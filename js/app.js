@@ -103,14 +103,42 @@ function renderHome(app) {
       </aside>
     </section>
 
-    <section class="panel panelWide">
+ <section class="panel panelWide availPanel">
+  <div class="availGrid">
+    <div class="availLeft">
       <h2>Nu beschikbaar</h2>
       <p>Op vinyl &amp; CD. Op = op.</p>
+
       <div class="ctaRow" style="margin-top:14px;">
         <a class="btn btnPrimary" href="#shop">Naar de shop</a>
         <a class="btn" href="#music">Eerst luisteren</a>
       </div>
-    </section>
+    </div>
+
+    <div class="availRight" aria-hidden="true">
+      <a class="availImgWrap" href="#shop/vinyl" title="Vinyl">
+        <img
+          class="availImg"
+          src="./assets/products/vinyl/tunnelvisie-front.webp"
+          alt="Tunnelvisie — Vinyl"
+          loading="lazy"
+        />
+        <div class="availTag">Vinyl</div>
+      </a>
+
+      <a class="availImgWrap" href="#shop/cd" title="CD">
+        <img
+          class="availImg"
+          src="./assets/products/cd/tunnelvisie-front-cd.webp"
+          alt="Tunnelvisie — CD"
+          loading="lazy"
+        />
+        <div class="availTag">CD</div>
+      </a>
+    </div>
+  </div>
+</section>
+
 
     <section class="panel panelWide">
       <div class="bioHero">

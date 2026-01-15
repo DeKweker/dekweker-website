@@ -4,6 +4,9 @@ import { euro, escapeHtml } from "./utils.js";
 
 let isOpen = false;
 
+/**
+ * Render: drawer + overlay (shell)
+ */
 export function renderCartShell() {
   return `
     <div class="overlay" id="cartOverlay" aria-hidden="true"></div>
@@ -37,6 +40,9 @@ export function renderCartShell() {
   `;
 }
 
+/**
+ * Open / close
+ */
 export function openCart() {
   isOpen = true;
   renderCartContents();
@@ -56,6 +62,9 @@ export function closeCart() {
   document.getElementById("cartOverlay")?.setAttribute("aria-hidden", "true");
 }
 
+/**
+ * Contents render
+ */
 export function renderCartContents() {
   const body = document.getElementById("cartBody");
   if (!body) return;
@@ -118,16 +127,34 @@ function updateCartTotals() {
   if (totalEl) totalEl.textContent = euro(cartTotal());
 }
 
+/**
+ * Badge sync
+ * - update counts
+ * - ALSO trigger header visibility logic (menu.js) via window.__CART_BADGE_SYNC__
+ */
 export function syncCartBadge() {
   const n = cartCount();
 
   const idEl = document.getElementById("cartCount");
   if (idEl) idEl.textContent = String(n);
 
-  document.querySelectorAll("[data-cart-count]").forEach((el) => (el.textContent = String(n)));
-  document.querySelectorAll(".cartCount").forEach((el) => (el.textContent = String(n)));
+  document.querySelectorAll("[data-cart-count]").forEach((el) => {
+    el.textContent = String(n);
+  });
+
+  document.querySelectorAll(".cartCount").forEach((el) => {
+    el.textContent = String(n);
+  });
+
+  // 🔥 this updates the header cart button show/hide + count everywhere
+  if (typeof window.__CART_BADGE_SYNC__ === "function") {
+    window.__CART_BADGE_SYNC__();
+  }
 }
 
+/**
+ * Events (1x binden)
+ */
 export function wireCartEvents() {
   const overlay = document.getElementById("cartOverlay");
   const closeBtn = document.getElementById("closeCart");
@@ -146,12 +173,13 @@ export function wireCartEvents() {
     syncCartBadge();
   });
 
+  // Qty buttons via delegation
   body?.addEventListener("click", (e) => {
     const btn = e.target?.closest?.("button[data-action][data-id]");
     if (!btn) return;
 
     const id = btn.getAttribute("data-id");
-    const action = btn.getAttribute("data-action");
+    const action = btn.getAttribute("data-action"); // inc/dec
     if (!id || !action) return;
 
     const current = getQtyFromStore(id);
@@ -162,6 +190,7 @@ export function wireCartEvents() {
     syncCartBadge();
   });
 
+  // Checkout
   document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
     const items = cartItemsDetailed();
     if (!items.length) {
@@ -170,23 +199,26 @@ export function wireCartEvents() {
     }
 
     try {
-const r = await fetch("/api/create-checkout-session", {
-  method: "POST",
-  headers: { "content-type": "application/json" },
-  body: JSON.stringify({
-    items: items.map((it) => ({
-      id: it.id,
-      name: it.name,
-      price: Number(it.price || 0),
-      qty: Number(it.qty || 1)
-    }))
-  })
-});
-
+      const r = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          items: items.map((it) => ({
+            id: it.id,
+            name: it.name,
+            price: it.price,
+            qty: it.qty
+          }))
+        })
+      });
 
       const data = await r.json().catch(() => ({}));
 
       if (!r.ok) {
+        if (data?.error === "sold_out") {
+          toast("Uitverkocht", data?.message || "Deze drop is uitverkocht.");
+          return;
+        }
         toast("Fout", data?.message || "Checkout lukt niet. Probeer opnieuw.");
         return;
       }

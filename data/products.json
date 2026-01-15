@@ -15,22 +15,7 @@
       "back": "/assets/products/vinyl/tunnelvisie-back.webp"
     }
   },
-  {
-    "id": "vinyl-8000-collector",
-    "category": "vinyl",
-    "slug": "8000-vinyl-collector",
-    "name": "8000 — Vinyl (Collector)",
-    "desc": "Genummerd, met insert. Klein detailwerk, grote vibe.",
-    "price": 39.99,
-    "tag": "Limited",
-    "type": "physical",
-    "shipping": { "pickup": true, "ship": true, "ship_price": 7 },
-    "limited": { "enabled": true, "total": 150, "press_min": 100, "numbered": true },
-    "images": {
-      "front": "/assets/products/vinyl/8000-collector-front.webp",
-      "back": "/assets/products/vinyl/8000-collector-back.webp"
-    }
-  },
+  
   {
     "id": "cd-tunnelvisie",
     "category": "cd",
@@ -47,22 +32,7 @@
       "back": null
     }
   },
-  {
-    "id": "cd-8000-signed",
-    "category": "cd",
-    "slug": "8000-cd-signed",
-    "name": "8000 — CD (Signed)",
-    "desc": "Gesigneerde sleeve. Kleine oplage.",
-    "price": 19.99,
-    "tag": "Limited",
-    "type": "physical",
-    "shipping": { "pickup": true, "ship": true, "ship_price": 7 },
-    "limited": { "enabled": false },
-    "images": {
-      "front": "/assets/products/cd/8000-signed-front.webp",
-      "back": null
-    }
-  },
+  
   {
     "id": "digitaal-8000",
     "category": "digitaal",
