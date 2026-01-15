@@ -197,11 +197,12 @@ export function wireCartEvents() {
   headers: { "content-type": "application/json" },
   body: JSON.stringify({
     items: items.map((it) => ({
-      id: it.id,
-      name: it.name,
-      price: it.price,
-      qty: it.qty
-    }))
+  id: it.id,
+  name: it.name,
+  price: Number(it.price),
+  qty: Number(it.qty || 1)
+}))
+
   })
 });
 
