@@ -170,18 +170,19 @@ export function wireCartEvents() {
     }
 
     try {
-      const r = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          items: items.map((it) => ({
-            id: it.id,
-            name: it.name,
-            price: it.price,
-            qty: it.qty
-          }))
-        })
-      });
+const r = await fetch("/api/create-checkout-session", {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({
+    items: items.map((it) => ({
+      id: it.id,
+      name: it.name,
+      price: Number(it.price || 0),
+      qty: Number(it.qty || 1)
+    }))
+  })
+});
+
 
       const data = await r.json().catch(() => ({}));
 

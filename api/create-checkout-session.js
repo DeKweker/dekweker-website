@@ -1,5 +1,4 @@
 const Stripe = require("stripe");
-console.log("CHECKOUT ITEMS:", items);
 
 module.exports = async (req, res) => {
   try {
@@ -15,25 +14,29 @@ module.exports = async (req, res) => {
 
     const stripe = Stripe(secret);
 
-    const body = req.body || {};
+    // body kan object zijn of string (Vercel)
+    let body = req.body || {};
+    if (typeof body === "string") {
+      try { body = JSON.parse(body); } catch (_) { body = {}; }
+    }
+
     const items = Array.isArray(body.items) ? body.items : [];
+
+    console.log("CHECKOUT ITEMS:", items);
 
     if (!items.length) {
       return res.status(400).json({ error: "No items" });
     }
 
-    // Support zowel:
-    // A) { name, price, qty }
-    // B) { qty, meta: { name, price } }
+    // Verwacht: { name, price, qty }
     const line_items = items.map((it) => {
       const qty = Math.max(1, Number(it.qty || 1));
-      const name = String(it.name || it?.meta?.name || "Item");
-      const price = Number(it.price ?? it?.meta?.price ?? 0);
+      const name = String(it.name || "Item");
+      const price = Number(it.price ?? 0);
 
       const unit_amount = Math.round(price * 100);
-      if (!Number.isFinite(unit_amount) || unit_amount < 50) {
-        // Stripe wil geen 0-cent “payment” sessies. 0 veroorzaakt vaak errors.
-        // (50 cent minimum is een veilige grens; pas aan als je wil.)
+
+      if (!Number.isFinite(unit_amount) || unit_amount <= 0) {
         throw new Error(`Invalid price for item "${name}" (${price})`);
       }
 
@@ -51,13 +54,13 @@ module.exports = async (req, res) => {
     const host = req.headers["x-forwarded-host"] || req.headers.host;
     const origin = `${proto}://${host}`;
 
-    // Shipping keuze “in checkout”: 2 opties
-    // (Stripe zal adres vragen; is oké voor nu. Later kunnen we pickup zonder adres doen via custom flow.)
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items,
 
+      // Shipping keuze IN checkout (2 opties)
       shipping_address_collection: { allowed_countries: ["BE"] },
+
       shipping_options: [
         {
           shipping_rate_data: {
@@ -70,7 +73,7 @@ module.exports = async (req, res) => {
           shipping_rate_data: {
             type: "fixed_amount",
             fixed_amount: { amount: 700, currency: "eur" },
-            display_name: "Verzending (BE) +€7",
+            display_name: "Verzending (BE)",
             delivery_estimate: {
               minimum: { unit: "business_day", value: 2 },
               maximum: { unit: "business_day", value: 5 }
