@@ -2,9 +2,7 @@
   "name": "dekweker-website",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
   "dependencies": {
-    "stripe": "^16.9.0",
-    "@vercel/kv": "^2.0.0"
+    "stripe": "^16.0.0"
   }
 }

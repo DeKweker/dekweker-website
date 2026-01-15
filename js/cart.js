@@ -193,16 +193,18 @@ export function wireCartEvents() {
 
     try {
       const r = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          items: items.map((it) => ({
-            id: it.id,
-            qty: it.qty,
-            meta: { name: it.name, price: it.price, tag: it.tag, image: it.image }
-          }))
-        })
-      });
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({
+    items: items.map((it) => ({
+      id: it.id,
+      name: it.name,
+      price: it.price,
+      qty: it.qty
+    }))
+  })
+});
+
 
       const data = await r.json().catch(() => ({}));
 
