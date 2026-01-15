@@ -1,11 +1,17 @@
-// ./js/menu.js
+// js/menu.js
 import { cartCount } from "./store.js";
+import { escapeHtml } from "./utils.js";
 
 let _wired = false;
 
+function getRouteKeyFromHash() {
+  const raw = String(window.location.hash || "#home").replace("#", "").trim();
+  const first = raw.split("/").filter(Boolean)[0] || "home";
+  return first;
+}
+
 function routeInfoFromHash() {
-  const raw = (window.location.hash || "#home").replace("#", "").trim();
-  const key = raw === "" ? "home" : raw;
+  const key = getRouteKeyFromHash();
 
   const map = {
     home: { label: "Home", hash: "#home" },
@@ -17,16 +23,8 @@ function routeInfoFromHash() {
   return map[key] || map.home;
 }
 
-function esc(s = "") {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
 function shouldShowCart(routeHash, count) {
+  // toon cart knop op shop altijd, of als er items zijn
   return routeHash === "#shop" || count > 0;
 }
 
@@ -35,10 +33,12 @@ function syncCartBadgeAndVisibility() {
   const count = Number(cartCount?.() ?? 0);
   const show = shouldShowCart(route.hash, count);
 
-  document.querySelectorAll("[data-cart-count], #cartCount, .cartCount").forEach((n) => {
-    if (n) n.textContent = String(count);
+  // badge teksten updaten
+  document.querySelectorAll("[data-cart-count], #cartCount, .cartCount").forEach((el) => {
+    if (el) el.textContent = String(count);
   });
 
+  // cart knop tonen/verbergen
   const cartBtn = document.querySelector("[data-open-cart]");
   if (cartBtn) cartBtn.style.display = show ? "" : "none";
 }
@@ -55,28 +55,26 @@ function headerHTML() {
       </div>
 
       <nav class="navLinks" aria-label="Primary navigation">
-        <a class="navLink ${route.hash==="#home" ? "isActive" : ""}" href="#home">Home</a>
-        <a class="navLink ${route.hash==="#shop" ? "isActive" : ""}" href="#shop">Shop</a>
-        <a class="navLink ${route.hash==="#music" ? "isActive" : ""}" href="#music">Music</a>
-        <a class="navLink ${route.hash==="#contact" ? "isActive" : ""}" href="#contact">Contact</a>
+        <a class="navLink ${route.hash === "#home" ? "isActive" : ""}" href="#home">Home</a>
+        <a class="navLink ${route.hash === "#shop" ? "isActive" : ""}" href="#shop">Shop</a>
+        <a class="navLink ${route.hash === "#music" ? "isActive" : ""}" href="#music">Music</a>
+        <a class="navLink ${route.hash === "#contact" ? "isActive" : ""}" href="#contact">Contact</a>
       </nav>
 
       <div class="actions">
-        <div class="pill currentPill">${esc(route.label)}</div>
+        <div class="pill currentPill">${escapeHtml(route.label)}</div>
 
         <button class="btn ghost cartBtn" type="button" data-open-cart aria-label="Open cart"
           style="display:${showCart ? "inline-flex" : "none"}">
           Cart <span class="cartCount" id="cartCount" data-cart-count>${count}</span>
         </button>
 
-        <!-- Menu knop blijft bestaan voor mobile (maar desktop verbergt hem via CSS) -->
         <button class="btn ghost hamburger" type="button" data-menu-toggle aria-label="Open menu">
           Menu
         </button>
       </div>
     </div>
 
-    <!-- Mobile drawer markup (wordt op desktop weggedrukt via CSS) -->
     <div class="mobileOverlay" data-menu-close></div>
     <aside class="mobileDrawer" aria-label="Menu">
       <div class="mobileDrawerHead">
@@ -85,10 +83,10 @@ function headerHTML() {
       </div>
 
       <div class="mobileDrawerBody">
-        <a class="mobileLink ${route.hash==="#home" ? "isActive" : ""}" href="#home" data-menu-close>Home</a>
-        <a class="mobileLink ${route.hash==="#shop" ? "isActive" : ""}" href="#shop" data-menu-close>Shop</a>
-        <a class="mobileLink ${route.hash==="#music" ? "isActive" : ""}" href="#music" data-menu-close>Music</a>
-        <a class="mobileLink ${route.hash==="#contact" ? "isActive" : ""}" href="#contact" data-menu-close>Contact</a>
+        <a class="mobileLink ${route.hash === "#home" ? "isActive" : ""}" href="#home" data-menu-close>Home</a>
+        <a class="mobileLink ${route.hash === "#shop" ? "isActive" : ""}" href="#shop" data-menu-close>Shop</a>
+        <a class="mobileLink ${route.hash === "#music" ? "isActive" : ""}" href="#music" data-menu-close>Music</a>
+        <a class="mobileLink ${route.hash === "#contact" ? "isActive" : ""}" href="#contact" data-menu-close>Contact</a>
         <div class="mobileMeta"><span class="muted">8000</span></div>
       </div>
     </aside>
@@ -119,6 +117,7 @@ export function renderHeader() {
 
   host.innerHTML = headerHTML();
 
+  // 1 delegated handler (geen losse listeners per knop)
   host.onclick = (e) => {
     const t = e.target;
 
@@ -126,28 +125,36 @@ export function renderHeader() {
       if (typeof window.__OPEN_CART__ === "function") window.__OPEN_CART__();
       return;
     }
+
     if (t?.closest?.("[data-menu-toggle]")) {
       toggleMenu();
       return;
     }
+
     if (t?.closest?.("[data-menu-close]")) {
       closeMenu();
       return;
     }
   };
 
+  // escape sluit menu
   host.onkeydown = (e) => {
     if (e.key === "Escape") closeMenu();
   };
 
+  // expose sync hook (store/cart gebruikt dit)
   window.__CART_BADGE_SYNC__ = syncCartBadgeAndVisibility;
 
+  // direct sync
   syncCartBadgeAndVisibility();
 
+  // bind global once
   if (!_wired) {
     _wired = true;
     window.addEventListener("hashchange", () => {
       closeMenu();
+      // app.js rendert ook header op route change, maar dit is veilig:
+      // re-render header zodat active state klopt
       renderHeader();
       syncCartBadgeAndVisibility();
     });
