@@ -158,7 +158,6 @@ export function mountShopShell(appEl) {
   const mount = appEl.querySelector("#shopMount");
   if (!mount) return;
 
-  // 1x delegation: add to cart (werkt voor cards + detail)
   mount.addEventListener("click", async (e) => {
     const btn = e.target?.closest?.("[data-add-to-cart]");
     if (!btn) return;
@@ -166,15 +165,10 @@ export function mountShopShell(appEl) {
     const id = btn.getAttribute("data-add-to-cart");
     if (!id) return;
 
-    // Zorg dat cache gevuld is (1x fetch)
-    try {
-      await loadProducts();
-    } catch (_) {}
+    const products = await loadProducts().catch(() => []);
+    const p = products.find((x) => x.id === id);
 
-    const p = (_products || []).find((x) => x.id === id);
-
-    // variant (maat) als die in dezelfde product wrap zit
-    const wrap = btn.closest?.("[data-product-wrap]") || mount;
+    const wrap = btn.closest?.("[data-product-wrap]") || document;
     const sizeSel = wrap.querySelector?.('select[name="size"]');
     const size = sizeSel ? String(sizeSel.value || "") : "";
 
@@ -192,8 +186,14 @@ export function mountShopShell(appEl) {
       : undefined;
 
     addToCart(id, meta, 1);
+
+    // 🔥 update header cart button + badge immediately (no refresh needed)
+    if (typeof window.__CART_BADGE_SYNC__ === "function") {
+      window.__CART_BADGE_SYNC__();
+    }
   });
 }
+
 
 /* ---------------------------
    Pages
