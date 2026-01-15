@@ -1,94 +1,70 @@
 // js/cart.js
-import {
-  cartItemsDetailed,
-  cartSubtotal,
-  cartTotal,
-  cartCount,
-  setQty,
-  clearCart,
-  setShipping,
-  getShipping,
-  shippingCost
-} from "./store.js";
+import { cartItemsDetailed, cartTotal, cartCount, setQty, clearCart } from "./store.js";
+import { euro, escapeHtml } from "./utils.js";
 
-import { euro } from "./utils.js";
+let isOpen = false;
 
-/* --------------------------------------------------
-   STATE
--------------------------------------------------- */
-
-let checkoutOpen = false;
-
-/* --------------------------------------------------
-   SHELL
--------------------------------------------------- */
-
+/**
+ * Render: drawer + overlay (shell)
+ */
 export function renderCartShell() {
   return `
-    <div class="overlay" id="cartOverlay"></div>
+    <div class="overlay" id="cartOverlay" aria-hidden="true"></div>
 
-    <aside class="cart" id="cartDrawer" aria-label="Winkelmandje">
+    <aside class="cart" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Kwekermandje">
       <div class="cartTop">
         <div class="cartTitle">Kwekermandje</div>
-        <button class="closeBtn" id="closeCart" aria-label="Sluiten">✕</button>
+        <button class="closeBtn" id="closeCart" type="button" aria-label="Sluiten">✕</button>
       </div>
 
       <div class="cartBody" id="cartBody"></div>
 
       <div class="cartBottom">
-        <div class="cartTotals">
-          <div class="cartRow">
-            <span>Subtotaal</span>
-            <span id="cartSubtotal"></span>
-          </div>
-
-          <div class="cartRow">
-            <span>Verzending</span>
-            <span id="cartShipping"></span>
-          </div>
-
-          <div class="cartRow total">
-            <strong>Totaal</strong>
-            <strong id="cartTotal"></strong>
-          </div>
+        <div class="cartRow">
+          <span class="cartRowLabel">Totaal</span>
+          <strong id="cartTotal">${euro(cartTotal())}</strong>
         </div>
 
-        <button class="btn btnPrimary" id="checkoutBtn">
+        <button class="btn btnPrimary" id="checkoutBtn" type="button">
           Afrekenen
         </button>
 
-        <div id="checkoutWrap" class="checkoutWrap"></div>
+        <div class="cartFine">
+          <div class="fineLine"><span class="fineDot"></span><span>Verzending of ophaling kies je in checkout.</span></div>
+          <div class="fineLine"><span class="fineDot"></span><span>Limited vinyl: genummerd. Persing start pas na genoeg betaalde orders.</span></div>
+        </div>
 
-        <button class="btn ghost" id="clearCartBtn">
-          Mandje leegmaken
-        </button>
+        <button class="btn" id="clearCartBtn" type="button">Mandje leegmaken</button>
       </div>
     </aside>
   `;
 }
 
-/* --------------------------------------------------
-   OPEN / CLOSE
--------------------------------------------------- */
-
+/**
+ * Open / close
+ */
 export function openCart() {
+  isOpen = true;
   renderCartContents();
+  syncCartBadge();
+
   document.body.classList.add("cart-open");
   document.getElementById("cartOverlay")?.classList.add("open");
   document.getElementById("cartDrawer")?.classList.add("open");
+  document.getElementById("cartOverlay")?.setAttribute("aria-hidden", "false");
 }
 
 export function closeCart() {
-  checkoutOpen = false;
+  isOpen = false;
   document.body.classList.remove("cart-open");
   document.getElementById("cartOverlay")?.classList.remove("open");
   document.getElementById("cartDrawer")?.classList.remove("open");
+  document.getElementById("cartOverlay")?.setAttribute("aria-hidden", "true");
 }
 
-/* --------------------------------------------------
-   CONTENT
--------------------------------------------------- */
-
+/**
+ * Contents render
+ */
 export function renderCartContents() {
   const body = document.getElementById("cartBody");
   if (!body) return;
@@ -98,143 +74,167 @@ export function renderCartContents() {
   if (!items.length) {
     body.innerHTML = `
       <div class="cartEmpty">
-        <strong>Nog leeg.</strong>
-        <div>Kies iets in de shop.</div>
+        <div class="cartEmptyTitle">Nog leeg.</div>
+        <div class="cartEmptySub">Kies iets in de shop en kom terug.</div>
       </div>
     `;
-    updateTotals();
-    renderCheckout(false);
+    updateCartTotals();
+    syncCartBadge();
     return;
   }
 
-  body.innerHTML = items.map(renderCartItem).join("");
+  body.innerHTML = items
+    .map(
+      (it) => `
+      <div class="cartItem" data-id="${escapeHtml(String(it.id))}">
+        <div class="cartThumb">
+          <div class="cartThumbGlow"></div>
+          <div class="cartThumbText">8000</div>
+        </div>
 
-  updateTotals();
-  renderCheckout(checkoutOpen);
-}
+        <div class="cartMeta">
+          <div class="cartTopRow">
+            <div>
+              <div class="cartName">${escapeHtml(it.name)}</div>
+              <div class="cartSub">${escapeHtml(it.tag || "Drop")}</div>
+            </div>
+            <div class="cartPrice">${euro(it.price)}</div>
+          </div>
 
-/* --------------------------------------------------
-   ITEM
--------------------------------------------------- */
+          <div class="qtyRow">
+            <button class="qtyBtn" data-action="dec" data-id="${escapeHtml(String(it.id))}" type="button" aria-label="Minder">
+              <span class="qtyGlyph">−</span>
+            </button>
 
-function renderCartItem(it) {
-  return `
-    <div class="cartItem" data-id="${it.id}">
-      <div class="cartItemMeta">
-        <div class="cartItemName">${it.name}</div>
-        <div class="cartItemTag">${it.tag || "Item"}</div>
+            <div class="qtyNum" data-qty="${it.qty}">${it.qty}</div>
+
+            <button class="qtyBtn" data-action="inc" data-id="${escapeHtml(String(it.id))}" type="button" aria-label="Meer">
+              <span class="qtyGlyph">+</span>
+            </button>
+          </div>
+        </div>
       </div>
+    `
+    )
+    .join("");
 
-      <div class="cartItemControls">
-        <button data-dec>−</button>
-        <span>${it.qty}</span>
-        <button data-inc>+</button>
-      </div>
-
-      <div class="cartItemPrice">
-        ${euro(it.subtotal)}
-      </div>
-    </div>
-  `;
+  updateCartTotals();
+  syncCartBadge();
 }
 
-/* --------------------------------------------------
-   TOTALS
--------------------------------------------------- */
-
-function updateTotals() {
-  document.getElementById("cartSubtotal").textContent =
-    euro(cartSubtotal());
-
-  document.getElementById("cartShipping").textContent =
-    shippingCost() === 0 ? "Gratis" : euro(shippingCost());
-
-  document.getElementById("cartTotal").textContent =
-    euro(cartTotal());
+function updateCartTotals() {
+  const totalEl = document.getElementById("cartTotal");
+  if (totalEl) totalEl.textContent = euro(cartTotal());
 }
 
-/* --------------------------------------------------
-   CHECKOUT
--------------------------------------------------- */
+/**
+ * Badge sync
+ */
+export function syncCartBadge() {
+  const n = cartCount();
 
-function renderCheckout(open) {
-  const wrap = document.getElementById("checkoutWrap");
-  if (!wrap) return;
+  const idEl = document.getElementById("cartCount");
+  if (idEl) idEl.textContent = String(n);
 
-  wrap.innerHTML = open ? checkoutHTML() : "";
-  wrap.classList.toggle("open", open);
+  document.querySelectorAll("[data-cart-count]").forEach((el) => {
+    el.textContent = String(n);
+  });
 
-  if (open) bindCheckoutEvents();
+  document.querySelectorAll(".cartCount").forEach((el) => {
+    el.textContent = String(n);
+  });
 }
 
-function checkoutHTML() {
-  return `
-    <div class="checkoutBox">
-      <h4>Levering</h4>
-
-      <label class="radioRow">
-        <input type="radio" name="shipping" value="pickup" ${getShipping() === "pickup" ? "checked" : ""}>
-        <span>Ophaling (gratis)</span>
-      </label>
-
-      <label class="radioRow">
-        <input type="radio" name="shipping" value="delivery" ${getShipping() === "delivery" ? "checked" : ""}>
-        <span>Verzending (+ €7)</span>
-      </label>
-
-      <div class="checkoutNotice">
-        Dit is een <strong>pre-order met betaling</strong>.<br/>
-        Pas na betaling wordt je exemplaar gereserveerd.
-      </div>
-
-      <button class="btn btnPrimary checkoutPay">
-        Doorgaan naar betaling
-      </button>
-    </div>
-  `;
-}
-
-/* --------------------------------------------------
-   EVENTS
--------------------------------------------------- */
-
+/**
+ * Events (1x binden)
+ */
 export function wireCartEvents() {
-  document.getElementById("cartOverlay")?.addEventListener("click", closeCart);
-  document.getElementById("closeCart")?.addEventListener("click", closeCart);
+  const overlay = document.getElementById("cartOverlay");
+  const closeBtn = document.getElementById("closeCart");
+  const body = document.getElementById("cartBody");
+
+  overlay?.addEventListener("click", closeCart);
+  closeBtn?.addEventListener("click", closeCart);
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeCart();
+  });
 
   document.getElementById("clearCartBtn")?.addEventListener("click", () => {
     clearCart();
-    checkoutOpen = false;
     renderCartContents();
+    syncCartBadge();
   });
 
-  document.getElementById("checkoutBtn")?.addEventListener("click", () => {
-    if (cartCount() === 0) return;
-    checkoutOpen = !checkoutOpen;
-    renderCheckout(checkoutOpen);
+  // Qty buttons via delegation
+  body?.addEventListener("click", (e) => {
+    const btn = e.target?.closest?.("button[data-action][data-id]");
+    if (!btn) return;
+
+    const id = btn.getAttribute("data-id");
+    const action = btn.getAttribute("data-action"); // inc/dec
+    if (!id || !action) return;
+
+    const current = getQtyFromStore(id);
+    const next = action === "inc" ? current + 1 : current - 1;
+
+    setQty(id, next);
+    renderCartContents();
+    syncCartBadge();
   });
 
-  document.getElementById("cartBody")?.addEventListener("click", (e) => {
-    const row = e.target.closest(".cartItem");
-    if (!row) return;
+  // Checkout
+  document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
+    const items = cartItemsDetailed();
+    if (!items.length) {
+      toast("Leeg mandje", "Kies eerst iets in de shop.");
+      return;
+    }
 
-    const id = row.dataset.id;
-    if (e.target.matches("[data-inc]")) setQty(id, +1);
-    if (e.target.matches("[data-dec]")) setQty(id, -1);
+    try {
+      const r = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          items: items.map((it) => ({
+            id: it.id,
+            qty: it.qty,
+            meta: { name: it.name, price: it.price, tag: it.tag, image: it.image }
+          }))
+        })
+      });
 
-    renderCartContents();
+      const data = await r.json().catch(() => ({}));
+
+      if (!r.ok) {
+        if (data?.error === "sold_out") {
+          toast("Uitverkocht", data?.message || "Deze drop is uitverkocht.");
+          return;
+        }
+        toast("Fout", "Checkout lukt niet. Probeer opnieuw.");
+        return;
+      }
+
+      if (data?.url) {
+        window.location.href = data.url;
+        return;
+      }
+
+      toast("Fout", "Geen checkout URL ontvangen.");
+    } catch (e) {
+      toast("Fout", "Netwerkprobleem. Probeer opnieuw.");
+    }
   });
 }
 
-function bindCheckoutEvents() {
-  document.querySelectorAll('input[name="shipping"]').forEach((r) => {
-    r.addEventListener("change", (e) => {
-      setShipping(e.target.value);
-      updateTotals();
-    });
-  });
+function getQtyFromStore(id) {
+  const items = cartItemsDetailed();
+  const found = items.find((x) => String(x.id) === String(id));
+  return found ? Number(found.qty || 0) : 0;
+}
 
-  document.querySelector(".checkoutPay")?.addEventListener("click", () => {
-    alert("👉 Hier komt later Stripe / Mollie betaling.");
-  });
+function toast(title, msg) {
+  try {
+    window.__TOAST__?.({ title, msg, ms: 2200 });
+  } catch (_) {}
 }

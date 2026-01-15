@@ -1,0 +1,148 @@
+[
+  {
+    "id": "tunnelvisie-vinyl",
+    "category": "vinyl",
+    "slug": "tunnelvisie-vinyl",
+    "name": "Tunnelvisie — Vinyl",
+    "desc": "Limited pressing. Zware sleeve, matte afwerking.",
+    "price": 29.99,
+    "tag": "Drop",
+    "type": "physical",
+    "shipping": { "pickup": true, "ship": true, "ship_price": 7 },
+    "limited": { "enabled": true, "total": 150, "press_min": 100, "numbered": true },
+    "images": {
+      "front": "/assets/products/vinyl/tunnelvisie-front.webp",
+      "back": "/assets/products/vinyl/tunnelvisie-back.webp"
+    }
+  },
+  {
+    "id": "vinyl-8000-collector",
+    "category": "vinyl",
+    "slug": "8000-vinyl-collector",
+    "name": "8000 — Vinyl (Collector)",
+    "desc": "Genummerd, met insert. Klein detailwerk, grote vibe.",
+    "price": 39.99,
+    "tag": "Limited",
+    "type": "physical",
+    "shipping": { "pickup": true, "ship": true, "ship_price": 7 },
+    "limited": { "enabled": true, "total": 150, "press_min": 100, "numbered": true },
+    "images": {
+      "front": "/assets/products/vinyl/8000-collector-front.webp",
+      "back": "/assets/products/vinyl/8000-collector-back.webp"
+    }
+  },
+  {
+    "id": "cd-tunnelvisie",
+    "category": "cd",
+    "slug": "tunnelvisie-cd",
+    "name": "Tunnelvisie — CD",
+    "desc": "Compact formaat met volledig artwork.",
+    "price": 14.99,
+    "tag": "Release",
+    "type": "physical",
+    "shipping": { "pickup": true, "ship": true, "ship_price": 7 },
+    "limited": { "enabled": false },
+    "images": {
+      "front": "/assets/products/cd/tunnelvisie-front-cd.webp",
+      "back": null
+    }
+  },
+  {
+    "id": "cd-8000-signed",
+    "category": "cd",
+    "slug": "8000-cd-signed",
+    "name": "8000 — CD (Signed)",
+    "desc": "Gesigneerde sleeve. Kleine oplage.",
+    "price": 19.99,
+    "tag": "Limited",
+    "type": "physical",
+    "shipping": { "pickup": true, "ship": true, "ship_price": 7 },
+    "limited": { "enabled": false },
+    "images": {
+      "front": "/assets/products/cd/8000-signed-front.webp",
+      "back": null
+    }
+  },
+  {
+    "id": "digitaal-8000",
+    "category": "digitaal",
+    "slug": "8000-digitaal",
+    "name": "8000 — Digitaal",
+    "desc": "Download-link na betaling.",
+    "price": 6.99,
+    "tag": "Instant",
+    "type": "digital",
+    "shipping": { "pickup": false, "ship": false, "ship_price": 0 },
+    "limited": { "enabled": false },
+    "images": {
+      "front": "/assets/products/digitaal/8000-digitaal.webp",
+      "back": null
+    }
+  },
+  {
+    "id": "digitaal-8000-deluxe",
+    "category": "digitaal",
+    "slug": "8000-digitaal-deluxe",
+    "name": "8000 — Digitaal (Deluxe)",
+    "desc": "Deluxe download + extra pack.",
+    "price": 9.99,
+    "tag": "Deluxe",
+    "type": "digital",
+    "shipping": { "pickup": false, "ship": false, "ship_price": 0 },
+    "limited": { "enabled": false },
+    "images": {
+      "front": "/assets/products/digitaal/8000-deluxe.webp",
+      "back": null
+    }
+  },
+  {
+    "id": "tee-8000",
+    "category": "merch",
+    "slug": "tee-8000",
+    "name": "T-shirt 8000",
+    "desc": "Clean front, Brugge achter. Heavy cotton, stevige fit.",
+    "price": 34.99,
+    "tag": "Staple",
+    "type": "physical",
+    "shipping": { "pickup": true, "ship": true, "ship_price": 7 },
+    "limited": { "enabled": false },
+    "variants": { "size": ["S", "M", "L", "XL"] },
+    "images": {
+      "front": "/assets/products/merch/tee-8000-front.webp",
+      "back": "/assets/products/merch/tee-8000-back.webp"
+    }
+  },
+  {
+    "id": "hoodie-kw",
+    "category": "merch",
+    "slug": "hoodie-kwartier-west",
+    "name": "Hoodie Kwartier West",
+    "desc": "Zwaar, zacht, minimal. Subtiel detail, warm draaggevoel.",
+    "price": 69.99,
+    "tag": "Limited",
+    "type": "physical",
+    "shipping": { "pickup": true, "ship": true, "ship_price": 7 },
+    "limited": { "enabled": false },
+    "variants": { "size": ["S", "M", "L", "XL"] },
+    "images": {
+      "front": "/assets/products/merch/hoodie-kw-front.webp",
+      "back": "/assets/products/merch/hoodie-kw-back.webp"
+    }
+  },
+  {
+    "id": "cap-muts",
+    "category": "merch",
+    "slug": "cap-muts",
+    "name": "Cap ‘MUTS’",
+    "desc": "Strak borduursel. Past op alles, zonder te roepen.",
+    "price": 24.99,
+    "tag": "Staple",
+    "type": "physical",
+    "shipping": { "pickup": true, "ship": true, "ship_price": 7 },
+    "limited": { "enabled": false },
+    "images": {
+      "front": "/assets/products/merch/cap-muts-front.webp",
+      "back": null
+    }
+  }
+]

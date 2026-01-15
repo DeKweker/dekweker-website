@@ -1,534 +1,201 @@
-// js/shop.js
-import { addToCart } from "./store.js";
-import { euro, escapeHtml } from "./utils.js";
+// js/store.js
+// Simpele, stabiele cart store (localStorage) — geen hacks, geen rondjes.
 
-let _products = null;
+const STORAGE_KEY = "kwkr_cart_v1";
+
+/**
+ * cart shape:
+ * {
+ *   [id]: {
+ *     id: string,
+ *     qty: number,
+ *     meta: { name, price, tag, image, category, slug, type, variant_size, ... }
+ *   }
+ * }
+ */
+let cart = loadCart();
 
 /* ---------------------------
-   Data loading
+   Internal helpers
 --------------------------- */
-async function loadProducts() {
-  if (_products) return _products;
-
-  const res = await fetch("./data/products.json", { cache: "no-store" });
-  if (!res.ok) throw new Error("Kan products.json niet laden.");
-  const data = await res.json();
-
-  const arr = Array.isArray(data) ? data : (data.products || []);
-  _products = arr.map(normalizeProduct);
-  return _products;
-}
-
-function normalizeProduct(p) {
-  const id = String(p?.id || "");
-  const category = String(p?.category || p?.cat || "merch");
-  const slug = String(p?.slug || slugify(p?.name || id));
-
-  const images =
-    p?.images && typeof p.images === "object"
-      ? {
-          front: p.images.front ? String(p.images.front) : "",
-          back: p.images.back ? String(p.images.back) : ""
-        }
-      : {
-          front: p?.image ? String(p.image) : "",
-          back: p?.imageBack ? String(p.imageBack) : ""
-        };
-
-  const type = String(p?.type || inferType(category));
-  const shipping = normalizeShipping(p?.shipping, type);
-  const limited = normalizeLimited(p?.limited, category);
-
-  const variants =
-    p?.variants && typeof p.variants === "object"
-      ? {
-          size: Array.isArray(p.variants.size) ? p.variants.size.map(String) : null
-        }
-      : { size: null };
-
-  return {
-    id,
-    slug,
-    category,
-    name: String(p?.name || id),
-    desc: String(p?.desc || ""),
-    price: Number(p?.price || 0),
-    tag: String(p?.tag || ""),
-    type, // "physical" | "digital"
-    shipping, // {pickup, ship, ship_price}
-    limited, // {enabled, total, press_min, numbered}
-    variants,
-    images
-  };
-}
-
-function inferType(category) {
-  return String(category) === "digitaal" ? "digital" : "physical";
-}
-
-function normalizeShipping(sh, type) {
-  // digital: nooit shipping
-  if (type === "digital") return { pickup: false, ship: false, ship_price: 0 };
-
-  const pickup = sh?.pickup !== false; // default true
-  const ship = sh?.ship !== false; // default true
-  const ship_price = Number(sh?.ship_price ?? 7);
-  return {
-    pickup: !!pickup,
-    ship: !!ship,
-    ship_price: Number.isFinite(ship_price) ? ship_price : 7
-  };
-}
-
-function normalizeLimited(lim, category) {
-  // default: vinyl limited
-  const isVinyl = String(category) === "vinyl";
-  const enabled = lim?.enabled ?? isVinyl;
-
-  if (!enabled) {
-    return { enabled: false, total: 0, press_min: 0, numbered: false };
+function loadCart() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    const data = JSON.parse(raw);
+    if (!data || typeof data !== "object") return {};
+    return data;
+  } catch {
+    return {};
   }
-
-  const total = clampInt(lim?.total ?? 150, 1, 99999);
-  const press_min = clampInt(lim?.press_min ?? 100, 1, total);
-  const numbered = lim?.numbered ?? true;
-
-  return { enabled: true, total, press_min, numbered: !!numbered };
 }
 
-function clampInt(n, min, max) {
+function saveCart() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+  } catch {
+    // ignore (privacy mode / quota)
+  }
+}
+
+function normId(id) {
+  return String(id ?? "").trim();
+}
+
+function clampQty(n) {
   const v = Number(n);
-  if (!Number.isFinite(v)) return min;
-  return Math.max(min, Math.min(max, Math.round(v)));
+  if (!Number.isFinite(v)) return 0;
+  return Math.max(0, Math.round(v));
 }
 
-function slugify(s) {
-  return String(s || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+function normPrice(p) {
+  const v = Number(p);
+  return Number.isFinite(v) ? v : 0;
 }
 
-function titleCase(s) {
-  const str = String(s || "");
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+function ensureLine(id) {
+  const key = normId(id);
+  if (!key) return null;
 
-function resolveImg(path) {
-  if (!path) return "";
-  if (path.startsWith("http") || path.startsWith("/") || path.startsWith("./")) return path;
-  return `./${path}`;
-}
-
-/* ---------------------------
-   Routing helper
---------------------------- */
-export function getShopPathParts() {
-  const raw = (window.location.hash || "#home").replace("#", "").trim();
-  const cleaned = raw.startsWith("/") ? raw.slice(1) : raw;
-  const parts = cleaned.split("/").filter(Boolean);
-
-  if (parts[0] !== "shop") return { category: null, slug: null };
-
-  return {
-    category: parts[1] ? String(parts[1]) : null,
-    slug: parts[2] ? String(parts[2]) : null
-  };
-}
-
-/* ---------------------------
-   Mount shell
---------------------------- */
-export function mountShopShell(appEl) {
-  if (!appEl) return;
-
-  appEl.innerHTML = `
-    <section class="panel panelWide">
-      <div class="shopPageHead">
-        <h1 style="margin:0 0 6px;">Shop</h1>
-        <p style="margin:0;color:rgba(255,255,255,.72);">
-          Vinyl, CD, digitaal en merch — klein gehouden, proper gekozen.
-        </p>
-      </div>
-
-      <nav class="shopNav" aria-label="Shop categorieën">
-        <a class="shopNavLink" href="#shop/vinyl" data-shop-nav="vinyl">Vinyl</a>
-        <a class="shopNavLink" href="#shop/cd" data-shop-nav="cd">CD</a>
-        <a class="shopNavLink" href="#shop/digitaal" data-shop-nav="digitaal">Digitaal</a>
-        <a class="shopNavLink" href="#shop/merch" data-shop-nav="merch">Merch</a>
-      </nav>
-
-      <div id="shopMount"></div>
-    </section>
-  `;
-
-  // 1x delegation: add to cart
-  const mount = appEl.querySelector("#shopMount");
-  if (!mount) return;
-
-  mount.addEventListener("click", async (e) => {
-    const btn = e.target?.closest?.("[data-add-to-cart]");
-    if (!btn) return;
-
-    const id = btn.getAttribute("data-add-to-cart");
-    if (!id) return;
-
-    // zorg dat products geladen zijn
-    const products = await loadProducts().catch(() => []);
-    const p = products.find((x) => x.id === id);
-
-    // variant (bv. maat) ophalen als er een selector staat in de buurt
-    const wrap = btn.closest?.("[data-product-wrap]") || document;
-    const sizeSel = wrap.querySelector?.('select[name="size"]');
-    const size = sizeSel ? String(sizeSel.value || "") : "";
-
-    const meta = p
-      ? {
-          name: p.name,
-          price: p.price,
-          tag: p.tag,
-          image: p.images?.front || "",
-          category: p.category,
-          slug: p.slug,
-          type: p.type,
-          variant_size: size || undefined
-        }
-      : undefined;
-
-    addToCart(id, meta, 1);
-  });
-}
-
-/* ---------------------------
-   Pages
---------------------------- */
-export async function renderShopHome() {
-  const mount = document.getElementById("shopMount");
-  if (!mount) return;
-
-  await loadProducts();
-
-  mount.innerHTML = `
-    <div class="shopCategoryGrid">
-      ${categoryCard("vinyl", "Limited pressings. Genummerd waar het hoort.")}
-      ${categoryCard("cd", "Compact, proper, klaar om te draaien.")}
-      ${categoryCard("digitaal", "Na betaling meteen binnen.")}
-      ${categoryCard("merch", "Stukken om te dragen — niet om te showen.")}
-    </div>
-
-    <div class="shopHint" style="margin-top:14px;color:rgba(255,255,255,.65);font-size:12px;">
-      Klik een categorie en pak het van daar.
-    </div>
-  `;
-
-  setActiveShopNav(null);
-}
-
-export async function renderShopCategory(category) {
-  const mount = document.getElementById("shopMount");
-  if (!mount) return;
-
-  const products = await loadProducts();
-  const list = products.filter((p) => p.category === category);
-
-  setActiveShopNav(category);
-
-  mount.innerHTML = `
-    <div class="shopPageHead">
-      <h2 style="margin:0 0 6px;">${escapeHtml(titleCase(category))}</h2>
-      <p style="margin:0;color:rgba(255,255,255,.72);">Een selectie. Geen rommel.</p>
-    </div>
-
-    <div class="shopGrid">
-      ${list.map((p) => productCard(p)).join("") || emptyCategory(category)}
-    </div>
-  `;
-
-  // nette fallbacks voor images
-  wireCardImageFallbacks(mount);
-}
-
-export async function renderProductDetail(category, slug) {
-  const mount = document.getElementById("shopMount");
-  if (!mount) return;
-
-  const products = await loadProducts();
-  const p = products.find((x) => x.category === category && x.slug === slug);
-
-  setActiveShopNav(category);
-
-  if (!p) {
-    mount.innerHTML = `
-      <div class="cartEmpty">
-        <div style="font-weight:900;">Niet gevonden.</div>
-        <div style="color:rgba(255,255,255,.65); font-size:12px; margin-top:6px;">
-          Ga terug naar <a href="#shop/${escapeHtml(category)}" style="color:rgba(255,255,255,.85);">de categorie</a>.
-        </div>
-      </div>
-    `;
-    return;
+  if (!cart[key]) {
+    cart[key] = { id: key, qty: 0, meta: {} };
   }
-
-  const front = resolveImg(p.images.front);
-  const back = resolveImg(p.images.back);
-
-  const shipLine = shippingLine(p);
-  const limitedLine = limitedLineHtml(p);
-
-  const sizePicker = p.variants?.size?.length
-    ? `
-      <label class="field" style="margin-top:12px;">
-        <span class="label">Maat</span>
-        <select name="size">
-          ${p.variants.size.map((s) => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("")}
-        </select>
-      </label>
-    `
-    : "";
-
-  mount.innerHTML = `
-    <div class="shopBreadcrumb">
-      <a href="#shop">Shop</a><span class="sep">/</span>
-      <a href="#shop/${escapeHtml(category)}">${escapeHtml(titleCase(category))}</a>
-      <span class="sep">/</span>
-      <span class="current">${escapeHtml(p.name)}</span>
-    </div>
-
-    <div class="productDetail" data-product-wrap>
-      <div>
-        <div class="productMedia ${front ? "" : "fallback"}" id="productMediaBox">
-          ${front ? `<img id="productMediaImg" class="prodImg prodImgFront" src="${front}" alt="${escapeHtml(p.name)}">` : ``}
-          ${back ? `<img id="productMediaImgBack" class="prodImg prodImgBack" src="${back}" alt="${escapeHtml(p.name)} (back)">` : ``}
-          <div class="productMediaFallback">De Kweker</div>
-        </div>
-
-        ${back ? `
-          <div class="galleryToggle">
-            <button class="pillBtn active" type="button" data-img="front">Front</button>
-            <button class="pillBtn" type="button" data-img="back">Back</button>
-          </div>
-        ` : ``}
-      </div>
-
-      <div>
-        <h2 class="productTitle">${escapeHtml(p.name)}</h2>
-
-        <div class="productMetaRow">
-          <span class="pillBtn" style="pointer-events:none;">${escapeHtml(p.tag || "Drop")}</span>
-          <span class="pillBtn" style="pointer-events:none;">${escapeHtml(titleCase(p.category))}</span>
-          ${p.type === "digital" ? `<span class="pillBtn" style="pointer-events:none;">Digitaal</span>` : ``}
-        </div>
-
-        <p class="productDesc">${escapeHtml(p.desc)}</p>
-
-        ${sizePicker}
-
-        <div class="productBuyRow" style="margin-top:12px;">
-          <div class="productPrice">${euro(p.price)}</div>
-          <button class="btn btnPrimary" type="button" data-add-to-cart="${escapeHtml(p.id)}">In mandje</button>
-          <a class="btn" href="#shop/${escapeHtml(category)}">Terug</a>
-        </div>
-
-        <div class="productFine">
-          ${limitedLine}
-          ${shipLine}
-          ${p.type === "digital"
-            ? `<div class="fineLine"><span class="fineDot"></span><span>Download na betaling. Link komt via mail.</span></div>`
-            : `<div class="fineLine"><span class="fineDot"></span><span>Ophalen kan. Verzenden kan ook.</span></div>`
-          }
-        </div>
-      </div>
-    </div>
-  `;
-
-  wireDetailMedia(mount, { front, back });
+  return cart[key];
 }
 
-/* ---------------------------
-   UI helpers
---------------------------- */
-function categoryCard(cat, sub) {
-  return `
-    <a class="shopCategoryCard" href="#shop/${escapeHtml(cat)}">
-      <div>
-        <div class="shopCategoryTitle">${escapeHtml(titleCase(cat))}</div>
-        <div class="shopCategorySub">${escapeHtml(sub)}</div>
-      </div>
-      <div class="shopCategorySub" style="opacity:.8;">Bekijk →</div>
-    </a>
-  `;
-}
-
-function emptyCategory(cat) {
-  return `
-    <div class="cartEmpty" style="grid-column:1/-1;">
-      <div style="font-weight:900;">Nog niks in ${escapeHtml(titleCase(cat))}.</div>
-      <div style="color:rgba(255,255,255,.65); font-size:12px; margin-top:6px;">
-        Komt eraan.
-      </div>
-    </div>
-  `;
-}
-
-function productCard(p) {
-  const front = resolveImg(p.images.front);
-  const back = resolveImg(p.images.back);
-
-  const hasFront = Boolean(front);
-  const hasBack = Boolean(back);
-
-  const mediaClass = [
-    "prodMedia",
-    hasFront ? "" : "fallback",
-    hasBack ? "" : "noBack"
-  ].filter(Boolean).join(" ");
-
-  const limitedBadge = p.limited?.enabled
-    ? `<span class="pillBtn" style="pointer-events:none;">${escapeHtml(String(p.limited.total))} stuks</span>`
-    : "";
-
-  return `
-    <article class="productCard panel" data-product-wrap>
-      <a class="prodMediaLink" href="#shop/${escapeHtml(p.category)}/${escapeHtml(p.slug)}">
-        <div class="${mediaClass}">
-          ${hasFront ? `<img class="prodImg prodImgFront" data-img-role="front" src="${front}" alt="${escapeHtml(p.name)}" loading="lazy">` : ``}
-          ${hasBack ? `<img class="prodImg prodImgBack" data-img-role="back" src="${back}" alt="${escapeHtml(p.name)} (back)" loading="lazy">` : ``}
-          <div class="prodMediaFallback">De Kweker</div>
-        </div>
-      </a>
-
-      <div class="productBody">
-        <div class="productTop">
-          <div class="tag">${escapeHtml(p.tag || "Drop")}</div>
-          <div class="price">${euro(p.price)}</div>
-        </div>
-
-        <a class="prodTitleLink" href="#shop/${escapeHtml(p.category)}/${escapeHtml(p.slug)}">
-          <div class="productName prodTitle">${escapeHtml(p.name)}</div>
-        </a>
-
-        <div class="productDesc">${escapeHtml(p.desc || "")}</div>
-
-        <div class="productMetaRow" style="margin-top:10px;">
-          ${limitedBadge}
-          ${p.type === "digital" ? `<span class="pillBtn" style="pointer-events:none;">Digitaal</span>` : ``}
-        </div>
-
-        <div class="productActions" style="margin-top:12px;">
-          <button class="btn btnPrimary" data-add-to-cart="${escapeHtml(p.id)}" type="button">In mandje</button>
-          <a class="btn" href="#shop/${escapeHtml(p.category)}/${escapeHtml(p.slug)}">Details</a>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-function setActiveShopNav(category) {
-  document.querySelectorAll(".shopNavLink").forEach((a) => a.classList.remove("active"));
-  if (!category) return;
-  const el = document.querySelector(`.shopNavLink[data-shop-nav="${CSS.escape(category)}"]`);
-  if (el) el.classList.add("active");
-}
-
-/* ---------------------------
-   Shipping / Limited lines
---------------------------- */
-function shippingLine(p) {
-  if (p.type !== "physical") return "";
-
-  const ship = p.shipping?.ship;
-  const pickup = p.shipping?.pickup;
-  const shipPrice = Number(p.shipping?.ship_price ?? 7);
-
-  const bits = [];
-  if (pickup) bits.push("Ophaling: gratis");
-  if (ship) bits.push(`Verzending: +${euro(shipPrice)}`);
-
-  if (!bits.length) return "";
-
-  return `<div class="fineLine"><span class="fineDot"></span><span>${escapeHtml(bits.join(" • "))}</span></div>`;
-}
-
-function limitedLineHtml(p) {
-  if (!p.limited?.enabled) {
-    return `<div class="fineLine"><span class="fineDot"></span><span>Beperkte oplage waar het klopt.</span></div>`;
+function mergeMeta(existing = {}, incoming = {}) {
+  // incoming wint, maar we houden bestaande keys als incoming leeg is
+  const out = { ...(existing || {}) };
+  for (const [k, v] of Object.entries(incoming || {})) {
+    if (v === undefined || v === null) continue;
+    // lege strings niet forceren over bestaande
+    if (typeof v === "string" && v.trim() === "") continue;
+    out[k] = v;
   }
+  return out;
+}
 
-  const total = p.limited.total;
-  const pressMin = p.limited.press_min;
-  const numbered = p.limited.numbered;
-
-  // tekst zonder marketing-blabla, maar helder
-  const t = numbered
-    ? `Limited: ${total} stuks • genummerd`
-    : `Limited: ${total} stuks`;
-
-  const t2 = `Persing start pas als er genoeg betaalde pre-orders zijn (${pressMin}/${total}).`;
-
-  return `
-    <div class="fineLine"><span class="fineDot"></span><span>${escapeHtml(t)}</span></div>
-    <div class="fineLine"><span class="fineDot"></span><span>${escapeHtml(t2)}</span></div>
-  `;
+function cleanupIfZero(id) {
+  const key = normId(id);
+  if (!key) return;
+  if (!cart[key]) return;
+  if (cart[key].qty <= 0) delete cart[key];
 }
 
 /* ---------------------------
-   Image wiring
+   Public API (imports in jouw files)
 --------------------------- */
-function wireCardImageFallbacks(scopeEl) {
-  scopeEl.querySelectorAll('img[data-img-role="front"], img[data-img-role="back"]').forEach((img) => {
-    img.addEventListener("error", () => {
-      const media = img.closest(".prodMedia");
-      if (!media) return;
 
-      if (img.getAttribute("data-img-role") === "front") {
-        img.remove();
-        media.classList.add("fallback");
-      } else {
-        img.remove();
-        media.classList.add("noBack");
-      }
-    });
-  });
+/**
+ * Voeg toe aan cart.
+ * meta kan {name, price, tag, image, category, slug, type, variant_size, ...}
+ */
+export function addToCart(id, meta = {}, qty = 1) {
+  const line = ensureLine(id);
+  if (!line) return;
+
+  const add = clampQty(qty);
+  if (add <= 0) return;
+
+  line.qty = clampQty(line.qty + add);
+  line.meta = mergeMeta(line.meta, meta);
+
+  saveCart();
+
+  // badge sync hook (menu.js zet dit)
+  if (typeof window.__CART_BADGE_SYNC__ === "function") {
+    window.__CART_BADGE_SYNC__();
+  }
 }
 
-function wireDetailMedia(scopeEl, { front, back }) {
-  const mediaBox = scopeEl.querySelector("#productMediaBox");
-  const frontImg = scopeEl.querySelector("#productMediaImg");
-  const backImg = scopeEl.querySelector("#productMediaImgBack");
+/**
+ * Zet quantity (0 = verwijderen)
+ */
+export function setQty(id, qty) {
+  const line = ensureLine(id);
+  if (!line) return;
 
-  // front fallback
-  if (frontImg && mediaBox) {
-    frontImg.addEventListener("error", () => {
-      frontImg.remove();
-      mediaBox.classList.add("fallback");
+  line.qty = clampQty(qty);
+  cleanupIfZero(id);
+
+  saveCart();
+
+  if (typeof window.__CART_BADGE_SYNC__ === "function") {
+    window.__CART_BADGE_SYNC__();
+  }
+}
+
+/**
+ * Leeg cart
+ */
+export function clearCart() {
+  cart = {};
+  saveCart();
+
+  if (typeof window.__CART_BADGE_SYNC__ === "function") {
+    window.__CART_BADGE_SYNC__();
+  }
+}
+
+/**
+ * Aantal items (som van qty)
+ */
+export function cartCount() {
+  let n = 0;
+  for (const k in cart) {
+    n += clampQty(cart[k]?.qty ?? 0);
+  }
+  return n;
+}
+
+/**
+ * Total in euro (som qty * price)
+ */
+export function cartTotal() {
+  let t = 0;
+  for (const k in cart) {
+    const line = cart[k];
+    const qty = clampQty(line?.qty ?? 0);
+    const price = normPrice(line?.meta?.price ?? 0);
+    t += qty * price;
+  }
+  return t;
+}
+
+/**
+ * Gedetailleerde items voor UI (cart.js verwacht dit)
+ */
+export function cartItemsDetailed() {
+  const items = [];
+
+  for (const k in cart) {
+    const line = cart[k];
+    const qty = clampQty(line?.qty ?? 0);
+    if (qty <= 0) continue;
+
+    const meta = line?.meta || {};
+    items.push({
+      id: String(line.id),
+      qty,
+      name: String(meta.name ?? line.id),
+      price: normPrice(meta.price ?? 0),
+      tag: String(meta.tag ?? ""),
+      image: String(meta.image ?? ""),
+      category: meta.category ? String(meta.category) : "",
+      slug: meta.slug ? String(meta.slug) : "",
+      type: meta.type ? String(meta.type) : "",
+      variant_size: meta.variant_size ? String(meta.variant_size) : ""
     });
   }
 
-  // back fallback -> gewoon verbergen
-  if (backImg) {
-    backImg.addEventListener("error", () => {
-      backImg.remove();
-      // als back faalt: toggleknop weg, en front blijft
-      scopeEl.querySelector(".galleryToggle")?.remove();
-    });
-  }
+  // optioneel: stabiele sort (zelfde volgorde)
+  items.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  return items;
+}
 
-  // toggle (zonder rare state)
-  if (back) {
-    const btns = scopeEl.querySelectorAll("[data-img]");
-    btns.forEach((b) => {
-      b.addEventListener("click", () => {
-        btns.forEach((x) => x.classList.remove("active"));
-        b.classList.add("active");
-
-        const mode = b.getAttribute("data-img");
-        if (mode === "back") {
-          frontImg?.classList.remove("prodImgFront");
-          backImg?.classList.add("prodImgBack");
-        }
-      });
-    });
-  }
+/**
+ * (Handig voor debug)
+ */
+export function _getCartRaw() {
+  return cart;
 }
