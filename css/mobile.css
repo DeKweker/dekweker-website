@@ -1,0 +1,95 @@
+/* css/mobile.css
+   Mobile-only drawer/overlay styling.
+*/
+
+body.no-scroll { overflow: hidden; }
+
+/* ✅ Force show overlay/drawer when open — ook boven 900px */
+.mobileOverlay.open{ display: block; }
+.mobileDrawer.open{ display: flex; }
+
+/* standaard: verberg mobile UI overal */
+.mobileOverlay,
+.mobileDrawer {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  /* desktop nav weg op mobile (anders dubbel) */
+  .navLinks, .centerNav { display: none !important; }
+
+  /* huidige pagina pill weg op mobile (rustiger) */
+  .currentPill { display: none !important; }
+
+  /* Overlay */
+  .mobileOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 5000; /* FIX: altijd boven alles */
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  .mobileOverlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Drawer */
+  .mobileDrawer {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: min(86vw, 360px);
+    z-index: 5001; /* FIX: boven overlay */
+    transform: translateX(110%);
+    transition: transform .25s ease;
+
+    background: rgba(0,0,0,.78);
+    backdrop-filter: blur(10px);
+    border-left: 1px solid rgba(255,255,255,.08);
+
+    padding: 14px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .mobileDrawer.open { transform: translateX(0); }
+
+  .mobileDrawerHead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding-bottom:10px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .mobileTitle{ font-weight:700; font-size:18px; }
+
+  .mobileDrawerBody{
+    display:grid;
+    gap:10px;
+    padding-top:10px;
+  }
+
+  .mobileLink{
+    display:block;
+    padding:14px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+    color:inherit;
+    text-decoration:none;
+    font-size:18px;
+  }
+  .mobileLink.isActive{
+    background:rgba(255,255,255,.10);
+    border-color:rgba(255,255,255,.14);
+  }
+
+  .mobileMeta{ margin-top: 6px; opacity: .7; }
+}

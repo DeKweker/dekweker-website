@@ -1,0 +1,414 @@
+/* ======================================================
+   COMPONENTS.CSS — Header + menu overlay (FIX dikke bar)
+====================================================== */
+
+/* HEADER */
+#site-header{
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  width: 100%;
+  padding: 10px 0;
+  background: rgba(10, 9, 8, .58);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+#site-header .inner,
+#site-header .wrap,
+#site-header .bar,
+#site-header nav{
+  width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+#site-header .brand,
+#site-header .logo,
+#site-header a.logo{
+  color: rgba(255,248,235,.92);
+  font-weight: 950;
+  letter-spacing: -.4px;
+}
+
+/* pills */
+#site-header button,
+#site-header .btn,
+#site-header .pill,
+#site-header .chip{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,248,235,.92);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+#site-header .btnPrimary,
+#site-header .primary{
+  background: linear-gradient(180deg, rgba(196,119,71,.95), rgba(196,119,71,.70));
+  border-color: rgba(196,119,71,.34);
+}
+
+/* ======================================================
+   MENU OVERLAY — standaard DICHT (dit was je dikke bar)
+====================================================== */
+
+/* overlay is standaard verborgen */
+#overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+  z-index: 80;
+}
+
+/* menu paneel (hamburger menu) standaard weg */
+#siteMenu{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  /* BELANGRIJK: niet als bar tonen wanneer dicht */
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+
+  background: rgba(12,10,8,.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+
+  z-index: 90;
+  transition: transform .22s ease, opacity .22s ease;
+}
+
+/* open state: pas dan zichtbaar */
+#overlay.open{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#siteMenu.open{
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* menu inhoud */
+#siteMenu .menuInner,
+#siteMenu .inner,
+#siteMenu nav{
+  width: var(--container);
+  margin: 0 auto;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+/* links in menu */
+#siteMenu a{
+  color: rgba(255,248,235,.88);
+  text-decoration: none;
+  font-weight: 900;
+  opacity: .9;
+}
+#siteMenu a:hover{ opacity: 1; }
+
+/* close knop: enkel tonen wanneer menu open is */
+#closeMenu{
+  position: absolute;
+  left: 14px;
+  top: 10px;
+
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08);
+  color: rgba(255,248,235,.92);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+#siteMenu.open #closeMenu{
+  display: inline-flex;
+}
+
+/* mobile */
+@media (max-width: 640px){
+  #siteMenu .menuInner,
+  #siteMenu .inner,
+  #siteMenu nav{
+    justify-content: space-around;
+    gap: 14px;
+    padding: 12px 10px;
+  }
+}
+/* ======================================================
+   FIX: hamburger knop zichtbaar + klikbaar
+====================================================== */
+
+/* Zorg dat de rechter knopjes in 1 rij staan */
+#site-header .actions,
+#site-header .right,
+#site-header .headerRight,
+#site-header .navRight{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* De hamburger knop (openMenu) */
+#openMenu{
+  width: 42px;
+  height: 38px;
+  padding: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.16);
+  color: rgba(255,248,235,.92);
+
+  cursor: pointer;
+}
+
+/* 3 streepjes tekenen in de knop */
+#openMenu::before{
+  content: "";
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  box-shadow:
+    0 -6px 0 currentColor,
+    0  6px 0 currentColor;
+  opacity: .95;
+}
+
+/* hover */
+#openMenu:hover{
+  background: rgba(255,255,255,.14);
+}
+/* ======================================================
+   HEADER: desktop open menu + mobile hamburger drawer
+====================================================== */
+
+#site-header{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.topbar{
+  height: 56px;                 /* <-- dunner */
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
+  align-items: center;
+  gap: 16px;
+
+  padding: 10px 14px;
+  background: rgba(10, 10, 10, .55);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.brand{
+  color: rgba(255,248,235,.92);
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .2px;
+}
+
+.navDesktop{
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+}
+
+.navLink{
+  color: rgba(255,248,235,.82);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 999px;
+}
+
+.navLink:hover{
+  background: rgba(255,255,255,.08);
+}
+
+.navLink.active{
+  background: rgba(255,255,255,.12);
+  color: rgba(255,248,235,.95);
+}
+
+.actions{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 12px;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,248,235,.90);
+
+  text-decoration: none;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.pill .count{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.12);
+  font-size: 12px;
+}
+
+.iconBtn{
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,248,235,.92);
+  cursor: pointer;
+}
+
+/* hamburger icon */
+.burger{
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor;
+}
+
+/* X icon */
+.xIcon{
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+.xIcon::before,
+.xIcon::after{
+  content:"";
+  position:absolute;
+  inset: 0;
+  margin:auto;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+}
+.xIcon::before{ transform: rotate(45deg); }
+.xIcon::after{ transform: rotate(-45deg); }
+
+/* Mobile drawer (default: hidden) */
+.overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+}
+
+.drawer{
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(360px, 92vw);
+  background: rgba(12,12,12,.78);
+  backdrop-filter: blur(12px);
+  border-left: 1px solid rgba(255,255,255,.10);
+
+  transform: translateX(110%);
+  transition: transform .22s ease;
+  padding: 14px;
+  z-index: 1000;
+}
+
+.drawerTop{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.drawerTitle{
+  color: rgba(255,248,235,.92);
+  font-weight: 800;
+}
+
+.navMobile{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.overlay.open{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer.open{
+  transform: translateX(0);
+}
+
+/* ======================================================
+   RESPONSIVE: desktop vs mobile
+====================================================== */
+
+#openMenu{ display: none; }      /* hamburger weg op desktop */
+#overlay, #siteMenu{ display: none; } /* drawer uit op desktop */
+
+@media (max-width: 900px){
+  .navDesktop{ display: none; }  /* desktop menu weg */
+  #openMenu{ display: inline-flex; } /* hamburger zichtbaar */
+  #overlay, #siteMenu{ display: block; } /* drawer aan */
+  .topbar{
+    grid-template-columns: 1fr auto;
+  }
+}

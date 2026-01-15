@@ -1,0 +1,289 @@
+/* css/base.css */
+
+/* =========================
+   Reset + document
+========================= */
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: rgba(255,255,255,.92);
+  background: #0a0a0a;
+  overflow-x: hidden; /* geen rare horizontale scroll */
+}
+
+/* Links: geen “default blauw”, tenzij je het expliciet wil */
+a{
+  color: inherit;
+  text-decoration-color: rgba(255,255,255,.22);
+}
+a:hover{
+  text-decoration: underline;
+  text-decoration-color: rgba(255,255,255,.28);
+}
+
+/* Media baseline */
+img, video{
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+iframe{
+  max-width: 100%;
+  border: 0;
+  display:block;
+}
+
+/* Inputs baseline (voor forms in cart / contact) */
+input, textarea, select, button{
+  font: inherit;
+  color: inherit;
+}
+input, textarea{
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+}
+input::placeholder, textarea::placeholder{
+  color: rgba(255,255,255,.45);
+}
+input:focus, textarea:focus{
+  border-color: rgba(201,122,58,.35);
+  box-shadow: 0 0 0 3px rgba(201,122,58,.14);
+}
+
+/* =========================
+   Background (studio)
+========================= */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: url("/assets/bg-studio.webp");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: .55;
+  filter: contrast(1.08) saturate(1.02);
+  transform: scale(1.02);
+}
+
+body::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events:none;
+  background:
+    radial-gradient(70% 65% at 50% 35%, rgba(0,0,0,.04), rgba(0,0,0,.22)),
+    linear-gradient(to bottom, rgba(0,0,0,.20), rgba(0,0,0,.06) 35%, rgba(0,0,0,.22));
+}
+
+/* =========================
+   App container
+========================= */
+#app{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 90px;
+}
+
+/* =========================
+   Panels (glass)
+========================= */
+.panel{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(12px);
+  border-radius: 22px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.45);
+  padding: 22px;
+  margin: 18px 0;
+}
+
+.panelWide{ padding: 22px 24px; }
+
+/* Glow variant (die je markup vaak gebruikt) */
+.panelGlow{
+  box-shadow:
+    0 18px 60px rgba(0,0,0,.45),
+    0 0 0 1px rgba(201,122,58,.10) inset,
+    0 0 80px rgba(201,122,58,.10);
+  border-color: rgba(255,255,255,.10);
+}
+
+.panel h1, .panel h2, .panel h3{
+  margin: 0 0 10px;
+  color: rgba(255,255,255,.95);
+}
+
+.panel p{
+  margin: 0;
+  color: rgba(255,255,255,.75);
+  line-height: 1.5;
+}
+
+/* =========================
+   Hero
+========================= */
+.heroChalet{
+  display: grid;
+  grid-template-columns: 1.2fr .9fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.heroTitle{
+  font-size: 56px;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 10px 0 10px;
+}
+
+.lead{
+  max-width: 52ch;
+  margin-top: 8px;
+  color: rgba(255,255,255,.78);
+}
+
+.kickerWarm{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,.72);
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.dotWarm{
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: #c97a3a;
+  box-shadow: 0 0 0 3px rgba(201,122,58,.18);
+}
+
+/* mini cards */
+.heroAside{ display: grid; gap: 10px; }
+.cardMini{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.28);
+  border-radius: 18px;
+  padding: 14px;
+}
+.cardMini h3{
+  font-size: 13px;
+  margin: 0 0 6px;
+  color: rgba(255,255,255,.92);
+}
+.cardMini p{
+  font-size: 13px;
+  color: rgba(255,255,255,.70);
+}
+
+/* =========================
+   Buttons / CTAs
+========================= */
+.ctaRow{
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.28);
+  color: rgba(255,255,255,.92);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:hover{ background: rgba(255,255,255,.06); }
+
+.btnPrimary{
+  background: rgba(201,122,58,.85);
+  border-color: rgba(201,122,58,.35);
+  color: #1b0f05;
+}
+
+.btnPrimary:hover{ background: rgba(201,122,58,.95); }
+
+/* =========================
+   Cart drawer + overlay (base)
+========================= */
+.overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+  z-index: 3000; /* hoger, zodat niets erover kan */
+}
+.overlay.open{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cart{
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(420px, 92vw);
+  background: rgba(10,10,10,.92);
+  backdrop-filter: blur(10px);
+  border-left: 1px solid rgba(255,255,255,.08);
+  transform: translateX(110%);
+  transition: transform .22s ease;
+  z-index: 3001;
+  display: flex;
+  flex-direction: column;
+}
+.cart.open{ transform: translateX(0); }
+
+.cartTop, .cartBottom{ padding: 14px; }
+.cartBody{
+  padding: 10px 14px;
+  overflow: auto;
+  flex: 1;
+}
+
+/* optioneel scroll lock */
+body.cart-open{ overflow: hidden; }
+
+/* wanneer cart open: verberg bubble + toast */
+body.cart-open .miniCartFab{
+  opacity: 0 !important;
+  transform: translateY(10px) scale(.98) !important;
+  pointer-events: none !important;
+}
+body.cart-open #toastHost{
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* =========================
+   Responsive
+========================= */
+@media (max-width: 900px){
+  #app{ padding-top: 18px; }
+  .heroChalet{ grid-template-columns: 1fr; }
+  .heroTitle{ font-size: 44px; }
+}
