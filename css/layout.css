@@ -963,3 +963,203 @@ html, body { overflow-x: hidden; }
   display: none !important;
 }
 
+/* =========================
+   Release highlight
+========================= */
+
+.releaseHighlight{
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 18px;
+
+  padding: 22px;
+  border-radius: 22px;
+
+  background: rgba(10,10,10,.55);
+  border: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 22px 60px rgba(0,0,0,.45);
+}
+
+@media (max-width: 900px){
+  .releaseHighlight{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* LEFT */
+
+.releaseText{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.releaseBadge{
+  display: inline-block;
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(201,122,58,.18);
+  color: rgba(201,122,58,.95);
+  border: 1px solid rgba(201,122,58,.35);
+}
+
+.releaseText h2{
+  margin: 0;
+  font-size: 32px;
+  letter-spacing: -.6px;
+}
+
+.releaseLead{
+  margin: 0;
+  color: rgba(255,255,255,.75);
+  line-height: 1.6;
+  max-width: 46ch;
+}
+
+.releaseMeta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.releaseMeta span{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.7);
+}
+
+.releaseActions{
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+/* RIGHT */
+
+.releaseMedia{
+  display: flex;
+  gap: 14px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 900px){
+  .releaseMedia{
+    justify-content: center;
+  }
+}
+
+.releaseItem{
+  position: relative;
+  width: 140px;
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
+  overflow: hidden;
+
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 18px 40px rgba(0,0,0,.5);
+}
+
+.releaseItem img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.releaseTag{
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 900;
+  border-radius: 999px;
+  background: rgba(0,0,0,.65);
+  border: 1px solid rgba(255,255,255,.15);
+}
+/* =========================
+   KickerWarm — "Nu beschikbaar" (primary accent)
+   FIX: terug warm/oranje zoals origineel
+========================= */
+.kickerWarm{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: -.2px;
+
+  color: #1a0f08;
+
+  background: linear-gradient(
+    180deg,
+    #d88a4a 0%,
+    #b56a36 100%
+  );
+
+  border: 1px solid rgba(255,255,255,.18);
+
+  box-shadow:
+    0 8px 22px rgba(181,106,54,.35),
+    0 1px 0 rgba(255,255,255,.35) inset;
+}
+
+/* dot links in dezelfde vibe */
+.kickerWarm .dotWarm{
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+
+  background: rgba(0,0,0,.55);
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.25);
+}
+/* =========================
+   KickerWarm terug "oranje pill"
+   (zet dit helemaal ONDERAAN)
+========================= */
+.kickerWarm{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 7px 12px;
+  border-radius: 999px;
+
+  /* oranje Apple/Spotify-achtige pill */
+  background: rgba(201,122,58,.18) !important;
+  border: 1px solid rgba(201,122,58,.38) !important;
+
+  color: rgba(255,255,255,.92) !important;
+  font-weight: 900;
+  letter-spacing: -.2px;
+  font-size: 13px;
+
+  box-shadow:
+    0 10px 26px rgba(0,0,0,.28),
+    0 0 0 4px rgba(201,122,58,.10);
+}
+
+.kickerWarm .dotWarm{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+
+  background: rgba(201,122,58,.95) !important;
+  box-shadow:
+    0 0 0 3px rgba(201,122,58,.18),
+    0 10px 24px rgba(201,122,58,.20);
+  flex: 0 0 auto;
+}

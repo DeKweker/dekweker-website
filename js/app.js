@@ -74,7 +74,7 @@ function renderHome(app) {
   app.innerHTML = `
     <section class="panel heroChalet">
       <div class="heroMain">
-        <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Brugge 8000</div>
+        <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Tunnelvisie</div>
         <h1 class="heroTitle">ALBUM RELEASE.<br/>Tunnelvisie.</h1>
         <p class="lead">
           Eerlijke miserie, echte emoties, een blik op de tweestrijd in mezelf.
