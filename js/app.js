@@ -234,19 +234,30 @@ function renderMusic(app) {
           <div class="kickerWarm" style="margin-bottom:10px;">
             <span class="dotWarm"></span> Nieuwste release
           </div>
-          <h2 style="margin:0 0 10px;">Lekt Em (Officiële videoclip)</h2>
-          <p style="margin:0;color:rgba(255,255,255,.75);line-height:1.55;">
-            Eerste videoclip
-Lekt Em is geen intro, maar een statement.
-De eerste officiële videoclip van De Kweker vangt de rauwe energie van het nummer in beeld.
+<h2 style="margin:0 0 10px;">Lekt Em (officiële videoclip)</h2>
 
-Regie: Jan Maes
-Camera: Patrick Nishimwe
-Edit: Jason Moens
+<p style="margin:0 0 12px;color:rgba(255,255,255,.85);line-height:1.6;">
+  <strong>Eerste videoclip.</strong><br>
+  Lekt Em is geen intro, maar een statement.
+</p>
 
-Gefilmd zonder franjes, gemonteerd met intentie.
-Beeld en muziek vallen hier samen
-          </p>
+<p style="margin:0 0 14px;color:rgba(255,255,255,.72);line-height:1.6;">
+  De eerste officiële videoclip van De Kweker vangt de rauwe energie van het nummer in beeld.
+  Gefilmd zonder franjes, gemonteerd met intentie.
+</p>
+
+<hr style="border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0;">
+
+<p style="margin:0;color:rgba(255,255,255,.7);line-height:1.6;">
+  <strong>Regie</strong> · Jan Maes<br>
+  <strong>Camera</strong> · Patrick Nishimwe<br>
+  <strong>Edit</strong> · Jason Moens
+</p>
+
+<p style="margin:14px 0 0;color:rgba(255,255,255,.6);line-height:1.6;">
+  Beeld en muziek vallen hier samen.
+</p>
+
 
           <div class="ctaRow" style="margin-top:14px;">
             <a class="btn btnPrimary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Play op YouTube</a>
