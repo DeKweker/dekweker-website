@@ -89,15 +89,15 @@ function renderHome(app) {
 
       <aside class="heroAside">
         <div class="cardMini">
-          <h3>Gemaakt om te dragen</h3>
-          <p>Degelijk, comfortabel, niet gemaakt om na twee wassen te stoppen.</p>
+          <h3>Gemaakt om te voelen</h3>
+          <p>Geschreven voor mezelf, uitgebracht voor jullie.</p>
         </div>
         <div class="cardMini">
-          <h3>Beperkt, niet massaal</h3>
-          <p>Drops komen en gaan. Als het klopt, dan klopt het.</p>
+          <h3>Beperkte oplage</h3>
+          <p>Vinyl pressing wordt beperkt tot 150stuks. Dit is dus een collector stuk.</p>
         </div>
         <div class="cardMini">
-          <h3>Brugge blijft de basis</h3>
+          <h3>Emotie is de basis</h3>
           <p>Geen kostuum. Geen filter. Gewoon wat het is.</p>
         </div>
       </aside>
