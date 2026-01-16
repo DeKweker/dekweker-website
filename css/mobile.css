@@ -4,9 +4,7 @@
 
 body.no-scroll { overflow: hidden; }
 
-/* ✅ Force show overlay/drawer when open — ook boven 900px */
-.mobileOverlay.open{ display: block; }
-.mobileDrawer.open{ display: flex; }
+
 
 /* standaard: verberg mobile UI overal */
 .mobileOverlay,
@@ -21,14 +19,15 @@ body.no-scroll { overflow: hidden; }
   /* huidige pagina pill weg op mobile (rustiger) */
   .currentPill { display: none !important; }
 
-  /* Overlay */
+   /* Overlay */
   .mobileOverlay {
     display: block;
     position: fixed;
     inset: 0;
-    z-index: 5000; /* FIX: altijd boven alles */
-    background: rgba(0,0,0,.55);
-    backdrop-filter: blur(6px);
+    z-index: 5000;
+    background: rgba(0,0,0,.80);
+    backdrop-filter: blur(10px) saturate(110%);
+    -webkit-backdrop-filter: blur(10px) saturate(110%);
     opacity: 0;
     pointer-events: none;
     transition: opacity .2s ease;
@@ -44,21 +43,45 @@ body.no-scroll { overflow: hidden; }
     position: fixed;
     top: 0;
     right: 0;
-    height: 100vh;
-    width: min(86vw, 360px);
-    z-index: 5001; /* FIX: boven overlay */
+    left: auto;
+    bottom: 0;
+    height: 100dvh;
+    width: min(86vw, 380px);
+    z-index: 5001;
     transform: translateX(110%);
     transition: transform .25s ease;
 
-    background: rgba(0,0,0,.78);
-    backdrop-filter: blur(10px);
-    border-left: 1px solid rgba(255,255,255,.08);
+    background:
+      radial-gradient(120% 80% at 50% 0%,
+        rgba(255,255,255,.10) 0%,
+        rgba(255,255,255,.04) 28%,
+        rgba(255,255,255,0) 60%),
+      linear-gradient(180deg,
+        rgba(18,18,20,.97) 0%,
+        rgba(12,12,14,.96) 55%,
+        rgba(10,10,12,.97) 100%);
 
-    padding: 14px;
+    border-left: 1px solid rgba(255,255,255,.10);
+    box-shadow: -24px 0 70px rgba(0,0,0,.55);
+
+    backdrop-filter: blur(18px) saturate(125%);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+
+    border-top-left-radius: 22px;
+    border-bottom-left-radius: 22px;
+
+    padding:
+      calc(14px + env(safe-area-inset-top))
+      14px
+      calc(14px + env(safe-area-inset-bottom))
+      14px;
+
     flex-direction: column;
     gap: 12px;
+    overflow: auto;
   }
   .mobileDrawer.open { transform: translateX(0); }
+
 
   .mobileDrawerHead{
     display:flex;
