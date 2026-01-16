@@ -234,9 +234,18 @@ function renderMusic(app) {
           <div class="kickerWarm" style="margin-bottom:10px;">
             <span class="dotWarm"></span> Nieuwste release
           </div>
-          <h2 style="margin:0 0 10px;">Clip</h2>
+          <h2 style="margin:0 0 10px;">Lekt Em (Officiële videoclip)</h2>
           <p style="margin:0;color:rgba(255,255,255,.75);line-height:1.55;">
-            Lekt Em is geen intro. Het is een statement.
+            Eerste videoclip
+Lekt Em is geen intro, maar een statement.
+De eerste officiële videoclip van De Kweker vangt de rauwe energie van het nummer in beeld.
+
+Regie: Jan Maes
+Camera: Patrick Nishimwe
+Edit: Jason Moens
+
+Gefilmd zonder franjes, gemonteerd met intentie.
+Beeld en muziek vallen hier samen
           </p>
 
           <div class="ctaRow" style="margin-top:14px;">
