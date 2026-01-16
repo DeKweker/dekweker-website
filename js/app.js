@@ -102,43 +102,55 @@ function renderHome(app) {
       </aside>
     </section>
 
- <section class="panel panelWide availPanel">
-  <div class="availGrid">
-    <div class="availLeft">
-      <h2>Nu beschikbaar</h2>
-      <p>Op vinyl &amp; CD. Op = op.</p>
-      <p>(disclaimer)Vinyl pressing gaat pas van start na 100 pre-orders.</p>
-      <div class="ctaRow" style="margin-top:14px;">
-        <a class="btn btnPrimary" href="#shop">Naar de shop</a>
-        <a class="btn" href="#music">Eerst luisteren</a>
+    <!-- Nu beschikbaar (moet BOVEN bio) -->
+    <section class="panel panelWide availPanel">
+      <div class="availGrid">
+        <div class="availLeft">
+          <div class="kickerWarm"><span class="dotWarm"></span> Nu beschikbaar</div>
+          <h2 style="margin:10px 0 8px;">Tunnelvisie</h2>
+
+          <p style="margin:0 0 10px;color:rgba(255,255,255,.85);line-height:1.6;">
+            Op vinyl &amp; CD — op = op.<br/>
+            Vinyl pressing start pas na <strong>100 pre-orders</strong>.
+          </p>
+
+          <div class="shopNav" style="margin:10px 0 0;">
+            <span class="shopNavLink" style="pointer-events:none;">Beperkte oplage</span>
+            <span class="shopNavLink" style="pointer-events:none;">Collector item</span>
+            <span class="shopNavLink" style="pointer-events:none;">Genummerd #1/150</span>
+          </div>
+
+          <div class="ctaRow" style="margin-top:14px;">
+            <a class="btn btnPrimary" href="#shop">Naar de shop</a>
+            <a class="btn" href="#music">Eerst luisteren</a>
+          </div>
+        </div>
+
+        <div class="availRight" aria-hidden="true">
+          <a class="availImgWrap" href="#shop/vinyl" title="Vinyl">
+            <img
+              class="availImg"
+              src="./assets/products/vinyl/tunnelvisie-front.webp"
+              alt="Tunnelvisie — Vinyl"
+              loading="lazy"
+            />
+            <div class="availTag">Vinyl</div>
+          </a>
+
+          <a class="availImgWrap" href="#shop/cd" title="CD">
+            <img
+              class="availImg"
+              src="./assets/products/cd/tunnelvisie-front-cd.webp"
+              alt="Tunnelvisie — CD"
+              loading="lazy"
+            />
+            <div class="availTag">CD</div>
+          </a>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="availRight" aria-hidden="true">
-      <a class="availImgWrap" href="#shop/vinyl" title="Vinyl">
-        <img
-          class="availImg"
-          src="./assets/products/vinyl/tunnelvisie-front.webp"
-          alt="Tunnelvisie — Vinyl"
-          loading="lazy"
-        />
-        <div class="availTag">Vinyl</div>
-      </a>
-
-      <a class="availImgWrap" href="#shop/cd" title="CD">
-        <img
-          class="availImg"
-          src="./assets/products/cd/tunnelvisie-front-cd.webp"
-          alt="Tunnelvisie — CD"
-          loading="lazy"
-        />
-        <div class="availTag">CD</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-
+    <!-- Bio terug (moet ONDER Nu beschikbaar) -->
     <section class="panel panelWide">
       <div class="bioHero">
         <div class="bioLeft">
@@ -196,6 +208,7 @@ function renderHome(app) {
     </section>
   `;
 }
+
 
 function wireBioToggle() {
   const btn = document.getElementById("bioToggle");
