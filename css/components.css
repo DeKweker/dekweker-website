@@ -412,3 +412,36 @@
     grid-template-columns: 1fr auto;
   }
 }
+/* Altijd voorkomen dat de pagina horizontaal breder wordt */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Overlay moet echt viewport-fixed zijn */
+#cartOverlay.overlay,
+.overlay#cartOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+}
+
+/* Cart drawer: fixed + nooit breder dan het scherm */
+#cartDrawer.cart,
+.cart#cartDrawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100dvh;              /* mobile safe */
+  width: min(420px, 92vw);
+  max-width: 92vw;
+  z-index: 2100;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Als cart open is: geen horizontale scroll/rare layout shifts */
+body.cart-open {
+  overflow: hidden;
+  touch-action: none;
+}

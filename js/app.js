@@ -79,7 +79,6 @@ function renderHome(app) {
         <p class="lead">
           Eerlijke miserie, echte emoties, een blik op de tweestrijd in mezelf.
         </p>
-
         <div class="ctaRow">
           <a class="btn btnPrimary" href="#shop">Kopen</a>
           <a class="btn" href="#music">Luister</a>
@@ -108,7 +107,7 @@ function renderHome(app) {
     <div class="availLeft">
       <h2>Nu beschikbaar</h2>
       <p>Op vinyl &amp; CD. Op = op.</p>
-
+      <p>(disclaimer)Vinyl pressing gaat pas van start na 100 pre-orders.</p>
       <div class="ctaRow" style="margin-top:14px;">
         <a class="btn btnPrimary" href="#shop">Naar de shop</a>
         <a class="btn" href="#music">Eerst luisteren</a>
@@ -229,38 +228,39 @@ function renderMusic(app) {
         </div>
       </div>
 
+      <!-- ✅ Spotlight blijft 2-koloms -->
       <div class="musicSpotlight">
         <div class="musicSpotText">
           <div class="kickerWarm" style="margin-bottom:10px;">
             <span class="dotWarm"></span> Nieuwste release
           </div>
-<h2 style="margin:0 0 10px;">Lekt Em (officiële videoclip)</h2>
 
-<p style="margin:0 0 12px;color:rgba(255,255,255,.85);line-height:1.6;">
-  <strong>Eerste videoclip.</strong><br>
-  Lekt Em is geen intro, maar een statement.
-</p>
+          <h2 style="margin:0 0 10px;">Lekt Em (officiële videoclip)</h2>
 
-<p style="margin:0 0 14px;color:rgba(255,255,255,.72);line-height:1.6;">
-  De eerste officiële videoclip van De Kweker vangt de rauwe energie van het nummer in beeld.
-  Gefilmd zonder franjes, gemonteerd met intentie.
-</p>
+          <p style="margin:0 0 12px;color:rgba(255,255,255,.85);line-height:1.6;">
+            <strong>Eerste videoclip.</strong><br>
+            Lekt Em is geen intro, maar een statement.
+          </p>
 
-<hr style="border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0;">
+          <p style="margin:0 0 14px;color:rgba(255,255,255,.72);line-height:1.6;">
+            De eerste officiële videoclip van De Kweker vangt de rauwe energie van het nummer in beeld.
+            Gefilmd zonder franjes, gemonteerd met intentie.
+          </p>
 
-<p style="margin:0;color:rgba(255,255,255,.7);line-height:1.6;">
-  <strong>Regie</strong> · Jan Maes<br>
-  <strong>Camera</strong> · Patrick Nishimwe<br>
-  <strong>Edit</strong> · Jason Moens
-</p>
+          <hr style="border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0;">
 
-<p style="margin:14px 0 0;color:rgba(255,255,255,.6);line-height:1.6;">
-  Beeld en muziek vallen hier samen.
-</p>
+          <p style="margin:0;color:rgba(255,255,255,.7);line-height:1.6;">
+            <strong>Regie</strong> · Jan Maes<br>
+            <strong>Camera</strong> · Patrick Nishimwe<br>
+            <strong>Edit</strong> · Jason Moens
+          </p>
 
+          <p style="margin:14px 0 0;color:rgba(255,255,255,.6);line-height:1.6;">
+            Beeld en muziek vallen hier samen.
+          </p>
 
           <div class="ctaRow" style="margin-top:14px;">
-            <a class="btn btnPrimary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Play op YouTube</a>
+            <a class="btn btnPrimary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Kijk op YouTube</a>
             <a class="btn" href="#shop">Shop</a>
             <a class="btn" href="#contact">Contact</a>
           </div>
@@ -278,52 +278,53 @@ function renderMusic(app) {
             ></iframe>
           </div>
         </div>
-      </div>
 
-      <div class="musicGrid" style="margin-top:14px;">
-        <div class="musicCard">
-          <div class="musicCardHead">
-            <h3>Spotify</h3>
-            <p class="mutedSmall">Alles netjes op één plek.</p>
-          </div>
-
-          <div class="spotifyFrameWrap">
-            <iframe
-              style="border-radius:16px;"
-              src="${SPOTIFY_EMBED_URL}"
-              width="100%"
-              height="420"
-              frameborder="0"
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-              title="De Kweker on Spotify"
-            ></iframe>
-          </div>
-        </div>
-
-        <div class="musicCard">
-          <div class="musicCardHead">
-            <h3>Context</h3>
-            <p class="mutedSmall">Waar het gemaakt wordt, en met wie.</p>
-          </div>
-
-          <div class="musicNotes">
-            <div class="noteLine">
-              <span class="noteDot"></span>
-              <span><strong>Rugged &amp; Raw</strong> is waar releases landen — kader, geen etalage.</span>
-            </div>
-            <div class="noteLine">
-              <span class="noteDot"></span>
-              <span><strong>Kwartier West</strong> is het collectief — feedback, scherpte, presence.</span>
-            </div>
-            <div class="noteLine">
-              <span class="noteDot"></span>
-              <span><strong>Numb</strong> draagt de klank — ruimte, spanning en gewicht.</span>
+        <!-- ✅ NIEUW: onderblok dat over de volle breedte gaat (lost lege rechterkolom op) -->
+        <div class="musicBelow">
+          <div class="musicCard">
+            <div class="musicCardHead">
+              <h3>Spotify</h3>
+              <p class="mutedSmall">Alles netjes op één plek.</p>
             </div>
 
-            <div class="ctaRow" style="margin-top:14px;">
-              <a class="btn btnPrimary" href="#contact">Contact</a>
-              <a class="btn" href="#shop">Shop</a>
+            <div class="spotifyFrameWrap">
+              <iframe
+                style="border-radius:16px;"
+                src="${SPOTIFY_EMBED_URL}"
+                width="100%"
+                height="420"
+                frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                title="De Kweker on Spotify"
+              ></iframe>
+            </div>
+          </div>
+
+          <div class="musicCard">
+            <div class="musicCardHead">
+              <h3>Context</h3>
+              <p class="mutedSmall">Waar het gemaakt wordt, en met wie.</p>
+            </div>
+
+            <div class="musicNotes">
+              <div class="noteLine">
+                <span class="noteDot"></span>
+                <span><strong>Rugged &amp; Raw</strong> is waar releases landen — kader, geen etalage.</span>
+              </div>
+              <div class="noteLine">
+                <span class="noteDot"></span>
+                <span><strong>Kwartier West</strong> is het collectief — feedback, scherpte, presence.</span>
+              </div>
+              <div class="noteLine">
+                <span class="noteDot"></span>
+                <span><strong>Numb</strong> draagt de klank — ruimte, spanning en gewicht.</span>
+              </div>
+
+              <div class="ctaRow" style="margin-top:14px;">
+                <a class="btn btnPrimary" href="#contact">Contact</a>
+                <a class="btn" href="#shop">Shop</a>
+              </div>
             </div>
           </div>
         </div>
@@ -331,6 +332,7 @@ function renderMusic(app) {
     </section>
   `;
 }
+
 
 /* ---------------------------
    CONTACT
