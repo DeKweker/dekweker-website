@@ -913,3 +913,30 @@
 #navDrawer{
   display: none !important;
 }
+@media (max-width: 900px) {
+  #toastHost {
+    left: 50%;
+    right: auto;
+    bottom: 88px; /* boven cart bar */
+    transform: translateX(-50%);
+    width: calc(100vw - 24px);
+    max-width: 420px;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .toast {
+    width: 100%;
+    pointer-events: auto;
+  }
+}
+/* ===============================
+   Toast gedrag wanneer cart open is (mobile)
+   =============================== */
+
+@media (max-width: 900px) {
+  body.cart-open #toastHost {
+    bottom: 140px; /* extra omhoog zodat hij boven cart blijft */
+    z-index: 10000;
+  }
+}
