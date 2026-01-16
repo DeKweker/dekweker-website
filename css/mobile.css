@@ -116,3 +116,40 @@ body.no-scroll { overflow: hidden; }
 
   .mobileMeta{ margin-top: 6px; opacity: .7; }
 }
+/* =========================
+   Mobile menu — Sluit knop (warm accent)
+========================= */
+@media (max-width: 900px){
+
+  .mobileDrawer .closeBtn,
+  .mobileDrawer [data-menu-close]{
+    background: rgba(201,122,58,.18);
+    border: 1px solid rgba(201,122,58,.35);
+    color: #fff;
+
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.08) inset,
+      0 12px 30px rgba(0,0,0,.35),
+      0 0 0 4px rgba(201,122,58,.12);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+      transform .12s ease,
+      filter .12s ease,
+      background .12s ease;
+  }
+
+  .mobileDrawer .closeBtn:hover,
+  .mobileDrawer [data-menu-close]:hover{
+    background: rgba(201,122,58,.26);
+    filter: brightness(1.05);
+  }
+
+  .mobileDrawer .closeBtn:active,
+  .mobileDrawer [data-menu-close]:active{
+    transform: scale(.97);
+    background: rgba(201,122,58,.32);
+  }
+}
