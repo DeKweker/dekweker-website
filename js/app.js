@@ -1,6 +1,14 @@
 // js/app.js
 import { initToasts } from "./toast.js";
 initToasts();
+// Limited edition counter (frontend-ready)
+const EDITION_TOTAL = 150;
+
+// later vervang je dit door echte data (API / store)
+const editionSold = window.__VINYL_SOLD__ || 1;
+
+const el = document.getElementById("editionCount");
+if (el) el.textContent = editionSold;
 
 import { renderHeader } from "./menu.js";
 import { getRoute } from "./router.js";
@@ -75,6 +83,15 @@ function renderHome(app) {
     <section class="panel heroChalet">
       <div class="heroMain">
         <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Tunnelvisie</div>
+        <div class="editionRow">
+  <span class="editionPill">
+    <span class="editionCount" id="editionCount">1</span>
+    <span class="editionSep">/</span>
+    <span class="editionTotal">150</span>
+  </span>
+  <span class="editionLabel">Genummerde vinyl</span>
+</div>
+
         <h1 class="heroTitle">ALBUM RELEASE.<br/>Tunnelvisie.</h1>
         <p class="lead">
           Eerlijke miserie, echte emoties, een blik op de tweestrijd in mezelf.

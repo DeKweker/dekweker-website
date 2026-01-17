@@ -1163,3 +1163,54 @@ html, body { overflow-x: hidden; }
     0 10px 24px rgba(201,122,58,.20);
   flex: 0 0 auto;
 }
+/* =========================
+   Limited edition counter (/150)
+========================= */
+
+.editionRow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin: 10px 0 14px;
+}
+
+.editionPill{
+  display:inline-flex;
+  align-items:baseline;
+  gap:4px;
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  background:
+    linear-gradient(180deg,
+      rgba(201,122,58,.28),
+      rgba(201,122,58,.12));
+
+  border: 1px solid rgba(201,122,58,.35);
+  box-shadow:
+    0 0 0 3px rgba(201,122,58,.12),
+    0 8px 24px rgba(0,0,0,.35);
+
+  color: rgba(255,240,225,.95);
+  font-weight: 900;
+  letter-spacing: -.3px;
+}
+
+.editionCount{
+  font-size: 18px;
+}
+
+.editionSep{
+  opacity:.6;
+  font-size: 14px;
+}
+
+.editionTotal{
+  font-size: 13px;
+  opacity:.85;
+}
+
+.editionLabel{
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+}
