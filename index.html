@@ -4,35 +4,27 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-  <!-- Primary SEO -->
-  <title>De Kweker – West-Vlaamse rapper uit Brugge (8000)</title>
-  <meta name="description" content="Ruwe, eerlijke Vlaamse rap. Lid van Rugged & Raw en Kwartier West." />
-  <link rel="canonical" href="https://kwkr.be/" />
+  <title>De Kweker — Nog even wachten</title>
+  <meta name="robots" content="noindex,nofollow" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="De Kweker – West-Vlaamse rapper uit Brugge (8000)" />
-  <meta property="og:description" content="Ruwe, eerlijke Vlaamse rap. Lid van Rugged & Raw en Kwartier West." />
-  <meta property="og:url" content="https://kwkr.be/" />
+  <!-- Open Graph / social preview -->
   <meta property="og:type" content="website" />
-  <meta property="og:locale" content="nl_BE" />
-  <meta property="og:image" content="https://kwkr.be/assets/og-cover.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:title" content="De Kweker" />
+  <meta property="og:description" content="Nog even wachten op wat groeit." />
+  <meta property="og:image" content="https://www.kwkr.be/assets/og-cover.jpg" />
+  <meta property="og:url" content="https://www.kwkr.be/" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="De Kweker – West-Vlaamse rapper uit Brugge (8000)" />
-  <meta name="twitter:description" content="Ruwe, eerlijke Vlaamse rap. Lid van Rugged & Raw en Kwartier West." />
-  <meta name="twitter:image" content="https://kwkr.be/assets/og-cover.jpg" />
+  <meta name="twitter:title" content="De Kweker" />
+  <meta name="twitter:description" content="Nog even wachten op wat groeit." />
+  <meta name="twitter:image" content="https://www.kwkr.be/assets/og-cover.jpg" />
 
-  <!-- Maintenance: keep out of index while live -->
-  <meta name="robots" content="noindex,nofollow" />
-
+  <!-- Favicons -->
   <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
   <style>
     *{ box-sizing:border-box; }
@@ -41,18 +33,16 @@
     body{
       min-height:100svh;
       background:#0b0b0b;
-
-      /* ✅ Zet hier je landscape maintenance image */
       background-image:url("/assets/maintenance-bg.jpg");
-
       background-repeat:no-repeat;
       background-size:cover;
-
-      /* Houdt je caption (onderaan) in beeld */
-      background-position:50% 85%;
+      background-position:center 85%;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
     }
 
-    /* Subtiele vignette (clean Spotify/Apple) */
+    /* subtle vignette (Apple/Spotify clean) */
     body::before{
       content:"";
       position:fixed;
@@ -60,18 +50,36 @@
       pointer-events:none;
       background:
         radial-gradient(1200px 700px at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 70%, rgba(0,0,0,.88) 100%),
-        linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.55));
+        linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.60));
       mix-blend-mode:multiply;
     }
 
-    /* MOBIEL: andere afbeelding (portrait) */
-    @media (max-width: 720px){
-      body{
-        background-image:url("/assets/maintenance-bg-mobile.jpg");
-        background-position:50% 92%;
-      }
+    .caption{
+      position:relative;
+      z-index:1;
+      padding: 26px 22px 44px;
+      text-align:center;
+      max-width: 92vw;
+    }
+
+    .caption p{
+      margin:0;
+      font-size: clamp(16px, 2.6vw, 20px);
+      font-weight: 500;
+      letter-spacing: .02em;
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 2px 18px rgba(0,0,0,.55);
+    }
+
+    @media (max-width:720px){
+      body{ background-position:50% 92%; }
+      .caption{ padding-bottom: 40px; }
     }
   </style>
 </head>
-<body></body>
+<body>
+  <div class="caption">
+    <p>Nog even wachten op wat groeit.</p>
+  </div>
+</body>
 </html>
