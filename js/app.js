@@ -168,61 +168,62 @@ function renderHome(app) {
     </section>
 
     <!-- Bio terug (moet ONDER Nu beschikbaar) -->
-    <section class="panel panelWide">
-      <div class="bioHero">
-        <div class="bioLeft">
-          <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • 8000</div>
+<section class="panel panelWide">
+  <div class="bioHero">
+    <div class="bioLeft">
+      <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Brugge (8000)</div>
 
-          <h2 class="bioTitle">Tweestrijd.</h2>
+      <h2 class="bioTitle">De Kweker.</h2>
 
-          <p class="bioLead">
-            Van Lekt Em tot Moed(ig)er: Tunnelvisie is geen pose. Het is wat er blijft liggen.
-          </p>
+      <p class="bioLead">
+        Geen pose. Geen rol. Wat blijft als de ruis wegvalt.
+      </p>
 
-          <p class="bioMeta">
-            <span class="bioMetaItem"><span class="bioMetaDot"></span> Releases via <strong>Rugged &amp; Raw</strong></span>
-            <span class="bioMetaItem"><span class="bioMetaDot"></span> Collectief <strong>Kwartier West</strong></span>
-            <span class="bioMetaItem"><span class="bioMetaDot"></span> Sound &amp; productie met <strong>NUMB</strong></span>
-          </p>
+      <p class="bioMeta">
+        <span class="bioMetaItem"><span class="bioMetaDot"></span> Releases via <strong>Rugged &amp; Raw</strong></span>
+        <span class="bioMetaItem"><span class="bioMetaDot"></span> Verbonden aan <strong>Kwartier West</strong></span>
+        <span class="bioMetaItem"><span class="bioMetaDot"></span> Klank &amp; productie met <strong>NUMB</strong></span>
+      </p>
 
-          <div class="ctaRow" style="margin-top:14px;">
-            <a class="btn btnPrimary" href="#music">Music</a>
-            <a class="btn" href="#shop">Shop</a>
-            <a class="btn" href="#contact">Contact</a>
-          </div>
-        </div>
-
-        <div class="bioRight">
-          <div class="bioTextHead">
-            <h3 class="bioTextTitle">Verhaal</h3>
-            <button class="bioToggle" id="bioToggle" type="button" aria-expanded="false">Lees meer</button>
-          </div>
-
-          <div class="bioBody" id="bioBody">
-            <p class="bioPara bioDrop">
-              De Kweker is een stem uit Brugge (8000). In ’t West-Vlaams, omdat dat de taal is waarin gedacht wordt.
-            </p>
-
-            <p class="bioPara">
-              Releases landen via Rugged &amp; Raw. Kwartier West is het collectief: feedback, scherpte, geen show.
-            </p>
-
-            <p class="bioPara">
-              Numb draagt de klank: ruimte, spanning en gewicht. Beats die niet overstemmen wat gezegd wordt.
-            </p>
-
-            <p class="bioPara">
-              Thema’s komen terug als straten die je kent: arbeid, identiteit, twijfel, trots, nostalgie.
-            </p>
-          </div>
-
-          <div class="bioQuote">
-            <span class="bioQuoteMark">“</span>
-            <span class="bioQuoteText">Ik maak geen muziek om te ontsnappen. Ik maak muziek om te blijven staan.</span>
-          </div>
-        </div>
+      <div class="ctaRow" style="margin-top:14px;">
+        <a class="btn btnPrimary" href="#music">Music</a>
+        <a class="btn" href="#shop">Shop</a>
+        <a class="btn" href="#contact">Contact</a>
       </div>
-    </section>
+    </div>
+
+    <div class="bioRight">
+      <div class="bioTextHead">
+        <h3 class="bioTextTitle">Verhaal</h3>
+        <button class="bioToggle" id="bioToggle" type="button" aria-expanded="false">Lees meer</button>
+      </div>
+
+      <div class="bioBody" id="bioBody">
+        <p class="bioPara bioDrop">
+          De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt, omdat dat de taal is waarin gedacht en gevoeld wordt.
+        </p>
+
+        <p class="bioPara">
+          Zijn muziek vertrekt vanuit mentale druk, identiteit en afkomst. Geen bravoure, geen vlucht vooruit, maar woorden die blijven staan.
+        </p>
+
+        <p class="bioPara">
+          Releases verschijnen via Rugged &amp; Raw. Kwartier West vormt de context: uitwisseling, scherpte en onafhankelijkheid, zonder richting op te leggen.
+        </p>
+
+        <p class="bioPara">
+          De klank wordt gedragen door NUMB: ruimte en spanning die het verhaal ondersteunen in plaats van overschreeuwen.
+        </p>
+      </div>
+
+      <div class="bioQuote">
+        <span class="bioQuoteMark">“</span>
+        <span class="bioQuoteText">Ik maak muziek om te benoemen wat blijft hangen.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
   `;
 }
 
