@@ -334,3 +334,36 @@ hr.soft{
   color: rgba(255,255,255,.65);
   font-size: 12px;
 }
+/* === Cart close button (safe isolated) === */
+#cartDrawer #closeCart{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-grid;
+  place-items: center;
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.92);
+
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+
+  position: relative;
+  z-index: 2;
+}
+
+#cartDrawer #closeCart:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.20);
+}
+
+#cartDrawer #closeCart:active{
+  transform: scale(.98);
+}
+
+#cartDrawer #closeCart:focus-visible{
+  outline: 2px solid rgba(205,132,66,.65);
+  outline-offset: 2px;
+}
