@@ -184,67 +184,70 @@ function renderHome(app) {
       </div>
     </section>
 
-    <!-- Bio -->
-    <section class="panel panelWide">
-      <div class="bioHero">
-        <div class="bioLeft">
-          <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Brugge (8000)</div>
+<!-- Bio -->
+<section class="panel panelWide">
+  <div class="bioHero">
+    <div class="bioLeft">
+      <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Brugge (8000)</div>
 
-          <h2 class="bioTitle">De Kweker.</h2>
+      <h2 class="bioTitle">De Kweker.</h2>
 
-          <p class="bioLead">
-            Geen pose. Geen rol. Wat blijft als de ruis wegvalt.
-          </p>
+      <p class="bioLead">
+        Geen pose. Geen rol. Wat blijft als de ruis wegvalt.
+      </p>
 
-          <div class="tagsRow" style="margin-top:10px;">
-            <span class="tag">Releases via <strong>Rugged &amp; Raw</strong></span>
-            <span class="tag">Verbonden aan <strong>Kwartier West</strong></span>
-            <span class="tag">Klank &amp; productie met <strong>NUMB</strong></span>
-          </div>
-
-          <div class="ctaRow" style="margin-top:14px;">
-            <a class="btn btnPrimary" href="#music">Music</a>
-            <a class="btn btnSecondary" href="#shop">Shop</a>
-            <a class="btn btnQuiet" href="#contact">Contact</a>
-          </div>
-        </div>
-
-        <div class="bioRight">
-          <div class="bioTextHead">
-            <h3 class="bioTextTitle">Verhaal</h3>
-            <button class="btn btnQuiet" id="bioToggle" type="button" aria-expanded="false">Lees meer</button>
-          </div>
-
-         <div class="bioBody">
-  <p>
-    De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit.
-    Zijn muziek is sober en direct, zonder pose of opsmuk, en vertrekt vanuit persoonlijke ervaringen in plaats van trends.
-  </p>
-
-  <p>
-    In zijn teksten balanceert hij tussen introspectie en confrontatie: kwetsbaar waar het moet, hard waar het niet anders kan.
-    De Kweker maakt geen bravoure-rap, maar gebruikt hiphop als middel om dingen te benoemen die meestal verzwegen blijven.
-  </p>
-
-  <p>
-    Hij is verbonden aan het collectief <strong>Kwartier West</strong> en releaset zijn muziek via <strong>Rugged &amp; Raw</strong>,
-    twee contexten die zijn onafhankelijke en underground benadering versterken zonder zijn verhaal te sturen.
-  </p>
-
-  <p>
-    De Kweker bouwt gestaag aan een eigen traject binnen de Vlaamse hiphop, met de focus op inhoud, consistentie en
-    geloofwaardigheid boven zichtbaarheid of hype.
-  </p>
-</div>
-
-
-          <div class="bioQuote">
-            <span class="bioQuoteMark">“</span>
-            <span class="bioQuoteText">Therapie voor mezelf, en hopelijk voor jullie.</span>
-          </div>
-        </div>
+      <div class="tagsRow" style="margin-top:10px;">
+        <span class="tag">Releases via <strong>Rugged &amp; Raw</strong></span>
+        <span class="tag">Verbonden aan <strong>Kwartier West</strong></span>
+        <span class="tag">Klank &amp; productie met <strong>NUMB</strong></span>
       </div>
-    </section>
+
+      <div class="ctaRow" style="margin-top:14px;">
+        <a class="btn btnPrimary" href="#music">Music</a>
+        <a class="btn btnSecondary" href="#shop">Shop</a>
+        <a class="btn btnQuiet" href="#contact">Contact</a>
+      </div>
+    </div>
+
+    <!-- ✅ starts collapsed by default -->
+    <div class="bioRight isCollapsed" id="bioPanel">
+      <div class="bioTextHead">
+        <h3 class="bioTextTitle">Verhaal</h3>
+        <button class="btn btnQuiet" id="bioToggle" type="button" aria-expanded="false" aria-controls="bioText">
+          Lees meer
+        </button>
+      </div>
+
+      <div class="bioBody" id="bioText">
+        <p>
+          De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit.
+          Zijn muziek is sober en direct, zonder pose of opsmuk, en vertrekt vanuit persoonlijke ervaringen in plaats van trends.
+        </p>
+
+        <p>
+          In zijn teksten balanceert hij tussen introspectie en confrontatie: kwetsbaar waar het moet, hard waar het niet anders kan.
+          De Kweker maakt geen bravoure-rap, maar gebruikt hiphop als middel om dingen te benoemen die meestal verzwegen blijven.
+        </p>
+
+        <p>
+          Hij is verbonden aan het collectief <strong>Kwartier West</strong> en releaset zijn muziek via <strong>Rugged &amp; Raw</strong>,
+          twee contexten die zijn onafhankelijke en underground benadering versterken zonder zijn verhaal te sturen.
+        </p>
+
+        <p>
+          De Kweker bouwt gestaag aan een eigen traject binnen de Vlaamse hiphop, met de focus op inhoud, consistentie en
+          geloofwaardigheid boven zichtbaarheid of hype.
+        </p>
+      </div>
+
+      <div class="bioQuote">
+        <span class="bioQuoteMark">“</span>
+        <span class="bioQuoteText">Therapie voor mezelf, en hopelijk voor jullie.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
   `;
 
   syncEditionUI();
@@ -512,4 +515,21 @@ window.addEventListener("DOMContentLoaded", () => {
   renderPage();
 
   if (cartCount() > 0) syncCartBadge();
+});
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("#bioToggle");
+  if (!btn) return;
+
+  const panel = document.querySelector("#bioPanel");
+  if (!panel) return;
+
+  const wasCollapsed = panel.classList.contains("isCollapsed");
+
+  // toggle class
+  panel.classList.toggle("isCollapsed");
+
+  // update button text + aria
+  const expanded = wasCollapsed; // if it was collapsed, now it’s expanded
+  btn.textContent = expanded ? "Lees minder" : "Lees meer";
+  btn.setAttribute("aria-expanded", expanded ? "true" : "false");
 });

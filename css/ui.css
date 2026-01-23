@@ -392,4 +392,89 @@ body.cart-open{
 }
 #app .tagsRow .tagWarm{ color: rgba(255,220,195,.78) !important; }
 
+/* =========================
+   BIO — collapsible story (premium + SEO)
+========================= */
+
+.bioHero{
+  display: grid;
+  gap: 18px;
+  align-items: start;
+}
+
+/* 2 columns on desktop */
+@media (min-width: 900px){
+  .bioHero{
+    grid-template-columns: 1.05fr .95fr;
+    gap: 18px;
+  }
+}
+
+.bioTextHead{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 6px 0 10px;
+}
+
+.bioTextTitle{
+  margin: 0;
+}
+
+/* Toggle: subtle, not a big CTA */
+#bioToggle.btn.btnQuiet{
+  padding: 7px 10px;
+  font-size: 12.5px;
+  border-radius: 999px;
+}
+
+/* The “small frame” for the long bio (SEO stays in DOM) */
+.bioBody{
+  position: relative;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.18);
+  border-radius: 18px;
+  padding: 16px 16px;
+  box-shadow: 0 12px 35px rgba(0,0,0,.28);
+}
+
+/* Text rhythm */
+.bioBody p{
+  margin: 0 0 11px;
+  color: rgba(255,255,255,.74);
+  line-height: 1.6;
+}
+.bioBody p:last-child{ margin-bottom: 0; }
+
+/* Collapsed: clamp height + fade */
+#bioPanel.isCollapsed .bioBody{
+  max-height: 168px;   /* polish: feels right */
+  overflow: hidden;
+}
+
+#bioPanel.isCollapsed .bioBody::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height: 68px;
+  pointer-events:none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0),
+    rgba(0,0,0,.65)
+  );
+}
+
+/* Quote sits cleaner */
+.bioQuote{
+  margin-top: 12px;
+  opacity: .92;
+}
+
+/* Optional: make the right side feel “stacked” */
+.bioRight{
+  display: grid;
+  gap: 10px;
+}
 
