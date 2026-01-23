@@ -7,14 +7,63 @@
 html,body{ height:100%; }
 
 body{
-  margin:0;
+  margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: rgba(255,255,255,.92);
-  background: #0a0a0a;
-  overflow-x: hidden; /* geen rare horizontale scroll */
+
+  /* fallback: prevents white flash */
+  background: rgba(0,0,0,0.92);
 }
 
-/* Links: geen “default blauw”, tenzij je het expliciet wil */
+/* =========================
+   Background (your current tunnel image)
+========================= */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+
+  background-image: url("/assets/bg-studio.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: .55;
+  filter: contrast(1.08) saturate(1.02);
+  transform: scale(1.02);
+}
+
+/* Single overlay layer (no duplicates) */
+body::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      ellipse at top center,
+      rgba(255, 180, 90, 0.06),
+      rgba(0,0,0,0.92) 60%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(0,0,0,0) 45%,
+      rgba(0,0,0,0.55) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.20),
+      rgba(0,0,0,.06) 35%,
+      rgba(0,0,0,.22)
+    );
+}
+
+/* =========================
+   Links
+========================= */
 a{
   color: inherit;
   text-decoration-color: rgba(255,255,255,.22);
@@ -24,7 +73,9 @@ a:hover{
   text-decoration-color: rgba(255,255,255,.28);
 }
 
-/* Media baseline */
+/* =========================
+   Media baseline
+========================= */
 img, video{
   max-width: 100%;
   height: auto;
@@ -36,7 +87,9 @@ iframe{
   display:block;
 }
 
-/* Inputs baseline (voor forms in cart / contact) */
+/* =========================
+   Inputs baseline (cart / contact)
+========================= */
 input, textarea, select, button{
   font: inherit;
   color: inherit;
@@ -57,35 +110,6 @@ input:focus, textarea:focus{
 }
 
 /* =========================
-   Background (studio)
-========================= */
-body::before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background-image: url("/assets/bg-studio.webp");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: .55;
-  filter: contrast(1.08) saturate(1.02);
-  transform: scale(1.02);
-}
-
-body::after{
-  content:"";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events:none;
-  background:
-    radial-gradient(70% 65% at 50% 35%, rgba(0,0,0,.04), rgba(0,0,0,.22)),
-    linear-gradient(to bottom, rgba(0,0,0,.20), rgba(0,0,0,.06) 35%, rgba(0,0,0,.22));
-}
-
-/* =========================
    App container
 ========================= */
 #app{
@@ -100,16 +124,22 @@ body::after{
 .panel{
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.35);
-  backdrop-filter: blur(12px);
   border-radius: 22px;
   box-shadow: 0 18px 60px rgba(0,0,0,.45);
   padding: 22px;
   margin: 18px 0;
 }
 
+/* Progressive enhancement: only blur when supported */
+@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))){
+  .panel{
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
 .panelWide{ padding: 22px 24px; }
 
-/* Glow variant (die je markup vaak gebruikt) */
 .panelGlow{
   box-shadow:
     0 18px 60px rgba(0,0,0,.45),
@@ -152,28 +182,9 @@ body::after{
   color: rgba(255,255,255,.78);
 }
 
-.kickerWarm{
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: rgba(255,255,255,.72);
-  font-size: 13px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.10);
-}
-
-.dotWarm{
-  width: 8px;
-  height: 8px;
-  border-radius: 99px;
-  background: #c97a3a;
-  box-shadow: 0 0 0 3px rgba(201,122,58,.18);
-}
-
 /* mini cards */
 .heroAside{ display: grid; gap: 10px; }
+
 .cardMini{
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.28);
@@ -191,41 +202,8 @@ body::after{
 }
 
 /* =========================
-   Buttons / CTAs
-========================= */
-.ctaRow{
-  display: flex;
-  gap: 10px;
-  margin-top: 16px;
-  flex-wrap: wrap;
-}
-
-.btn{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 14px;
-  border-radius: 999px;
-  text-decoration: none;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.28);
-  color: rgba(255,255,255,.92);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.btn:hover{ background: rgba(255,255,255,.06); }
-
-.btnPrimary{
-  background: rgba(201,122,58,.85);
-  border-color: rgba(201,122,58,.35);
-  color: #1b0f05;
-}
-
-.btnPrimary:hover{ background: rgba(201,122,58,.95); }
-
-/* =========================
    Cart drawer + overlay (base)
+   IMPORTANT: must be ABOVE header (header is z-index:5000)
 ========================= */
 .overlay{
   position: fixed;
@@ -234,7 +212,9 @@ body::after{
   opacity: 0;
   pointer-events: none;
   transition: opacity .18s ease;
-  z-index: 3000; /* hoger, zodat niets erover kan */
+
+  /* ✅ above sticky header */
+  z-index: 9000;
 }
 .overlay.open{
   opacity: 1;
@@ -248,14 +228,24 @@ body::after{
   height: 100vh;
   width: min(420px, 92vw);
   background: rgba(10,10,10,.92);
-  backdrop-filter: blur(10px);
   border-left: 1px solid rgba(255,255,255,.08);
   transform: translateX(110%);
   transition: transform .22s ease;
-  z-index: 3001;
+
+  /* ✅ above overlay + header */
+  z-index: 9001;
+
   display: flex;
   flex-direction: column;
 }
+
+@supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
+  .cart{
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
 .cart.open{ transform: translateX(0); }
 
 .cartTop, .cartBottom{ padding: 14px; }
@@ -265,10 +255,10 @@ body::after{
   flex: 1;
 }
 
-/* optioneel scroll lock */
+/* scroll lock */
 body.cart-open{ overflow: hidden; }
 
-/* wanneer cart open: verberg bubble + toast */
+/* when cart open: hide bubble + toast */
 body.cart-open .miniCartFab{
   opacity: 0 !important;
   transform: translateY(10px) scale(.98) !important;

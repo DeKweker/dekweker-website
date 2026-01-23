@@ -1,71 +1,74 @@
-/* css/layout.css */
+/* css/layout.css
+   Header + toast + mini cart bubble.
+   Single source of truth for header layout.
+*/
 
 :root{
-  --header-h: 64px;
+  --header-h: 56px;
 }
 
 /* =========================
-   Header (sticky glass)
+   Header (sticky)
 ========================= */
 #site-header{
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 5000;
 }
 
+/* menu.js renders .topbar */
 #site-header .topbar{
   height: var(--header-h);
-  display: flex;
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
+
   padding: 10px 14px;
 
   background: rgba(10,10,10,.55);
-  backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
-/* brand */
-#site-header .brand{
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+@supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
+  #site-header .topbar{
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
+/* brand */
+#site-header .brand{ display:flex; align-items:center; }
 #site-header .brandLink{
   color: rgba(255,255,255,.92);
   text-decoration: none;
-  font-weight: 800;
-  letter-spacing: .2px;
+  font-weight: 900;
+  letter-spacing: -.2px;
   white-space: nowrap;
 }
 
 /* center nav */
 #site-header .navLinks{
-  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
   min-width: 0;
 }
-
 #site-header .navLink{
-  color: rgba(255,255,255,.75);
+  color: rgba(255,255,255,.78);
   text-decoration: none;
   padding: 8px 12px;
   border-radius: 999px;
   white-space: nowrap;
 }
-
 #site-header .navLink:hover{
   color: rgba(255,255,255,.92);
   background: rgba(255,255,255,.06);
 }
-
-/* menu.js gebruikt .isActive */
 #site-header .navLink.isActive{
   color: rgba(255,255,255,.95);
   background: rgba(255,255,255,.10);
@@ -74,32 +77,34 @@
 
 /* right actions */
 #site-header .actions{
-  flex: 0 0 auto;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
 }
 
-/* current page pill (menu.js) */
-#site-header .currentPill{
-  display: inline-flex;
-  align-items: center;
-  padding: 7px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.08);
-  color: rgba(255,255,255,.92);
-  font-size: 13px;
-  text-decoration: none;
-  white-space: nowrap;
+/* desktop: hide hamburger hard */
+#site-header .hamburger{
+  display: none !important;
 }
 
-/* hamburger alleen op mobile (desktop gebruikt center nav) */
-.hamburger{ display:none; }
+/* Mobile header behavior */
 @media (max-width: 900px){
-  #site-header .navLinks{ display:none !important; }
-  #site-header .currentPill{ display:none !important; }
-  .hamburger{ display:inline-flex; }
+  #site-header .topbar{
+    grid-template-columns: 1fr auto;
+  }
+
+  #site-header .navLinks{
+    display: none !important;
+  }
+
+  #site-header .currentPill{
+    display: none !important;
+  }
+
+  #site-header .hamburger{
+    display: inline-flex !important;
+  }
 }
 
 /* =========================
@@ -108,7 +113,7 @@
 #toastHost{
   position: fixed;
   right: 14px;
-  bottom: 72px; /* boven bubble */
+  bottom: 72px;
   z-index: 2500;
   display: grid;
   gap: 10px;
@@ -120,13 +125,19 @@
   border: 1px solid rgba(255,255,255,.10);
   border-radius: 16px;
   padding: 12px;
-  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   box-shadow: 0 18px 50px rgba(0,0,0,.45);
   animation: toastIn .16s ease;
+}
+
+@supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
+  .toast{
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
 .toast.out{
@@ -137,23 +148,15 @@
 
 .toastTitle{ font-weight: 900; letter-spacing: -.2px; }
 .toastMsg{ font-size: 12px; color: rgba(255,255,255,.72); margin-top: 3px; }
-
 .toastActions{ display:flex; gap:8px; align-items:center; }
-.toastBtnGhost{ padding: 10px 12px; border-radius: 12px; }
 
 @keyframes toastIn{
   from{ opacity: 0; transform: translateY(8px); }
   to{ opacity: 1; transform: translateY(0); }
 }
 
-/* pulse op “In mandje” */
-.addedPulse{
-  transform: translateY(-1px);
-  filter: brightness(1.06);
-}
-
 /* =========================
-   Mini cart bubble (Kwekermandje)
+   Mini cart bubble (optional)
 ========================= */
 .miniCartFab{
   position: fixed;
@@ -170,8 +173,6 @@
 
   background: rgba(12,12,12,.90);
   border: 1px solid rgba(255,255,255,.10);
-  backdrop-filter: blur(10px);
-
   box-shadow: 0 18px 50px rgba(0,0,0,.40);
 
   opacity: 0;
@@ -180,1037 +181,15 @@
   transition: opacity .18s ease, transform .18s ease;
 }
 
+@supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
+  .miniCartFab{
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
 .miniCartFab.show{
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
-}
-
-.miniCartLabel{
-  font-weight: 900;
-  letter-spacing: -.2px;
-  opacity: .92;
-}
-
-.miniCartCount{
-  min-width: 22px;
-  height: 22px;
-  display: inline-grid;
-  place-items: center;
-
-  border-radius: 999px;
-  padding: 0 8px;
-
-  font-weight: 900;
-  font-size: 12px;
-
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.10);
-}
-
-.miniCartFab.pop{ animation: miniCartPop .34s ease; }
-
-@keyframes miniCartPop{
-  0%   { transform: translateY(12px) scale(.95); }
-  60%  { transform: translateY(-2px) scale(1.03); }
-  100% { transform: translateY(0) scale(1); }
-}
-
-/* =========================
-   Music page (cards below video)
-========================= */
-.musicGrid{
-  display: grid;
-  gap: 14px;
-  grid-template-columns: 1.2fr .8fr;
-}
-@media (max-width: 900px){
-  .musicGrid{ grid-template-columns: 1fr; }
-}
-
-.musicCard{
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(10,10,10,.55);
-  backdrop-filter: blur(10px);
-  padding: 14px;
-  min-width: 0;
-}
-
-.spotifyFrameWrap{
-  margin-top: 12px;
-  overflow: hidden;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.08);
-  width: 100%;
-  min-width: 0;
-}
-.spotifyFrameWrap iframe{
-  width: 100% !important;
-  display:block;
-}
-
-/* =========================
-   Shop nav + categories
-========================= */
-.shopNav{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin: 6px 0 14px;
-}
-
-.shopNavLink{
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(10,10,10,.45);
-  backdrop-filter: blur(10px);
-  color: rgba(255,255,255,.86);
-  padding: 8px 12px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 900;
-  letter-spacing: -.2px;
-  transition: transform .12s ease, filter .12s ease;
-}
-.shopNavLink:hover{ transform: translateY(-1px); filter: brightness(1.05); }
-.shopNavLink.active{
-  border-color: rgba(255,255,255,.18);
-  background: rgba(255,255,255,.08);
-}
-
-.shopPageHead{ margin: 6px 0 14px; }
-
-.shopCategoryGrid{
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-top: 12px;
-}
-@media (max-width: 900px){
-  .shopCategoryGrid{ grid-template-columns: 1fr 1fr; }
-}
-
-.shopCategoryCard{
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  gap: 10px;
-
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(10,10,10,.55);
-  backdrop-filter: blur(10px);
-  padding: 14px;
-
-  text-decoration:none;
-  color: rgba(255,255,255,.90);
-  box-shadow: 0 18px 50px rgba(0,0,0,.25);
-  transition: transform .12s ease, filter .12s ease;
-}
-.shopCategoryCard:hover{ transform: translateY(-2px); filter: brightness(1.04); }
-
-.shopCategoryTitle{ font-weight: 950; letter-spacing: -.3px; font-size: 16px; }
-.shopCategorySub{ font-size: 12px; color: rgba(255,255,255,.65); }
-.shopHint{ margin-top: 10px; }
-
-/* =========================
-   Product cards: media + hover front/back
-========================= */
-.prodMediaLink{ display:block; text-decoration:none; color:inherit; }
-
-.prodMedia{
-  position: relative;
-  width: 100%;
-  max-width: 420px;
-  aspect-ratio: 1 / 1;
-  margin: 0 auto 14px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.06);
-}
-
-.prodMedia::before{
-  content:"";
-  position:absolute;
-  inset: 10px 12px 14px 12px;
-  border-radius: 14px;
-  box-shadow:
-    0 18px 46px rgba(0,0,0,.55),
-    0 2px 0 rgba(255,255,255,.06) inset,
-    0 -14px 30px rgba(0,0,0,.35) inset;
-  opacity: .75;
-  pointer-events:none;
-  transform: translateY(2px);
-}
-@media (hover:hover){
-  .prodMedia:hover::before{ opacity: .9; transform: translateY(0); }
-}
-
-.prodImg{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: opacity .22s ease, transform .22s ease;
-}
-
-.prodImgFront{ opacity: 1; transform: scale(1.01); }
-.prodImgBack{ opacity: 0; transform: scale(1.02); }
-
-@media (hover:hover){
-  .prodMedia:hover .prodImgFront{ opacity: 0; transform: scale(1.03); }
-  .prodMedia:hover .prodImgBack{ opacity: 1; transform: scale(1.03); }
-}
-
-.prodMedia.noBack .prodImgBack{ display:none !important; }
-@media (hover:hover){
-  .prodMedia.noBack:hover .prodImgFront{
-    opacity: 1 !important;
-    transform: scale(1.01) !important;
-  }
-}
-
-.prodMediaFallback{
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 16px;
-  font-weight: 900;
-  letter-spacing: -.3px;
-  color: rgba(255,255,255,.75);
-  background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));
-  opacity: 0;
-  pointer-events: none;
-}
-.prodMedia.fallback .prodMediaFallback{ opacity: 1; }
-
-.prodTitleLink{ text-decoration:none; color:inherit; }
-.prodTitleLink:hover .prodTitle{
-  text-decoration: underline;
-  text-decoration-color: rgba(255,255,255,.22);
-}
-
-/* =========================
-   Product detail page
-========================= */
-.shopBreadcrumb{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  align-items:center;
-  font-size: 12px;
-  color: rgba(255,255,255,.65);
-  margin: 6px 0 14px;
-}
-.shopBreadcrumb a{
-  color: rgba(255,255,255,.82);
-  text-decoration:none;
-}
-.shopBreadcrumb a:hover{ text-decoration: underline; }
-.shopBreadcrumb .sep{ opacity:.5; }
-.shopBreadcrumb .current{ color: rgba(255,255,255,.82); font-weight: 700; }
-
-.productDetail{
-  display:grid;
-  grid-template-columns: 1.15fr .85fr;
-  gap: 18px;
-  align-items:start;
-}
-@media (max-width: 900px){
-  .productDetail{ grid-template-columns: 1fr; }
-}
-
-.productMedia{
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.06);
-  aspect-ratio: 1 / 1;
-}
-.productMedia img{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display:block;
-  transition: opacity .22s ease, transform .22s ease;
-}
-.productMedia .prodImgFront{ opacity: 1; transform: scale(1.01); }
-.productMedia .prodImgBack{ opacity: 0; transform: scale(1.02); }
-@media (hover:hover){
-  .productMedia:hover .prodImgFront{ opacity: 0; transform: scale(1.03); }
-  .productMedia:hover .prodImgBack{ opacity: 1; transform: scale(1.03); }
-}
-
-.productMediaFallback{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color: rgba(255,255,255,.7);
-  font-weight: 900;
-  opacity:0;
-}
-.productMedia.fallback .productMediaFallback{ opacity:1; }
-
-.galleryToggle{ display:flex; gap:10px; margin-top: 12px; }
-
-.pillBtn.active{
-  border-color: rgba(255,255,255,.18);
-  background: rgba(255,255,255,.08);
-}
-
-.productTitle{
-  font-size: 28px;
-  letter-spacing: -.6px;
-  margin: 4px 0 10px;
-}
-
-.productMetaRow{ display:flex; gap: 10px; align-items:center; margin-bottom: 10px; }
-
-.productDesc{
-  color: rgba(255,255,255,.78);
-  line-height: 1.55;
-  margin: 8px 0 14px;
-}
-
-.productBuyRow{
-  display:flex;
-  flex-wrap:wrap;
-  gap: 10px;
-  align-items:center;
-  margin: 8px 0 14px;
-}
-
-.productPrice{
-  font-weight: 950;
-  letter-spacing: -.3px;
-  font-size: 18px;
-  margin-right: 6px;
-}
-
-.productFine{
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,.06);
-}
-
-.fineLine{
-  display:flex;
-  gap: 10px;
-  align-items:center;
-  color: rgba(255,255,255,.65);
-  font-size: 12px;
-  margin: 8px 0;
-}
-
-.fineDot{
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.35);
-}
-
-/* =========================
-   Cart controls
-========================= */
-.cartTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-}
-
-.closeBtn{
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.92) !important;
-  display:grid;
-  place-items:center;
-  cursor:pointer;
-  transition: transform .14s ease, background .14s ease, border-color .14s ease;
-  backdrop-filter: blur(10px);
-}
-
-.closeBtn:hover{
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.18);
-}
-
-.closeBtn:active{ transform: translateY(0) scale(.98); }
-
-.qtyRow{
-  display:flex;
-  align-items:center;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.qtyBtn{
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.90);
-  display:grid;
-  place-items:center;
-  cursor:pointer;
-  font-weight: 900;
-  line-height: 1;
-  transition: transform .14s ease, background .14s ease, border-color .14s ease;
-  backdrop-filter: blur(10px);
-}
-
-.qtyBtn:hover{
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.18);
-}
-
-.qtyBtn:active{ transform: translateY(0) scale(.98); }
-
-.qtyNum{
-  min-width: 36px;
-  height: 34px;
-  border-radius: 12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background: rgba(0,0,0,.25);
-  border: 1px solid rgba(255,255,255,.08);
-  color: rgba(255,255,255,.85);
-  font-weight: 800;
-}
-
-/* =========================
-   Contact page
-========================= */
-.contactPage{ max-width: 980px; margin: 0 auto; }
-.contactIntro{ margin-bottom: 24px; }
-
-.contactGrid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-@media (max-width: 900px){
-  .contactGrid{ grid-template-columns: 1fr; }
-}
-
-.contactCard{
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 16px;
-  padding: 18px;
-}
-
-.contactMail{
-  display: inline-flex;
-  align-items:center;
-  gap: 8px;
-  margin-top: 10px;
-  font-weight: 900;
-  letter-spacing: -.2px;
-  color: rgba(255,255,255,.92);
-  text-decoration: none;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-}
-.contactMail:hover{
-  background: rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.16);
-  text-decoration: none;
-}
-
-.contactNote{
-  margin-top: 8px;
-  font-size: 12px;
-  color: rgba(255,255,255,.6);
-}
-
-.socialList{
-  list-style: none;
-  padding: 0;
-  margin: 10px 0 0;
-}
-.socialList li{ margin-bottom: 6px; }
-
-.socialList a{
-  color: rgba(255,255,255,.85);
-  text-decoration: none;
-}
-.socialList a:hover{
-  text-decoration: underline;
-  text-decoration-color: rgba(255,255,255,.25);
-}
-
-.contactFooter{
-  margin-top: 28px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,.06);
-  color: rgba(255,255,255,.65);
-  font-size: 13px;
-}
-.mutedSmall{
-  margin: 6px 0 0;
-  font-size: 12px;
-  color: rgba(255,255,255,.65);
-}
-
-/* =========================
-   Music spotlight (YouTube) + below grid inside spotlight
-   Verwacht HTML:
-   <div class="musicSpotlight">
-     <div class="musicSpotText">...</div>
-     <div class="musicSpotMedia"><div class="ytWrap">...</div></div>
-     <div class="musicBelow">...</div>  <-- (jij hebt dit al in renderMusic gedaan)
-   </div>
-========================= */
-.musicSpotlight{
-  display: grid;
-  grid-template-columns: .95fr 1.05fr;
-  grid-template-areas:
-    "text media"
-    "below below";
-  gap: 14px;
-  align-items: start;
-
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(10,10,10,.55);
-  backdrop-filter: blur(10px);
-  padding: 14px;
-  box-shadow: 0 18px 50px rgba(0,0,0,.25);
-}
-
-.musicSpotText{ grid-area: text; padding: 6px; min-width: 0; }
-.musicSpotMedia{ grid-area: media; min-width: 0; }
-
-.musicBelow{
-  grid-area: below;
-  display: grid;
-  grid-template-columns: 1.15fr .85fr; /* Spotify breder */
-  gap: 14px;
-  min-width: 0;
-}
-
-@media (max-width: 900px){
-  .musicSpotlight{
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "text"
-      "media"
-      "below";
-  }
-  .musicBelow{ grid-template-columns: 1fr; }
-}
-
-/* YouTube wrapper bepaalt ratio */
-.ytWrap{
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  min-width: 0;
-
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(0,0,0,.25);
-  box-shadow: 0 18px 50px rgba(0,0,0,.25);
-}
-
-.ytWrap > iframe{
-  position: absolute;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-  border: 0;
-  display: block;
-}
-
-/* =========================
-   Mobile toast placement
-========================= */
-@media (max-width: 900px) {
-  #toastHost {
-    left: 50%;
-    right: auto;
-    bottom: 88px;
-    transform: translateX(-50%);
-    width: calc(100vw - 24px);
-    max-width: 420px;
-    z-index: 9999;
-    pointer-events: none;
-  }
-  .toast {
-    width: 100%;
-    pointer-events: auto;
-  }
-}
-
-@media (max-width: 900px) {
-  body.cart-open #toastHost {
-    bottom: 140px;
-    z-index: 10000;
-  }
-}
-
-/* voorkom horizontale “reflow/zoom” op mobile */
-html, body { overflow-x: hidden; }
-
-/* cart sizing op mobile */
-@media (max-width: 900px){
-  #cartDrawer.cart{
-    width: min(420px, 92vw);
-  }
-}
-
-/* =========================
-   Bio (Home) — layout + stabiliteit
-========================= */
-.bioHero{
-  display: grid;
-  grid-template-columns: .95fr 1.05fr;
-  gap: 14px;
-  align-items: stretch;
-  min-width: 0;
-}
-
-@media (max-width: 900px){
-  .bioHero{ grid-template-columns: 1fr; }
-}
-
-.bioLeft,
-.bioRight{
-  min-width: 0;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(10,10,10,.55);
-  backdrop-filter: blur(10px);
-  padding: 18px;
-  box-shadow: 0 18px 50px rgba(0,0,0,.25);
-}
-
-.bioTitle{
-  margin: 10px 0 10px;
-  font-size: 34px;
-  letter-spacing: -.8px;
-  line-height: 1.02;
-}
-
-.bioLead{
-  margin: 0;
-  color: rgba(255,255,255,.76);
-  line-height: 1.6;
-  max-width: 60ch;
-}
-
-.bioMeta{
-  margin: 14px 0 0;
-  display:flex;
-  flex-wrap: wrap;
-  gap: 10px 14px;
-}
-
-.bioMetaItem{
-  display:inline-flex;
-  align-items:center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.04);
-  color: rgba(255,255,255,.70);
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.bioMetaDot{
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: rgba(201,122,58,.75);
-  box-shadow: 0 0 0 3px rgba(201,122,58,.14);
-}
-
-.bioTextHead{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-  margin-bottom: 12px;
-  min-width: 0;
-}
-
-.bioTextTitle{
-  margin: 0;
-  font-size: 13px;
-  letter-spacing: -.2px;
-  color: rgba(255,255,255,.88);
-}
-
-.bioToggle{
-  flex: 0 0 auto;
-  width: auto;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.88);
-  padding: 8px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 900;
-  letter-spacing: -.2px;
-  transition: transform .12s ease, filter .12s ease;
-}
-
-.bioToggle:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.05);
-}
-
-.bioBody{
-  max-height: 170px;
-  overflow: hidden;
-  position: relative;
-}
-
-.bioBody::after{
-  content:"";
-  position:absolute;
-  left:0; right:0; bottom:0;
-  height: 64px;
-  background: linear-gradient(to bottom, rgba(10,10,10,0), rgba(10,10,10,.90));
-  pointer-events:none;
-}
-
-.bioBody.open{ max-height: none; }
-.bioBody.open::after{ display:none; }
-
-.bioPara{
-  margin: 0 0 12px;
-  color: rgba(255,255,255,.75);
-  line-height: 1.7;
-}
-
-.bioDrop::first-letter{
-  float:left;
-  font-size: 46px;
-  line-height: .95;
-  font-weight: 950;
-  margin: 2px 10px 0 0;
-  color: rgba(201,122,58,.92);
-  text-shadow: 0 10px 30px rgba(0,0,0,.45);
-}
-
-.bioQuote{
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255,255,255,.06);
-  display:flex;
-  gap: 10px;
-  align-items:flex-start;
-}
-
-.bioQuoteMark{
-  font-size: 28px;
-  line-height: 1;
-  color: rgba(201,122,58,.85);
-  font-weight: 950;
-}
-
-.bioQuoteText{
-  color: rgba(255,255,255,.82);
-  font-weight: 850;
-  letter-spacing: -.2px;
-  line-height: 1.4;
-}
-
-@media (min-width: 980px){
-  .bioBody.open{
-    column-count: 2;
-    column-gap: 18px;
-  }
-  .bioBody.open .bioPara{ break-inside: avoid; }
-}
-
-/* =========================
-   Desktop: oude menu implementatie kill (zoals je had)
-========================= */
-#navOverlay,
-#navDrawer{
-  display: none !important;
-}
-
-/* =========================
-   Release highlight
-========================= */
-
-.releaseHighlight{
-  display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap: 18px;
-
-  padding: 22px;
-  border-radius: 22px;
-
-  background: rgba(10,10,10,.55);
-  border: 1px solid rgba(255,255,255,.08);
-  backdrop-filter: blur(12px);
-
-  box-shadow: 0 22px 60px rgba(0,0,0,.45);
-}
-
-@media (max-width: 900px){
-  .releaseHighlight{
-    grid-template-columns: 1fr;
-  }
-}
-
-/* LEFT */
-
-.releaseText{
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.releaseBadge{
-  display: inline-block;
-  align-self: flex-start;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 900;
-  background: rgba(201,122,58,.18);
-  color: rgba(201,122,58,.95);
-  border: 1px solid rgba(201,122,58,.35);
-}
-
-.releaseText h2{
-  margin: 0;
-  font-size: 32px;
-  letter-spacing: -.6px;
-}
-
-.releaseLead{
-  margin: 0;
-  color: rgba(255,255,255,.75);
-  line-height: 1.6;
-  max-width: 46ch;
-}
-
-.releaseMeta{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.releaseMeta span{
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.08);
-  color: rgba(255,255,255,.7);
-}
-
-.releaseActions{
-  display: flex;
-  gap: 10px;
-  margin-top: 6px;
-}
-
-/* RIGHT */
-
-.releaseMedia{
-  display: flex;
-  gap: 14px;
-  justify-content: flex-end;
-}
-
-@media (max-width: 900px){
-  .releaseMedia{
-    justify-content: center;
-  }
-}
-
-.releaseItem{
-  position: relative;
-  width: 140px;
-  aspect-ratio: 1 / 1;
-  border-radius: 18px;
-  overflow: hidden;
-
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 18px 40px rgba(0,0,0,.5);
-}
-
-.releaseItem img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.releaseTag{
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: 900;
-  border-radius: 999px;
-  background: rgba(0,0,0,.65);
-  border: 1px solid rgba(255,255,255,.15);
-}
-/* =========================
-   KickerWarm — "Nu beschikbaar" (primary accent)
-   FIX: terug warm/oranje zoals origineel
-========================= */
-.kickerWarm{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 6px 12px;
-  border-radius: 999px;
-
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: -.2px;
-
-  color: #1a0f08;
-
-  background: linear-gradient(
-    180deg,
-    #d88a4a 0%,
-    #b56a36 100%
-  );
-
-  border: 1px solid rgba(255,255,255,.18);
-
-  box-shadow:
-    0 8px 22px rgba(181,106,54,.35),
-    0 1px 0 rgba(255,255,255,.35) inset;
-}
-
-/* dot links in dezelfde vibe */
-.kickerWarm .dotWarm{
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-
-  background: rgba(0,0,0,.55);
-  box-shadow:
-    0 0 0 3px rgba(255,255,255,.25);
-}
-/* =========================
-   KickerWarm terug "oranje pill"
-   (zet dit helemaal ONDERAAN)
-========================= */
-.kickerWarm{
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 7px 12px;
-  border-radius: 999px;
-
-  /* oranje Apple/Spotify-achtige pill */
-  background: rgba(201,122,58,.18) !important;
-  border: 1px solid rgba(201,122,58,.38) !important;
-
-  color: rgba(255,255,255,.92) !important;
-  font-weight: 900;
-  letter-spacing: -.2px;
-  font-size: 13px;
-
-  box-shadow:
-    0 10px 26px rgba(0,0,0,.28),
-    0 0 0 4px rgba(201,122,58,.10);
-}
-
-.kickerWarm .dotWarm{
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-
-  background: rgba(201,122,58,.95) !important;
-  box-shadow:
-    0 0 0 3px rgba(201,122,58,.18),
-    0 10px 24px rgba(201,122,58,.20);
-  flex: 0 0 auto;
-}
-/* =========================
-   Limited edition counter (/150)
-========================= */
-
-.editionRow{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin: 10px 0 14px;
-}
-
-.editionPill{
-  display:inline-flex;
-  align-items:baseline;
-  gap:4px;
-  padding: 6px 12px;
-  border-radius: 999px;
-
-  background:
-    linear-gradient(180deg,
-      rgba(201,122,58,.28),
-      rgba(201,122,58,.12));
-
-  border: 1px solid rgba(201,122,58,.35);
-  box-shadow:
-    0 0 0 3px rgba(201,122,58,.12),
-    0 8px 24px rgba(0,0,0,.35);
-
-  color: rgba(255,240,225,.95);
-  font-weight: 900;
-  letter-spacing: -.3px;
-}
-
-.editionCount{
-  font-size: 18px;
-}
-
-.editionSep{
-  opacity:.6;
-  font-size: 14px;
-}
-
-.editionTotal{
-  font-size: 13px;
-  opacity:.85;
-}
-
-.editionLabel{
-  font-size: 12px;
-  color: rgba(255,255,255,.65);
 }

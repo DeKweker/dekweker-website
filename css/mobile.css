@@ -1,155 +1,201 @@
 /* css/mobile.css
-   Mobile-only drawer/overlay styling.
+   Mobile-only drawer/overlay styling for the HEADER MENU ONLY.
+   IMPORTANT:
+   - We DO NOT style generic .overlay/.drawer anymore,
+     because the cart uses .overlay (#cartOverlay).
 */
 
-body.no-scroll { overflow: hidden; }
+:root{
+  --kw-accent: rgba(201,122,58,.95);
+  --kw-accent-soft: rgba(201,122,58,.18);
+}
 
+/* optional scroll lock (JS can toggle either) */
+body.no-scroll{
+  overflow: hidden;
+}
 
-
-/* standaard: verberg mobile UI overal */
+/* Default: hide HEADER mobile UI everywhere */
 .mobileOverlay,
-.mobileDrawer {
+.mobileDrawer{
   display: none;
 }
 
-@media (max-width: 900px) {
-  /* desktop nav weg op mobile (anders dubbel) */
-  .navLinks, .centerNav { display: none !important; }
+/* Mobile only */
+@media (max-width: 900px){
 
-  /* huidige pagina pill weg op mobile (rustiger) */
-  .currentPill { display: none !important; }
-
-   /* Overlay */
-  .mobileOverlay {
+  /* =========================
+     Overlay (menu)
+  ========================= */
+  .mobileOverlay{
     display: block;
     position: fixed;
     inset: 0;
     z-index: 5000;
-    background: rgba(0,0,0,.80);
-    backdrop-filter: blur(10px) saturate(110%);
-    -webkit-backdrop-filter: blur(10px) saturate(110%);
+
+    background: rgba(0,0,0,.72);
+
     opacity: 0;
     pointer-events: none;
-    transition: opacity .2s ease;
+    transition: opacity .18s ease;
   }
-  .mobileOverlay.open {
+
+  @supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
+    .mobileOverlay{
+      backdrop-filter: blur(10px) saturate(110%);
+      -webkit-backdrop-filter: blur(10px) saturate(110%);
+    }
+  }
+
+  .mobileOverlay.open{
     opacity: 1;
     pointer-events: auto;
   }
 
-  /* Drawer */
-  .mobileDrawer {
+  /* =========================
+     Drawer / sheet (menu)
+  ========================= */
+  .mobileDrawer{
     display: flex;
     position: fixed;
-    top: 0;
-    right: 0;
-    left: auto;
-    bottom: 0;
-    height: 100dvh;
-    width: min(86vw, 380px);
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: min(88vw, 420px);
     z-index: 5001;
-    transform: translateX(110%);
-    transition: transform .25s ease;
 
+    /* default: hidden off-canvas */
+    transform: translateX(110%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .22s ease, opacity .22s ease;
+
+    /* premium “sheet” */
     background:
       radial-gradient(120% 80% at 50% 0%,
         rgba(255,255,255,.10) 0%,
         rgba(255,255,255,.04) 28%,
         rgba(255,255,255,0) 60%),
       linear-gradient(180deg,
-        rgba(18,18,20,.97) 0%,
-        rgba(12,12,14,.96) 55%,
-        rgba(10,10,12,.97) 100%);
+        rgba(18,18,20,.94) 0%,
+        rgba(12,12,14,.92) 55%,
+        rgba(10,10,12,.94) 100%);
 
-    border-left: 1px solid rgba(255,255,255,.10);
-    box-shadow: -24px 0 70px rgba(0,0,0,.55);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow:
+      0 28px 90px rgba(0,0,0,.65),
+      0 1px 0 rgba(255,255,255,.08) inset;
 
-    backdrop-filter: blur(18px) saturate(125%);
-    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    border-radius: 22px;
+    overflow: hidden;
 
-    border-top-left-radius: 22px;
-    border-bottom-left-radius: 22px;
-
-    padding:
-      calc(14px + env(safe-area-inset-top))
-      14px
-      calc(14px + env(safe-area-inset-bottom))
-      14px;
-
+    padding: 14px;
     flex-direction: column;
     gap: 12px;
-    overflow: auto;
   }
-  .mobileDrawer.open { transform: translateX(0); }
 
+  @supports ((backdrop-filter: blur(18px)) or (-webkit-backdrop-filter: blur(18px))){
+    .mobileDrawer{
+      backdrop-filter: blur(18px) saturate(125%);
+      -webkit-backdrop-filter: blur(18px) saturate(125%);
+    }
+  }
 
+  .mobileDrawer.open{
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Handle */
+  .mobileDrawer::before{
+    content:"";
+    width: 46px;
+    height: 5px;
+    margin: 6px auto 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.18);
+    box-shadow: 0 1px 0 rgba(0,0,0,.35) inset;
+    opacity: .9;
+  }
+
+  /* =========================
+     Drawer header/body
+  ========================= */
   .mobileDrawerHead{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:10px;
-    padding-bottom:10px;
-    border-bottom:1px solid rgba(255,255,255,.08);
+    padding: 6px 4px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
   }
-  .mobileTitle{ font-weight:700; font-size:18px; }
+
+  .mobileTitle{
+    font-weight: 950;
+    letter-spacing: -.3px;
+    margin: 0;
+    color: rgba(255,255,255,.92);
+  }
 
   .mobileDrawerBody{
-    display:grid;
-    gap:10px;
-    padding-top:10px;
+    display: grid;
+    gap: 10px;
+    padding-top: 8px;
   }
 
+  /* =========================
+     Links inside drawer
+  ========================= */
   .mobileLink{
-    display:block;
-    padding:14px 14px;
-    border-radius:999px;
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.08);
-    color:inherit;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    min-height: 54px;
+
+    padding: 0 16px;
+    border-radius: 16px;
+
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.10);
+
+    color: rgba(255,255,255,.92);
     text-decoration:none;
-    font-size:18px;
+    font-weight: 850;
+    letter-spacing: -.2px;
+
+    transition: transform .12s ease, filter .12s ease, background .12s ease, border-color .12s ease;
   }
+
+  .mobileLink:hover{
+    filter: brightness(1.06);
+    background: rgba(255,255,255,.08);
+    transform: translateY(-1px);
+  }
+
+  .mobileLink:active{
+    transform: translateY(0) scale(.99);
+    background: rgba(255,255,255,.10);
+  }
+
   .mobileLink.isActive{
-    background:rgba(255,255,255,.10);
-    border-color:rgba(255,255,255,.14);
+    border-color: rgba(201,122,58,.35);
+    background: rgba(201,122,58,.14);
+    box-shadow: 0 0 0 3px rgba(201,122,58,.10);
   }
 
-  .mobileMeta{ margin-top: 6px; opacity: .7; }
-}
-/* =========================
-   Mobile menu — Sluit knop (warm accent)
-========================= */
-@media (max-width: 900px){
-
+  /* Close button */
   .mobileDrawer .closeBtn,
   .mobileDrawer [data-menu-close]{
-    background: rgba(201,122,58,.18);
-    border: 1px solid rgba(201,122,58,.35);
-    color: #fff;
-
-    box-shadow:
-      0 1px 0 rgba(255,255,255,.08) inset,
-      0 12px 30px rgba(0,0,0,.35),
-      0 0 0 4px rgba(201,122,58,.12);
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    transition:
-      transform .12s ease,
-      filter .12s ease,
-      background .12s ease;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.08);
+    padding: 10px 14px;
   }
 
-  .mobileDrawer .closeBtn:hover,
-  .mobileDrawer [data-menu-close]:hover{
-    background: rgba(201,122,58,.26);
-    filter: brightness(1.05);
-  }
-
-  .mobileDrawer .closeBtn:active,
-  .mobileDrawer [data-menu-close]:active{
-    transform: scale(.97);
-    background: rgba(201,122,58,.32);
+  /* Small meta */
+  .mobileMeta{
+    margin-top: 6px;
+    opacity: .7;
   }
 }

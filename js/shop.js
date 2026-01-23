@@ -1,203 +1,110 @@
 // js/shop.js
 import { addToCart } from "./store.js";
-import { euro, escapeHtml, clampInt } from "./utils.js";
+import { euro } from "./utils.js";
 
 let _products = null;
 
-/* ---------------------------
-   Data loading
---------------------------- */
+function normalizeProduct(p = {}) {
+  const images = p.images || {};
+  const front = images.front || p.image || "";
+  const back = images.back || p.imageBack || p.back || "";
+
+  return {
+    id: String(p.id || ""),
+    category: String(p.category || "").toLowerCase(),
+    slug: String(p.slug || ""),
+    title: String(p.name || p.title || "Item"),
+    subtitle: String(p.desc || p.subtitle || ""),
+    description: String(p.desc || p.description || ""),
+    price: Number(p.price || 0),
+    tag: String(p.tag || "Drop"),
+    type: String(p.type || ""),
+    image: String(front || ""),
+    imageBack: String(back || ""),
+    shipping: p.shipping || null,
+    limited: p.limited || null,
+    variants: p.variants || null
+  };
+}
+
 async function loadProducts() {
   if (_products) return _products;
 
   const res = await fetch("./data/products.json", { cache: "no-store" });
   if (!res.ok) throw new Error("Kan products.json niet laden.");
-  const data = await res.json();
 
+  const data = await res.json();
   const arr = Array.isArray(data) ? data : (data.products || []);
   _products = arr.map(normalizeProduct);
   return _products;
 }
 
-function normalizeProduct(p) {
-  const id = String(p?.id || "");
-  const category = String(p?.category || p?.cat || "merch");
-  const slug = String(p?.slug || slugify(p?.name || id));
-
-  const images =
-    p?.images && typeof p.images === "object"
-      ? {
-          front: p.images.front ? String(p.images.front) : "",
-          back: p.images.back ? String(p.images.back) : ""
-        }
-      : {
-          front: p?.image ? String(p.image) : "",
-          back: p?.imageBack ? String(p.imageBack) : ""
-        };
-
-  const type = String(p?.type || inferType(category)); // "physical" | "digital"
-  const shipping = normalizeShipping(p?.shipping, type);
-  const limited = normalizeLimited(p?.limited, category);
-
-  const variants =
-    p?.variants && typeof p.variants === "object"
-      ? {
-          size: Array.isArray(p.variants.size) ? p.variants.size.map(String) : null
-        }
-      : { size: null };
-
-  return {
-    id,
-    slug,
-    category,
-    name: String(p?.name || id),
-    desc: String(p?.desc || ""),
-    price: Number(p?.price || 0),
-    tag: String(p?.tag || ""),
-    type,
-    shipping,
-    limited,
-    variants,
-    images
-  };
-}
-
-function inferType(category) {
-  return String(category) === "digitaal" ? "digital" : "physical";
-}
-
-function normalizeShipping(sh, type) {
-  if (type === "digital") return { pickup: false, ship: false, ship_price: 0 };
-
-  const pickup = sh?.pickup !== false; // default true
-  const ship = sh?.ship !== false; // default true
-  const ship_price = Number(sh?.ship_price ?? 7);
-
-  return {
-    pickup: !!pickup,
-    ship: !!ship,
-    ship_price: Number.isFinite(ship_price) ? ship_price : 7
-  };
-}
-
-function normalizeLimited(lim, category) {
-  const isVinyl = String(category) === "vinyl";
-  const enabled = lim?.enabled ?? isVinyl;
-
-  if (!enabled) return { enabled: false, total: 0, press_min: 0, numbered: false };
-
-  const total = clampInt(lim?.total ?? 150, 1, 99999);
-  const press_min = clampInt(lim?.press_min ?? 100, 1, total);
-  const numbered = lim?.numbered ?? true;
-
-  return { enabled: true, total, press_min, numbered: !!numbered };
-}
-
-function slugify(s) {
-  return String(s || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
-}
-
-function titleCase(s) {
-  const str = String(s || "");
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function resolveImg(path) {
-  if (!path) return "";
-  if (path.startsWith("http") || path.startsWith("/") || path.startsWith("./")) return path;
-  return `./${path}`;
-}
-
-/* ---------------------------
-   Routing helper
---------------------------- */
 export function getShopPathParts() {
-  const raw = (window.location.hash || "#home").replace("#", "").trim();
-  const cleaned = raw.startsWith("/") ? raw.slice(1) : raw;
-  const parts = cleaned.split("/").filter(Boolean);
+  const raw = (window.location.hash || "#shop").replace("#", "").trim();
+  const path = raw.startsWith("shop") ? raw.slice(4) : "";
+  const clean = path.replace(/^\/+/, "");
+  if (!clean) return { category: null, slug: null };
 
-  if (parts[0] !== "shop") return { category: null, slug: null };
-
+  const parts = clean.split("/").filter(Boolean);
   return {
-    category: parts[1] ? String(parts[1]) : null,
-    slug: parts[2] ? String(parts[2]) : null
+    category: parts[0] || null,
+    slug: parts[1] || null
   };
 }
 
-/* ---------------------------
-   Mount shell
---------------------------- */
-export function mountShopShell(appEl) {
-  if (!appEl) return;
-
-  appEl.innerHTML = `
+export function mountShopShell(app) {
+  app.innerHTML = `
     <section class="panel panelWide">
       <div class="shopPageHead">
-        <h1 style="margin:0 0 6px;">Shop</h1>
-        <p style="margin:0;color:rgba(255,255,255,.72);">
-          Vinyl, CD, digitaal en merch — klein gehouden, proper gekozen.
-        </p>
+        <h1>Shop</h1>
+        <p class="mutedSmall">Vinyl, CD, digitaal en merch — klein gehouden, proper gekozen.</p>
       </div>
 
-      <nav class="shopNav" aria-label="Shop categorieën">
-        <a class="shopNavLink" href="#shop/vinyl" data-shop-nav="vinyl">Vinyl</a>
-        <a class="shopNavLink" href="#shop/cd" data-shop-nav="cd">CD</a>
-        <a class="shopNavLink" href="#shop/digitaal" data-shop-nav="digitaal">Digitaal</a>
-        <a class="shopNavLink" href="#shop/merch" data-shop-nav="merch">Merch</a>
+      <nav class="shopNav" aria-label="Shop categories">
+        <a class="shopNavLink" href="#shop/vinyl" data-cat="vinyl">Vinyl</a>
+        <a class="shopNavLink" href="#shop/cd" data-cat="cd">CD</a>
+        <a class="shopNavLink" href="#shop/digitaal" data-cat="digitaal">Digitaal</a>
+        <a class="shopNavLink" href="#shop/merch" data-cat="merch">Merch</a>
       </nav>
 
       <div id="shopMount"></div>
     </section>
   `;
 
-  const mount = appEl.querySelector("#shopMount");
-  if (!mount) return;
-
-  mount.addEventListener("click", async (e) => {
-    const btn = e.target?.closest?.("[data-add-to-cart]");
-    if (!btn) return;
-
-    const id = btn.getAttribute("data-add-to-cart");
-    if (!id) return;
-
-    const products = await loadProducts().catch(() => []);
-    const p = products.find((x) => x.id === id);
-
-    const wrap = btn.closest?.("[data-product-wrap]") || document;
-    const sizeSel = wrap.querySelector?.('select[name="size"]');
-    const size = sizeSel ? String(sizeSel.value || "") : "";
-
-    const meta = p
-      ? {
-          name: p.name,
-          price: p.price,
-          tag: p.tag,
-          image: p.images?.front || "",
-          category: p.category,
-          slug: p.slug,
-          type: p.type,
-          variant_size: size || undefined
-        }
-      : undefined;
-
-    addToCart(id, meta, 1);
-
-    // 🔥 update header cart button + badge immediately (no refresh needed)
-    if (typeof window.__CART_BADGE_SYNC__ === "function") {
-      window.__CART_BADGE_SYNC__();
-    }
+  app.querySelectorAll(".shopNavLink").forEach(a => {
+    a.addEventListener("click", () => {
+      setActiveShopNav(a.dataset.cat || null);
+    });
   });
 }
 
+function setActiveShopNav(cat) {
+  document.querySelectorAll(".shopNavLink").forEach(a => {
+    const is = (a.dataset.cat || "") === (cat || "");
+    a.classList.toggle("active", is);
+  });
+}
 
-/* ---------------------------
-   Pages
---------------------------- */
+function categoryCard(cat, desc) {
+  const map = {
+    vinyl: { title: "Vinyl", desc },
+    cd: { title: "CD", desc },
+    digitaal: { title: "Digitaal", desc },
+    merch: { title: "Merch", desc }
+  };
+  const item = map[cat] || { title: cat, desc: desc || "" };
+
+  return `
+    <a class="shopCategoryCard" href="#shop/${cat}">
+      <div>
+        <div class="shopCategoryTitle">${esc(item.title)}</div>
+        <div class="shopCategorySub">${esc(item.desc)}</div>
+      </div>
+      <div class="shopHint mutedSmall" style="margin-top:10px;">Bekijk →</div>
+    </a>
+  `;
+}
+
 export async function renderShopHome() {
   const mount = document.getElementById("shopMount");
   if (!mount) return;
@@ -205,6 +112,10 @@ export async function renderShopHome() {
   await loadProducts();
 
   mount.innerHTML = `
+    <div class="mutedSmall" style="margin:0 0 12px;">
+      Kies een categorie. Vinyl &amp; CD staan bovenaan.
+    </div>
+
     <div class="shopCategoryGrid">
       ${categoryCard("vinyl", "Limited pressings. Genummerd waar het hoort.")}
       ${categoryCard("cd", "Compact, proper, klaar om te draaien.")}
@@ -212,7 +123,7 @@ export async function renderShopHome() {
       ${categoryCard("merch", "Stukken om te dragen — niet om te showen.")}
     </div>
 
-    <div class="shopHint" style="margin-top:14px;color:rgba(255,255,255,.65);font-size:12px;">
+    <div class="shopHint mutedSmall" style="margin-top:14px;">
       Klik een categorie en pak het van daar.
     </div>
   `;
@@ -220,27 +131,88 @@ export async function renderShopHome() {
   setActiveShopNav(null);
 }
 
+function productCard(p) {
+  const front = p.image || "";
+  const back = p.imageBack || "";
+  const hasBack = Boolean(back);
+
+  return `
+    <article class="panel" style="padding:14px;">
+      <a class="prodMediaLink" href="#shop/${esc(p.category)}/${esc(p.slug)}">
+        <div class="prodMedia ${hasBack ? "" : "noBack"}">
+          ${front ? `<img class="prodImg prodImgFront" src="${front}" alt="${esc(p.title)}" loading="lazy">` : ""}
+          ${hasBack ? `<img class="prodImg prodImgBack" src="${back}" alt="${esc(p.title)} (back)" loading="lazy">` : ""}
+          ${!front ? `<div class="prodMediaFallback">Geen image</div>` : ""}
+        </div>
+      </a>
+
+      <a class="prodTitleLink" href="#shop/${esc(p.category)}/${esc(p.slug)}" style="text-decoration:none;color:inherit;">
+        <div class="prodTitle" style="font-weight:950;letter-spacing:-.3px;">${esc(p.title)}</div>
+      </a>
+
+      <div class="mutedSmall" style="margin-top:6px;">${esc(p.subtitle || "")}</div>
+
+      <div class="productBuyRow" style="margin-top:10px;">
+        <div class="productPrice">${euro(p.price)}</div>
+        <button class="btn btnPrimary" data-add="${esc(p.id)}" type="button">In mandje</button>
+      </div>
+    </article>
+  `;
+}
+
 export async function renderShopCategory(category) {
   const mount = document.getElementById("shopMount");
   if (!mount) return;
 
   const products = await loadProducts();
-  const list = products.filter((p) => p.category === category);
+  const cat = String(category || "").toLowerCase();
 
-  setActiveShopNav(category);
+  setActiveShopNav(cat);
+
+  const items = products.filter(p => p.category === cat);
 
   mount.innerHTML = `
-    <div class="shopPageHead">
-      <h2 style="margin:0 0 6px;">${escapeHtml(titleCase(category))}</h2>
-      <p style="margin:0;color:rgba(255,255,255,.72);">Een selectie. Geen rommel.</p>
+    <div class="shopBreadcrumb">
+      <a href="#shop">Shop</a> <span class="sep">/</span>
+      <span class="current">${esc(cap(cat))}</span>
     </div>
 
-    <div class="shopGrid">
-      ${list.map((p) => productCard(p)).join("") || emptyCategory(category)}
-    </div>
+    ${items.length === 0 ? `
+      <div class="panel" style="padding:14px;">
+        <div style="font-weight:950;letter-spacing:-.2px;">Nog geen items hier.</div>
+        <div class="mutedSmall" style="margin-top:6px;">Kom straks terug. Eerst komt vinyl &amp; CD.</div>
+      </div>
+    ` : `
+      <div class="shopGrid">
+        ${items.map(productCard).join("")}
+      </div>
+    `}
   `;
 
-  wireCardImageFallbacks(mount);
+  mount.querySelectorAll("[data-add]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-add");
+      const p = products.find(x => String(x.id) === String(id));
+      if (!p) return;
+
+      addToCart(
+        p.id,
+        {
+          name: p.title,
+          price: p.price,
+          tag: p.tag,
+          image: p.image,
+          category: p.category,
+          slug: p.slug,
+          type: p.type
+        },
+        1
+      );
+
+      window.__CART_BADGE_SYNC__?.();
+      window.__TOAST__?.({ title: "In mandje", msg: p.title, ms: 1600 });
+    });
+  });
 }
 
 export async function renderProductDetail(category, slug) {
@@ -248,301 +220,98 @@ export async function renderProductDetail(category, slug) {
   if (!mount) return;
 
   const products = await loadProducts();
-  const p = products.find((x) => x.category === category && x.slug === slug);
+  const cat = String(category || "").toLowerCase();
+  const s = String(slug || "").toLowerCase();
 
-  setActiveShopNav(category);
+  setActiveShopNav(cat);
+
+  const p = products.find(x => x.category === cat && String(x.slug).toLowerCase() === s);
 
   if (!p) {
     mount.innerHTML = `
-      <div class="cartEmpty">
-        <div style="font-weight:900;">Niet gevonden.</div>
-        <div style="color:rgba(255,255,255,.65); font-size:12px; margin-top:6px;">
-          Ga terug naar <a href="#shop/${escapeHtml(category)}" style="color:rgba(255,255,255,.85);">de categorie</a>.
+      <div class="panel" style="padding:14px;">
+        <div style="font-weight:950;">Niet gevonden.</div>
+        <div class="mutedSmall" style="margin-top:6px;">
+          Terug naar <a href="#shop/${esc(cat)}">categorie</a>.
         </div>
       </div>
     `;
     return;
   }
 
-  const front = resolveImg(p.images.front);
-  const back = resolveImg(p.images.back);
-
-  const shipLine = shippingLine(p);
-  const limLine = limitedLineHtml(p);
-
-  const sizePicker = p.variants?.size?.length
-    ? `
-      <label class="field" style="margin-top:12px; display:grid; gap:6px;">
-        <span class="label" style="font-size:12px; color:rgba(255,255,255,.70);">Maat</span>
-        <select name="size">
-          ${p.variants.size.map((s) => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("")}
-        </select>
-      </label>
-    `
-    : "";
+  const front = p.image || "";
+  const back = p.imageBack || "";
+  const hasBack = Boolean(back);
 
   mount.innerHTML = `
     <div class="shopBreadcrumb">
-      <a href="#shop">Shop</a><span class="sep">/</span>
-      <a href="#shop/${escapeHtml(category)}">${escapeHtml(titleCase(category))}</a>
-      <span class="sep">/</span>
-      <span class="current">${escapeHtml(p.name)}</span>
+      <a href="#shop">Shop</a> <span class="sep">/</span>
+      <a href="#shop/${esc(cat)}">${esc(cap(cat))}</a> <span class="sep">/</span>
+      <span class="current">${esc(p.title)}</span>
     </div>
 
-    <div class="productDetail" data-product-wrap>
+    <div class="productDetail">
       <div>
-        <div class="productMedia ${front ? "" : "fallback"}" id="productMediaBox">
-          ${
-            front
-              ? `<img id="productFrontImg" class="prodImg" src="${front}" alt="${escapeHtml(p.name)}">`
-              : ``
-          }
-          ${
-            back
-              ? `<img id="productBackImg" class="prodImg" src="${back}" alt="${escapeHtml(p.name)} (back)" style="opacity:0;">`
-              : ``
-          }
-          <div class="productMediaFallback">De Kweker</div>
+        <div class="productMedia prodMedia ${hasBack ? "" : "noBack"}">
+          ${front ? `<img class="prodImg prodImgFront" src="${front}" alt="${esc(p.title)}" loading="lazy">` : ""}
+          ${hasBack ? `<img class="prodImg prodImgBack" src="${back}" alt="${esc(p.title)} (back)" loading="lazy">` : ""}
+          ${!front ? `<div class="productMediaFallback">Geen image</div>` : ""}
         </div>
-
-        ${
-          back
-            ? `
-          <div class="galleryToggle">
-            <button class="pillBtn active" type="button" data-img="front">Front</button>
-            <button class="pillBtn" type="button" data-img="back">Back</button>
-          </div>
-        `
-            : ``
-        }
       </div>
 
-      <div>
-        <h2 class="productTitle">${escapeHtml(p.name)}</h2>
+      <div class="panel" style="padding:16px;">
+        <div class="productTitle">${esc(p.title)}</div>
+        <div class="mutedSmall">${esc(p.subtitle || "")}</div>
 
-        <div class="productMetaRow">
-          <span class="pillBtn" style="pointer-events:none;">${escapeHtml(p.tag || "Drop")}</span>
-          <span class="pillBtn" style="pointer-events:none;">${escapeHtml(titleCase(p.category))}</span>
-          ${p.type === "digital" ? `<span class="pillBtn" style="pointer-events:none;">Digitaal</span>` : ``}
-        </div>
+        <div class="productDesc">${esc(p.description || "")}</div>
 
-        <p class="productDesc">${escapeHtml(p.desc)}</p>
-
-        ${sizePicker}
-
-        <div class="productBuyRow" style="margin-top:12px;">
+        <div class="productBuyRow">
           <div class="productPrice">${euro(p.price)}</div>
-          <button class="btn btnPrimary" type="button" data-add-to-cart="${escapeHtml(p.id)}">In mandje</button>
-          <a class="btn" href="#shop/${escapeHtml(category)}">Terug</a>
+          <button class="btn btnPrimary" id="buyBtn" type="button">In mandje</button>
         </div>
 
         <div class="productFine">
-          ${limLine}
-          ${shipLine}
-          ${
-            p.type === "digital"
-              ? `<div class="fineLine"><span class="fineDot"></span><span>Download na betaling. Link komt via mail.</span></div>`
-              : `<div class="fineLine"><span class="fineDot"></span><span>Ophalen kan. Verzenden kan ook.</span></div>`
-          }
+          <div class="fineLine"><span class="fineDot"></span><span>Betaalde pre-order. Geen reservatie zonder betaling.</span></div>
+          <div class="fineLine"><span class="fineDot"></span><span>Verzending +€7 of gratis ophaling.</span></div>
+          <div class="fineLine"><span class="fineDot"></span><span>Genummerde pressing: #?/150 (na checkout bevestigd).</span></div>
         </div>
       </div>
     </div>
   `;
 
-  wireDetailMedia(mount);
-}
+  document.getElementById("buyBtn")?.addEventListener("click", () => {
+    addToCart(
+      p.id,
+      {
+        name: p.title,
+        price: p.price,
+        tag: p.tag,
+        image: p.image,
+        category: p.category,
+        slug: p.slug,
+        type: p.type
+      },
+      1
+    );
 
-/* ---------------------------
-   UI helpers
---------------------------- */
-function categoryCard(cat, sub) {
-  return `
-    <a class="shopCategoryCard" href="#shop/${escapeHtml(cat)}">
-      <div>
-        <div class="shopCategoryTitle">${escapeHtml(titleCase(cat))}</div>
-        <div class="shopCategorySub">${escapeHtml(sub)}</div>
-      </div>
-      <div class="shopCategorySub" style="opacity:.8;">Bekijk →</div>
-    </a>
-  `;
-}
-
-function emptyCategory(cat) {
-  return `
-    <div class="cartEmpty" style="grid-column:1/-1;">
-      <div style="font-weight:900;">Nog niks in ${escapeHtml(titleCase(cat))}.</div>
-      <div style="color:rgba(255,255,255,.65); font-size:12px; margin-top:6px;">
-        Komt eraan.
-      </div>
-    </div>
-  `;
-}
-
-function productCard(p) {
-  const front = resolveImg(p.images.front);
-  const back = resolveImg(p.images.back);
-
-  const hasFront = Boolean(front);
-  const hasBack = Boolean(back);
-
-  const mediaClass = [
-    "prodMedia",
-    hasFront ? "" : "fallback",
-    hasBack ? "" : "noBack"
-  ].filter(Boolean).join(" ");
-
-  const limitedBadge = p.limited?.enabled
-    ? `<span class="pillBtn" style="pointer-events:none;">${escapeHtml(String(p.limited.total))} stuks</span>`
-    : "";
-
-  return `
-    <article class="productCard panel" data-product-wrap>
-      <a class="prodMediaLink" href="#shop/${escapeHtml(p.category)}/${escapeHtml(p.slug)}">
-        <div class="${mediaClass}">
-          ${
-            hasFront
-              ? `<img class="prodImg prodImgFront" data-img-role="front" src="${front}" alt="${escapeHtml(p.name)}" loading="lazy">`
-              : ``
-          }
-          ${
-            hasBack
-              ? `<img class="prodImg prodImgBack" data-img-role="back" src="${back}" alt="${escapeHtml(p.name)} (back)" loading="lazy">`
-              : ``
-          }
-          <div class="prodMediaFallback">De Kweker</div>
-        </div>
-      </a>
-
-      <div class="productBody">
-        <div class="productTop">
-          <div class="tag">${escapeHtml(p.tag || "Drop")}</div>
-          <div class="price">${euro(p.price)}</div>
-        </div>
-
-        <a class="prodTitleLink" href="#shop/${escapeHtml(p.category)}/${escapeHtml(p.slug)}">
-          <div class="productName prodTitle">${escapeHtml(p.name)}</div>
-        </a>
-
-        <div class="productDesc">${escapeHtml(p.desc || "")}</div>
-
-        <div class="productMetaRow" style="margin-top:10px;">
-          ${limitedBadge}
-          ${p.type === "digital" ? `<span class="pillBtn" style="pointer-events:none;">Digitaal</span>` : ``}
-        </div>
-
-        <div class="productActions" style="margin-top:12px;">
-          <button class="btn btnPrimary" data-add-to-cart="${escapeHtml(p.id)}" type="button">In mandje</button>
-          <a class="btn" href="#shop/${escapeHtml(p.category)}/${escapeHtml(p.slug)}">Details</a>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-function setActiveShopNav(category) {
-  document.querySelectorAll(".shopNavLink").forEach((a) => a.classList.remove("active"));
-  if (!category) return;
-  const el = document.querySelector(`.shopNavLink[data-shop-nav="${CSS.escape(category)}"]`);
-  if (el) el.classList.add("active");
-}
-
-/* ---------------------------
-   Shipping / Limited lines
---------------------------- */
-function shippingLine(p) {
-  if (p.type !== "physical") return "";
-
-  const ship = p.shipping?.ship;
-  const pickup = p.shipping?.pickup;
-  const shipPrice = Number(p.shipping?.ship_price ?? 7);
-
-  const bits = [];
-  if (pickup) bits.push("Ophaling: gratis");
-  if (ship) bits.push(`Verzending: +${euro(shipPrice)}`);
-
-  if (!bits.length) return "";
-
-  return `<div class="fineLine"><span class="fineDot"></span><span>${escapeHtml(bits.join(" • "))}</span></div>`;
-}
-
-function limitedLineHtml(p) {
-  // Als niet limited: toon gewoon korte lijn zonder marketing
-  if (!p.limited?.enabled) {
-    return `<div class="fineLine"><span class="fineDot"></span><span>Beperkt waar het klopt.</span></div>`;
-  }
-
-  const total = p.limited.total;
-  const pressMin = p.limited.press_min;
-  const numbered = p.limited.numbered;
-
-  const t1 = numbered ? `Limited: ${total} stuks • genummerd` : `Limited: ${total} stuks`;
-  const t2 = `Persing start pas als er genoeg betaalde pre-orders zijn (${pressMin}/${total}).`;
-
-  return `
-    <div class="fineLine"><span class="fineDot"></span><span>${escapeHtml(t1)}</span></div>
-    <div class="fineLine"><span class="fineDot"></span><span>${escapeHtml(t2)}</span></div>
-  `;
-}
-
-/* ---------------------------
-   Image wiring
---------------------------- */
-function wireCardImageFallbacks(scopeEl) {
-  scopeEl.querySelectorAll('img[data-img-role="front"], img[data-img-role="back"]').forEach((img) => {
-    img.addEventListener("error", () => {
-      const media = img.closest(".prodMedia");
-      if (!media) return;
-
-      const role = img.getAttribute("data-img-role");
-      img.remove();
-
-      if (role === "front") {
-        media.classList.add("fallback");
-      } else {
-        media.classList.add("noBack");
-      }
-    });
+    window.__CART_BADGE_SYNC__?.();
+    window.__TOAST__?.({ title: "In mandje", msg: p.title, ms: 1600 });
   });
 }
 
-function wireDetailMedia(scopeEl) {
-  const mediaBox = scopeEl.querySelector("#productMediaBox");
-  const frontImg = scopeEl.querySelector("#productFrontImg");
-  const backImg = scopeEl.querySelector("#productBackImg");
+/* ---------------------------
+   Helpers
+--------------------------- */
+function esc(s) {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
 
-  // Front fallback
-  if (frontImg && mediaBox) {
-    frontImg.addEventListener("error", () => {
-      frontImg.remove();
-      mediaBox.classList.add("fallback");
-    });
-  }
-
-  // Back fallback -> toggle weg, front blijft
-  if (backImg) {
-    backImg.addEventListener("error", () => {
-      backImg.remove();
-      scopeEl.querySelector(".galleryToggle")?.remove();
-    });
-  }
-
-  if (!backImg || !frontImg) return;
-
-  // Toggle (simpel, stabiel)
-  const btns = scopeEl.querySelectorAll("[data-img]");
-  btns.forEach((b) => {
-    b.addEventListener("click", () => {
-      btns.forEach((x) => x.classList.remove("active"));
-      b.classList.add("active");
-
-      const mode = b.getAttribute("data-img");
-      if (mode === "back") {
-        frontImg.style.opacity = "0";
-        backImg.style.opacity = "1";
-      } else {
-        frontImg.style.opacity = "1";
-        backImg.style.opacity = "0";
-      }
-    });
-  });
+function cap(s) {
+  const t = String(s || "");
+  return t ? t.charAt(0).toUpperCase() + t.slice(1) : t;
 }

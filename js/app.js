@@ -1,16 +1,6 @@
 // js/app.js
 import { initToasts } from "./toast.js";
-initToasts();
-// Limited edition counter (frontend-ready)
-const EDITION_TOTAL = 150;
-
-// later vervang je dit door echte data (API / store)
-const editionSold = window.__VINYL_SOLD__ || 1;
-
-const el = document.getElementById("editionCount");
-if (el) el.textContent = editionSold;
-
-import { renderHeader } from "./menu.js";
+import { renderHeader, closeHeaderMenu } from "./menu.js";
 import { getRoute } from "./router.js";
 
 import {
@@ -30,6 +20,30 @@ import {
 } from "./cart.js";
 
 import { cartCount, clearCart } from "./store.js";
+
+initToasts();
+
+/* ---------------------------
+   Limited edition (Phase 1 UI)
+--------------------------- */
+const EDITION_TOTAL = 150;
+
+function getEditionSold() {
+  const v = Number(window.__VINYL_SOLD__ ?? 1);
+  if (!Number.isFinite(v) || v < 1) return 1;
+  if (v > EDITION_TOTAL) return EDITION_TOTAL;
+  return v;
+}
+
+function syncEditionUI() {
+  const sold = getEditionSold();
+  document.querySelectorAll("#editionCount,[data-edition-sold]").forEach(el => {
+    el.textContent = String(sold);
+  });
+  document.querySelectorAll("#editionTotal,[data-edition-total]").forEach(el => {
+    el.textContent = String(EDITION_TOTAL);
+  });
+}
 
 /* ---------------------------
    LINKS (artist + release)
@@ -83,23 +97,26 @@ function renderHome(app) {
     <section class="panel heroChalet">
       <div class="heroMain">
         <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Tunnelvisie</div>
-        <div class="editionRow">
-  <span class="editionPill">
-    <span class="editionCount" id="editionCount">1</span>
-    <span class="editionSep">/</span>
-    <span class="editionTotal">150</span>
-  </span>
-  <span class="editionLabel">Genummerde vinyl</span>
-</div>
+
+        <div class="editionRow" style="margin-top:10px;">
+          <span class="counterBadge">
+            <strong id="editionCount" data-edition-sold>1</strong>
+            <small>/</small>
+            <small id="editionTotal" data-edition-total>${EDITION_TOTAL}</small>
+            <span>Genummerde vinyl</span>
+          </span>
+        </div>
 
         <h1 class="heroTitle">ALBUM RELEASE.<br/>Tunnelvisie.</h1>
+
         <p class="lead">
           Eerlijke miserie, echte emoties, een blik op de tweestrijd in mezelf.
         </p>
+
         <div class="ctaRow">
           <a class="btn btnPrimary" href="#shop">Kopen</a>
-          <a class="btn" href="#music">Luister</a>
-          <a class="btn" href="#contact">Contact</a>
+          <a class="btn btnSecondary" href="#music">Luister</a>
+          <a class="btn btnQuiet" href="#contact">Contact</a>
         </div>
       </div>
 
@@ -119,7 +136,7 @@ function renderHome(app) {
       </aside>
     </section>
 
-    <!-- Nu beschikbaar (moet BOVEN bio) -->
+    <!-- Nu beschikbaar -->
     <section class="panel panelWide availPanel">
       <div class="availGrid">
         <div class="availLeft">
@@ -131,15 +148,15 @@ function renderHome(app) {
             Vinyl pressing start pas na <strong>100 pre-orders</strong>.
           </p>
 
-          <div class="shopNav" style="margin:10px 0 0;">
-            <span class="shopNavLink" style="pointer-events:none;">Beperkte oplage</span>
-            <span class="shopNavLink" style="pointer-events:none;">Collector item</span>
-            <span class="shopNavLink" style="pointer-events:none;">Genummerd #1/150</span>
+          <div class="tagsRow" style="margin:10px 0 0;">
+            <span class="tag">Beperkte oplage</span>
+            <span class="tag">Collector item</span>
+            <span class="tag tagWarm">Genummerd <span style="opacity:.9;">#</span><span data-edition-sold>1</span>/<span data-edition-total>${EDITION_TOTAL}</span></span>
           </div>
 
           <div class="ctaRow" style="margin-top:14px;">
             <a class="btn btnPrimary" href="#shop">Naar de shop</a>
-            <a class="btn" href="#music">Eerst luisteren</a>
+            <a class="btn btnSecondary" href="#music">Eerst luisteren</a>
           </div>
         </div>
 
@@ -167,66 +184,71 @@ function renderHome(app) {
       </div>
     </section>
 
-    <!-- Bio terug (moet ONDER Nu beschikbaar) -->
-<section class="panel panelWide">
-  <div class="bioHero">
-    <div class="bioLeft">
-      <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Brugge (8000)</div>
+    <!-- Bio -->
+    <section class="panel panelWide">
+      <div class="bioHero">
+        <div class="bioLeft">
+          <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Brugge (8000)</div>
 
-      <h2 class="bioTitle">De Kweker.</h2>
+          <h2 class="bioTitle">De Kweker.</h2>
 
-      <p class="bioLead">
-        Geen pose. Geen rol. Wat blijft als de ruis wegvalt.
-      </p>
+          <p class="bioLead">
+            Geen pose. Geen rol. Wat blijft als de ruis wegvalt.
+          </p>
 
-      <p class="bioMeta">
-        <span class="bioMetaItem"><span class="bioMetaDot"></span> Releases via <strong>Rugged &amp; Raw</strong></span>
-        <span class="bioMetaItem"><span class="bioMetaDot"></span> Verbonden aan <strong>Kwartier West</strong></span>
-        <span class="bioMetaItem"><span class="bioMetaDot"></span> Klank &amp; productie met <strong>NUMB</strong></span>
-      </p>
+          <div class="tagsRow" style="margin-top:10px;">
+            <span class="tag">Releases via <strong>Rugged &amp; Raw</strong></span>
+            <span class="tag">Verbonden aan <strong>Kwartier West</strong></span>
+            <span class="tag">Klank &amp; productie met <strong>NUMB</strong></span>
+          </div>
 
-      <div class="ctaRow" style="margin-top:14px;">
-        <a class="btn btnPrimary" href="#music">Music</a>
-        <a class="btn" href="#shop">Shop</a>
-        <a class="btn" href="#contact">Contact</a>
+          <div class="ctaRow" style="margin-top:14px;">
+            <a class="btn btnPrimary" href="#music">Music</a>
+            <a class="btn btnSecondary" href="#shop">Shop</a>
+            <a class="btn btnQuiet" href="#contact">Contact</a>
+          </div>
+        </div>
+
+        <div class="bioRight">
+          <div class="bioTextHead">
+            <h3 class="bioTextTitle">Verhaal</h3>
+            <button class="btn btnQuiet" id="bioToggle" type="button" aria-expanded="false">Lees meer</button>
+          </div>
+
+         <div class="bioBody">
+  <p>
+    De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit.
+    Zijn muziek is sober en direct, zonder pose of opsmuk, en vertrekt vanuit persoonlijke ervaringen in plaats van trends.
+  </p>
+
+  <p>
+    In zijn teksten balanceert hij tussen introspectie en confrontatie: kwetsbaar waar het moet, hard waar het niet anders kan.
+    De Kweker maakt geen bravoure-rap, maar gebruikt hiphop als middel om dingen te benoemen die meestal verzwegen blijven.
+  </p>
+
+  <p>
+    Hij is verbonden aan het collectief <strong>Kwartier West</strong> en releaset zijn muziek via <strong>Rugged &amp; Raw</strong>,
+    twee contexten die zijn onafhankelijke en underground benadering versterken zonder zijn verhaal te sturen.
+  </p>
+
+  <p>
+    De Kweker bouwt gestaag aan een eigen traject binnen de Vlaamse hiphop, met de focus op inhoud, consistentie en
+    geloofwaardigheid boven zichtbaarheid of hype.
+  </p>
+</div>
+
+
+          <div class="bioQuote">
+            <span class="bioQuoteMark">“</span>
+            <span class="bioQuoteText">Therapie voor mezelf, en hopelijk voor jullie.</span>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="bioRight">
-      <div class="bioTextHead">
-        <h3 class="bioTextTitle">Verhaal</h3>
-        <button class="bioToggle" id="bioToggle" type="button" aria-expanded="false">Lees meer</button>
-      </div>
-
-      <div class="bioBody" id="bioBody">
-        <p class="bioPara bioDrop">
-          De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt, omdat dat de taal is waarin gedacht en gevoeld wordt.
-        </p>
-
-        <p class="bioPara">
-          Zijn muziek vertrekt vanuit mentale druk, identiteit en afkomst. Geen bravoure, geen vlucht vooruit, maar woorden die blijven staan.
-        </p>
-
-        <p class="bioPara">
-          Releases verschijnen via Rugged &amp; Raw. Kwartier West vormt de context: uitwisseling, scherpte en onafhankelijkheid, zonder richting op te leggen.
-        </p>
-
-        <p class="bioPara">
-          De klank wordt gedragen door NUMB: ruimte en spanning die het verhaal ondersteunen in plaats van overschreeuwen.
-        </p>
-      </div>
-
-      <div class="bioQuote">
-        <span class="bioQuoteMark">“</span>
-        <span class="bioQuoteText">Ik maak muziek om te benoemen wat blijft hangen.</span>
-      </div>
-    </div>
-  </div>
-</section>
-
+    </section>
   `;
-}
 
+  syncEditionUI();
+}
 
 function wireBioToggle() {
   const btn = document.getElementById("bioToggle");
@@ -251,31 +273,30 @@ function renderMusic(app) {
     <section class="panel panelWide">
       <div class="musicTop">
         <h1>Music</h1>
-        <p>Releases, features en dingen in opbouw — zonder ruis.</p>
+        <p>Releases en beelden — helder, zonder ruis.</p>
 
         <div class="ctaRow" style="margin-top:14px;">
           <a class="btn btnPrimary" href="${SPOTIFY_ARTIST_URL}" target="_blank" rel="noopener noreferrer">Open in Spotify</a>
-          <a class="btn" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Bekijk op YouTube</a>
+          <a class="btn btnSecondary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Bekijk op YouTube</a>
         </div>
       </div>
 
-      <!-- ✅ Spotlight blijft 2-koloms -->
       <div class="musicSpotlight">
         <div class="musicSpotText">
           <div class="kickerWarm" style="margin-bottom:10px;">
-            <span class="dotWarm"></span> Nieuwste release
+            <span class="dotWarm"></span> Uitgelicht
           </div>
 
           <h2 style="margin:0 0 10px;">Lekt Em (officiële videoclip)</h2>
 
           <p style="margin:0 0 12px;color:rgba(255,255,255,.85);line-height:1.6;">
             <strong>Eerste videoclip.</strong><br>
-            Lekt Em is geen intro, maar een statement.
+            Geen intro, maar een markering.
           </p>
 
           <p style="margin:0 0 14px;color:rgba(255,255,255,.72);line-height:1.6;">
-            De eerste officiële videoclip van De Kweker vangt de rauwe energie van het nummer in beeld.
-            Gefilmd zonder franjes, gemonteerd met intentie.
+            De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, identiteit en afkomst.
+            In <em>Lekt Em</em> valt beeld en tekst samen: sober, direct, zonder franjes.
           </p>
 
           <hr style="border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0;">
@@ -287,13 +308,13 @@ function renderMusic(app) {
           </p>
 
           <p style="margin:14px 0 0;color:rgba(255,255,255,.6);line-height:1.6;">
-            Beeld en muziek vallen hier samen.
+            Alles wat je zoekt staat op één plek: clip, releases, context.
           </p>
 
           <div class="ctaRow" style="margin-top:14px;">
             <a class="btn btnPrimary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Kijk op YouTube</a>
-            <a class="btn" href="#shop">Shop</a>
-            <a class="btn" href="#contact">Contact</a>
+            <a class="btn btnSecondary" href="#shop">Shop</a>
+            <a class="btn btnQuiet" href="#contact">Contact</a>
           </div>
         </div>
 
@@ -301,7 +322,7 @@ function renderMusic(app) {
           <div class="ytWrap">
             <iframe
               src="${YT_EMBED}"
-              title="De Kweker — nieuwste clip"
+              title="De Kweker — Lekt Em (officiële videoclip)"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen
@@ -310,12 +331,11 @@ function renderMusic(app) {
           </div>
         </div>
 
-        <!-- ✅ NIEUW: onderblok dat over de volle breedte gaat (lost lege rechterkolom op) -->
         <div class="musicBelow">
           <div class="musicCard">
             <div class="musicCardHead">
               <h3>Spotify</h3>
-              <p class="mutedSmall">Alles netjes op één plek.</p>
+              <p class="mutedSmall">Releases en features, netjes gebundeld.</p>
             </div>
 
             <div class="spotifyFrameWrap">
@@ -335,26 +355,26 @@ function renderMusic(app) {
           <div class="musicCard">
             <div class="musicCardHead">
               <h3>Context</h3>
-              <p class="mutedSmall">Waar het gemaakt wordt, en met wie.</p>
+              <p class="mutedSmall">Waar het gemaakt wordt — zonder het verhaal over te nemen.</p>
             </div>
 
             <div class="musicNotes">
               <div class="noteLine">
                 <span class="noteDot"></span>
-                <span><strong>Rugged &amp; Raw</strong> is waar releases landen — kader, geen etalage.</span>
+                <span><strong>Rugged &amp; Raw</strong> is waar releases landen — structuur, geen slogan.</span>
               </div>
               <div class="noteLine">
                 <span class="noteDot"></span>
-                <span><strong>Kwartier West</strong> is het collectief — feedback, scherpte, presence.</span>
+                <span><strong>Kwartier West</strong> is het collectief — uitwisseling, scherpte, onafhankelijkheid.</span>
               </div>
               <div class="noteLine">
                 <span class="noteDot"></span>
-                <span><strong>Numb</strong> draagt de klank — ruimte, spanning en gewicht.</span>
+                <span><strong>NUMB</strong> draagt de klank — ruimte en spanning die tekst laat ademen.</span>
               </div>
 
               <div class="ctaRow" style="margin-top:14px;">
                 <a class="btn btnPrimary" href="#contact">Contact</a>
-                <a class="btn" href="#shop">Shop</a>
+                <a class="btn btnSecondary" href="#shop">Shop</a>
               </div>
             </div>
           </div>
@@ -363,7 +383,6 @@ function renderMusic(app) {
     </section>
   `;
 }
-
 
 /* ---------------------------
    CONTACT
@@ -413,7 +432,6 @@ function handleCheckoutResult() {
   const canceled = url.searchParams.get("canceled");
 
   if (success === "1") {
-    // mandje leegmaken (betaling is al gebeurd)
     clearCart();
     syncCartBadge();
 
@@ -423,7 +441,6 @@ function handleCheckoutResult() {
       ms: 3200
     });
 
-    // cleanup query (zodat refresh geen 2x toast geeft)
     url.searchParams.delete("success");
     url.searchParams.delete("sid");
     window.history.replaceState({}, "", url.toString());
@@ -483,7 +500,12 @@ function renderPage() {
   wireBioToggle();
 }
 
-window.addEventListener("hashchange", renderPage);
+window.addEventListener("hashchange", () => {
+  // feels cleaner: close menu before page swap
+  closeHeaderMenu?.();
+  renderPage();
+});
+
 window.addEventListener("DOMContentLoaded", () => {
   ensureUIRoot();
   handleCheckoutResult();

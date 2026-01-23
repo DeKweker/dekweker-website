@@ -4,14 +4,11 @@ import { euro, escapeHtml } from "./utils.js";
 
 let isOpen = false;
 
-/**
- * Render: drawer + overlay (shell)
- */
 export function renderCartShell() {
   return `
     <div class="overlay" id="cartOverlay" aria-hidden="true"></div>
 
-    <aside class="cart" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Kwekermandje">
+    <aside class="cart" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Kwekermandje" aria-hidden="true">
       <div class="cartTop">
         <div class="cartTitle">Kwekermandje</div>
         <button class="closeBtn" id="closeCart" type="button" aria-label="Sluiten">✕</button>
@@ -25,46 +22,59 @@ export function renderCartShell() {
           <strong id="cartTotal">${euro(cartTotal())}</strong>
         </div>
 
-        <button class="btn btnPrimary" id="checkoutBtn" type="button">
-          Afrekenen
-        </button>
+        <button class="btn btnPrimary" id="checkoutBtn" type="button">Afrekenen</button>
 
         <div class="cartFine">
           <div class="fineLine"><span class="fineDot"></span><span>Verzending of ophaling kies je in checkout.</span></div>
           <div class="fineLine"><span class="fineDot"></span><span>Limited vinyl: genummerd. Persing start pas na genoeg betaalde orders.</span></div>
         </div>
 
-        <button class="btn" id="clearCartBtn" type="button">Mandje leegmaken</button>
+        <button class="btn btnSecondary" id="clearCartBtn" type="button">Mandje leegmaken</button>
       </div>
     </aside>
   `;
 }
 
-/**
- * Open / close
- */
 export function openCart() {
+  const overlay = document.getElementById("cartOverlay");
+  const drawer = document.getElementById("cartDrawer");
+
+  // ✅ Safety: als CSS/DOM ooit breekt, locken we de body niet
+  if (!overlay || !drawer) return;
+
   isOpen = true;
   renderCartContents();
   syncCartBadge();
 
   document.body.classList.add("cart-open");
-  document.getElementById("cartOverlay")?.classList.add("open");
-  document.getElementById("cartDrawer")?.classList.add("open");
-  document.getElementById("cartOverlay")?.setAttribute("aria-hidden", "false");
+
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden", "false");
+
+  drawer.classList.add("open");
+  drawer.setAttribute("aria-hidden", "false");
+
+  // kleine UX: focus naar sluitknop
+  window.setTimeout(() => {
+    document.getElementById("closeCart")?.focus?.();
+  }, 0);
 }
 
 export function closeCart() {
+  const overlay = document.getElementById("cartOverlay");
+  const drawer = document.getElementById("cartDrawer");
+
   isOpen = false;
+
   document.body.classList.remove("cart-open");
-  document.getElementById("cartOverlay")?.classList.remove("open");
-  document.getElementById("cartDrawer")?.classList.remove("open");
-  document.getElementById("cartOverlay")?.setAttribute("aria-hidden", "true");
+
+  overlay?.classList.remove("open");
+  overlay?.setAttribute("aria-hidden", "true");
+
+  drawer?.classList.remove("open");
+  drawer?.setAttribute("aria-hidden", "true");
 }
 
-/**
- * Contents render
- */
 export function renderCartContents() {
   const body = document.getElementById("cartBody");
   if (!body) return;
@@ -86,35 +96,35 @@ export function renderCartContents() {
   body.innerHTML = items
     .map(
       (it) => `
-      <div class="cartItem" data-id="${escapeHtml(String(it.id))}">
-        <div class="cartThumb">
-          <div class="cartThumbGlow"></div>
-          <div class="cartThumbText">8000</div>
+    <div class="cartItem" data-id="${escapeHtml(String(it.id))}">
+      <div class="cartThumb">
+        <div class="cartThumbGlow"></div>
+        <div class="cartThumbText">8000</div>
+      </div>
+
+      <div class="cartMeta">
+        <div class="cartTopRow">
+          <div>
+            <div class="cartName">${escapeHtml(it.name)}</div>
+            <div class="cartSub">${escapeHtml(it.tag || "Drop")}</div>
+          </div>
+          <div class="cartPrice">${euro(it.price)}</div>
         </div>
 
-        <div class="cartMeta">
-          <div class="cartTopRow">
-            <div>
-              <div class="cartName">${escapeHtml(it.name)}</div>
-              <div class="cartSub">${escapeHtml(it.tag || "Drop")}</div>
-            </div>
-            <div class="cartPrice">${euro(it.price)}</div>
-          </div>
+        <div class="qtyRow">
+          <button class="qtyBtn" data-action="dec" data-id="${escapeHtml(String(it.id))}" type="button" aria-label="Minder">
+            <span class="qtyGlyph">−</span>
+          </button>
 
-          <div class="qtyRow">
-            <button class="qtyBtn" data-action="dec" data-id="${escapeHtml(String(it.id))}" type="button" aria-label="Minder">
-              <span class="qtyGlyph">−</span>
-            </button>
+          <div class="qtyNum" data-qty="${it.qty}">${it.qty}</div>
 
-            <div class="qtyNum" data-qty="${it.qty}">${it.qty}</div>
-
-            <button class="qtyBtn" data-action="inc" data-id="${escapeHtml(String(it.id))}" type="button" aria-label="Meer">
-              <span class="qtyGlyph">+</span>
-            </button>
-          </div>
+          <button class="qtyBtn" data-action="inc" data-id="${escapeHtml(String(it.id))}" type="button" aria-label="Meer">
+            <span class="qtyGlyph">+</span>
+          </button>
         </div>
       </div>
-    `
+    </div>
+  `
     )
     .join("");
 
@@ -127,34 +137,19 @@ function updateCartTotals() {
   if (totalEl) totalEl.textContent = euro(cartTotal());
 }
 
-/**
- * Badge sync
- * - update counts
- * - ALSO trigger header visibility logic (menu.js) via window.__CART_BADGE_SYNC__
- */
 export function syncCartBadge() {
   const n = cartCount();
 
-  const idEl = document.getElementById("cartCount");
-  if (idEl) idEl.textContent = String(n);
-
-  document.querySelectorAll("[data-cart-count]").forEach((el) => {
-    el.textContent = String(n);
+  document.querySelectorAll("[data-cart-count], #cartCount, .cartCount").forEach((el) => {
+    if (el) el.textContent = String(n);
   });
 
-  document.querySelectorAll(".cartCount").forEach((el) => {
-    el.textContent = String(n);
-  });
-
-  // 🔥 this updates the header cart button show/hide + count everywhere
-  if (typeof window.__CART_BADGE_SYNC__ === "function") {
-    window.__CART_BADGE_SYNC__();
-  }
+  // laat menu.js beslissen of Cart knop zichtbaar is
+  try {
+    window.__CART_BADGE_SYNC__?.();
+  } catch (_) {}
 }
 
-/**
- * Events (1x binden)
- */
 export function wireCartEvents() {
   const overlay = document.getElementById("cartOverlay");
   const closeBtn = document.getElementById("closeCart");
@@ -173,13 +168,12 @@ export function wireCartEvents() {
     syncCartBadge();
   });
 
-  // Qty buttons via delegation
   body?.addEventListener("click", (e) => {
     const btn = e.target?.closest?.("button[data-action][data-id]");
     if (!btn) return;
 
     const id = btn.getAttribute("data-id");
-    const action = btn.getAttribute("data-action"); // inc/dec
+    const action = btn.getAttribute("data-action");
     if (!id || !action) return;
 
     const current = getQtyFromStore(id);
@@ -190,7 +184,6 @@ export function wireCartEvents() {
     syncCartBadge();
   });
 
-  // Checkout
   document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
     const items = cartItemsDetailed();
     if (!items.length) {
@@ -207,9 +200,9 @@ export function wireCartEvents() {
             id: it.id,
             name: it.name,
             price: it.price,
-            qty: it.qty
-          }))
-        })
+            qty: it.qty,
+          })),
+        }),
       });
 
       const data = await r.json().catch(() => ({}));
@@ -229,7 +222,7 @@ export function wireCartEvents() {
       }
 
       toast("Fout", "Geen checkout URL ontvangen.");
-    } catch (e) {
+    } catch {
       toast("Fout", "Netwerkprobleem. Probeer opnieuw.");
     }
   });

@@ -26,8 +26,11 @@ export function getRoute() {
   const parts = raw.split("/").filter(Boolean);
   const root = (parts[0] || "").toLowerCase();
 
-  // shop keeps subroutes inside shop.js via getShopPathParts()
-  if (root === "shop") return "/shop";
+  // Keep shop subroutes intact: /shop, /shop/<category>, /shop/<category>/<slug>
+  if (root === "shop") {
+    const rest = parts.slice(1).join("/");
+    return rest ? `/shop/${rest}` : "/shop";
+  }
 
   if (root === "home") return "/home";
   if (root === "music") return "/music";

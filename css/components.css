@@ -1,447 +1,336 @@
-/* ======================================================
-   COMPONENTS.CSS — Header + menu overlay (FIX dikke bar)
-====================================================== */
+/* css/components.css
+   Components: SHOP + CART + small helpers
+   (No header/menu code here — that's layout.css + mobile.css)
+*/
 
-/* HEADER */
-#site-header{
-  position: sticky;
-  top: 0;
-  z-index: 60;
-  width: 100%;
-  padding: 10px 0;
-  background: rgba(10, 9, 8, .58);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,.10);
+:root{
+  --container: min(1100px, calc(100% - 32px));
 }
 
-#site-header .inner,
-#site-header .wrap,
-#site-header .bar,
-#site-header nav{
-  width: var(--container);
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
+/* ---------- Helpers ---------- */
+.mutedSmall{ font-size: 12px; color: rgba(255,255,255,.62); }
+hr.soft{
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+  margin: 14px 0;
+}
+
+/* ---------- SHOP ---------- */
+.shopCategoryGrid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 14px;
+}
+@media (max-width: 900px){
+  .shopCategoryGrid{ grid-template-columns: 1fr; }
+}
+
+.shopCategoryCard{
+  display:flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
+
+  padding: 16px;
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(10,10,10,.55);
+  backdrop-filter: blur(10px);
+
+  text-decoration:none;
+  color: rgba(255,255,255,.92);
+
+  transition: transform .12s ease, border-color .12s ease, background .12s ease;
+}
+.shopCategoryCard:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,.16);
+  background: rgba(10,10,10,.62);
 }
 
-#site-header .brand,
-#site-header .logo,
-#site-header a.logo{
-  color: rgba(255,248,235,.92);
+.shopCategoryTitle{
   font-weight: 950;
-  letter-spacing: -.4px;
+  letter-spacing: -.3px;
+}
+.shopCategorySub{
+  margin-top: 6px;
+  color: rgba(255,255,255,.70);
+  font-size: 13px;
+  line-height: 1.45;
 }
 
-/* pills */
-#site-header button,
-#site-header .btn,
-#site-header .pill,
-#site-header .chip{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.14);
-  color: rgba(255,248,235,.92);
-  font-weight: 900;
-  cursor: pointer;
-}
-
-#site-header .btnPrimary,
-#site-header .primary{
-  background: linear-gradient(180deg, rgba(196,119,71,.95), rgba(196,119,71,.70));
-  border-color: rgba(196,119,71,.34);
-}
-
-/* ======================================================
-   MENU OVERLAY — standaard DICHT (dit was je dikke bar)
-====================================================== */
-
-/* overlay is standaard verborgen */
-#overlay{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  backdrop-filter: blur(3px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .18s ease;
-  z-index: 80;
-}
-
-/* menu paneel (hamburger menu) standaard weg */
-#siteMenu{
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  /* BELANGRIJK: niet als bar tonen wanneer dicht */
-  transform: translateY(-120%);
-  opacity: 0;
-  pointer-events: none;
-
-  background: rgba(12,10,8,.88);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,.10);
-
-  z-index: 90;
-  transition: transform .22s ease, opacity .22s ease;
-}
-
-/* open state: pas dan zichtbaar */
-#overlay.open{
-  opacity: 1;
-  pointer-events: auto;
-}
-
-#siteMenu.open{
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* menu inhoud */
-#siteMenu .menuInner,
-#siteMenu .inner,
-#siteMenu nav{
-  width: var(--container);
-  margin: 0 auto;
-  padding: 12px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-}
-
-/* links in menu */
-#siteMenu a{
-  color: rgba(255,248,235,.88);
-  text-decoration: none;
-  font-weight: 900;
-  opacity: .9;
-}
-#siteMenu a:hover{ opacity: 1; }
-
-/* close knop: enkel tonen wanneer menu open is */
-#closeMenu{
-  position: absolute;
-  left: 14px;
-  top: 10px;
-
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.08);
-  color: rgba(255,248,235,.92);
-
-  display: none;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-}
-#siteMenu.open #closeMenu{
-  display: inline-flex;
-}
-
-/* mobile */
-@media (max-width: 640px){
-  #siteMenu .menuInner,
-  #siteMenu .inner,
-  #siteMenu nav{
-    justify-content: space-around;
-    gap: 14px;
-    padding: 12px 10px;
-  }
-}
-/* ======================================================
-   FIX: hamburger knop zichtbaar + klikbaar
-====================================================== */
-
-/* Zorg dat de rechter knopjes in 1 rij staan */
-#site-header .actions,
-#site-header .right,
-#site-header .headerRight,
-#site-header .navRight{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* De hamburger knop (openMenu) */
-#openMenu{
-  width: 42px;
-  height: 38px;
-  padding: 0;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.16);
-  color: rgba(255,248,235,.92);
-
-  cursor: pointer;
-}
-
-/* 3 streepjes tekenen in de knop */
-#openMenu::before{
-  content: "";
-  width: 18px;
-  height: 2px;
-  background: currentColor;
-  border-radius: 2px;
-  box-shadow:
-    0 -6px 0 currentColor,
-    0  6px 0 currentColor;
-  opacity: .95;
-}
-
-/* hover */
-#openMenu:hover{
-  background: rgba(255,255,255,.14);
-}
-/* ======================================================
-   HEADER: desktop open menu + mobile hamburger drawer
-====================================================== */
-
-#site-header{
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
-.topbar{
-  height: 56px;                 /* <-- dunner */
-  display: grid;
-  grid-template-columns: 180px 1fr auto;
-  align-items: center;
-  gap: 16px;
-
-  padding: 10px 14px;
-  background: rgba(10, 10, 10, .55);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,.08);
-}
-
-.brand{
-  color: rgba(255,248,235,.92);
-  font-weight: 700;
-  text-decoration: none;
-  letter-spacing: .2px;
-}
-
-.navDesktop{
-  display: flex;
-  justify-content: center;
-  gap: 22px;
-}
-
-.navLink{
-  color: rgba(255,248,235,.82);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  padding: 8px 10px;
-  border-radius: 999px;
-}
-
-.navLink:hover{
-  background: rgba(255,255,255,.08);
-}
-
-.navLink.active{
-  background: rgba(255,255,255,.12);
-  color: rgba(255,248,235,.95);
-}
-
-.actions{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pill{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 8px 12px;
-  border-radius: 999px;
-
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.14);
-  color: rgba(255,248,235,.90);
-
-  text-decoration: none;
-  font-weight: 650;
-  cursor: pointer;
-}
-
-.pill .count{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 6px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.12);
+.shopBreadcrumb{
+  margin: 8px 0 12px;
+  color: rgba(255,255,255,.65);
   font-size: 12px;
 }
+.shopBreadcrumb a{ color: rgba(255,255,255,.85); text-decoration: none; }
+.shopBreadcrumb a:hover{ text-decoration: underline; }
+.shopBreadcrumb .sep{ opacity: .5; margin: 0 6px; }
+.shopBreadcrumb .current{ color: rgba(255,255,255,.90); }
 
-.iconBtn{
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.14);
-  color: rgba(255,248,235,.92);
-  cursor: pointer;
+/* product detail layout */
+.productDetail{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 900px){
+  .productDetail{ grid-template-columns: 1fr; }
 }
 
-/* hamburger icon */
-.burger{
-  width: 18px;
-  height: 2px;
-  background: currentColor;
-  border-radius: 2px;
-  box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor;
-}
-
-/* X icon */
-.xIcon{
+.productMedia{
+  border-radius: 16px;
+  overflow:hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.25);
   position: relative;
-  width: 18px;
-  height: 18px;
+  aspect-ratio: 1/1;
 }
-.xIcon::before,
-.xIcon::after{
-  content:"";
-  position:absolute;
-  inset: 0;
-  margin:auto;
-  width: 18px;
-  height: 2px;
-  background: currentColor;
-  border-radius: 2px;
+.productMedia img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
 }
-.xIcon::before{ transform: rotate(45deg); }
-.xIcon::after{ transform: rotate(-45deg); }
 
-/* Mobile drawer (default: hidden) */
-.overlay{
+.productTitle{
+  font-weight: 950;
+  letter-spacing: -.3px;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+.productDesc{
+  margin-top: 12px;
+  color: rgba(255,255,255,.75);
+  line-height: 1.6;
+}
+
+.productBuyRow{
+  margin-top: 14px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.productPrice{
+  font-weight: 950;
+  letter-spacing: -.2px;
+  color: rgba(255,255,255,.92);
+}
+
+/* ---------- CART ---------- */
+/* Cart must always be above header + any overlay */
+#cartOverlay.cartOverlay,
+.cartOverlay{
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.55);
+  z-index: 9000;
+
+  background: rgba(0,0,0,.72);
   opacity: 0;
   pointer-events: none;
   transition: opacity .18s ease;
 }
-
-.drawer{
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  width: min(360px, 92vw);
-  background: rgba(12,12,12,.78);
-  backdrop-filter: blur(12px);
-  border-left: 1px solid rgba(255,255,255,.10);
-
-  transform: translateX(110%);
-  transition: transform .22s ease;
-  padding: 14px;
-  z-index: 1000;
-}
-
-.drawerTop{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.drawerTitle{
-  color: rgba(255,248,235,.92);
-  font-weight: 800;
-}
-
-.navMobile{
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.overlay.open{
+.cartOverlay.open{
   opacity: 1;
   pointer-events: auto;
 }
 
-.drawer.open{
-  transform: translateX(0);
-}
-
-/* ======================================================
-   RESPONSIVE: desktop vs mobile
-====================================================== */
-
-#openMenu{ display: none; }      /* hamburger weg op desktop */
-#overlay, #siteMenu{ display: none; } /* drawer uit op desktop */
-
-@media (max-width: 900px){
-  .navDesktop{ display: none; }  /* desktop menu weg */
-  #openMenu{ display: inline-flex; } /* hamburger zichtbaar */
-  #overlay, #siteMenu{ display: block; } /* drawer aan */
-  .topbar{
-    grid-template-columns: 1fr auto;
-  }
-}
-/* Altijd voorkomen dat de pagina horizontaal breder wordt */
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-}
-
-/* Overlay moet echt viewport-fixed zijn */
-#cartOverlay.overlay,
-.overlay#cartOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-}
-
-/* Cart drawer: fixed + nooit breder dan het scherm */
-#cartDrawer.cart,
-.cart#cartDrawer {
+#cartDrawer.cartDrawer,
+.cartDrawer{
   position: fixed;
   top: 0;
   right: 0;
-  height: 100dvh;              /* mobile safe */
+  height: 100%;
   width: min(420px, 92vw);
-  max-width: 92vw;
-  z-index: 2100;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  z-index: 9001;
+
+  transform: translateX(110%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .22s ease, opacity .22s ease;
+
+  background: rgba(12,12,12,.94);
+  border-left: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 28px 90px rgba(0,0,0,.65);
+
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 12px;
+}
+.cartDrawer.open{
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* Als cart open is: geen horizontale scroll/rare layout shifts */
-body.cart-open {
+/* drawer header */
+.cartTop{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.cartTitle{
+  font-weight: 950;
+  letter-spacing: -.3px;
+}
+
+/* empty */
+.cartEmpty{ padding: 18px 0; }
+.cartEmptyTitle{ font-weight: 950; }
+.cartEmptySub{ margin-top: 6px; color: rgba(255,255,255,.68); }
+
+/* list item */
+.cartItem{
+  display:grid;
+  grid-template-columns: 52px 1fr;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.cartItem:last-child{ border-bottom: 0; }
+
+.cartThumb{
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  position: relative;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+}
+.cartThumbGlow{
+  position:absolute;
+  inset:-20px;
+  background: radial-gradient(circle at 50% 40%, rgba(201,122,58,.22), rgba(0,0,0,0) 60%);
+  pointer-events:none;
+}
+.cartThumbText{
+  position: relative;
+  font-weight: 950;
+  font-size: 12px;
+  opacity: .9;
+}
+
+.cartTopRow{
+  display:flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: start;
+}
+.cartName{ font-weight: 950; letter-spacing: -.2px; }
+.cartSub{ margin-top: 4px; font-size: 12px; color: rgba(255,255,255,.62); }
+.cartPrice{ font-weight: 950; color: rgba(255,255,255,.90); }
+
+/* qty row buttons */
+.qtyRow{
+  margin-top: 10px;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.qtyBtn{
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+  cursor: pointer;
+  display:grid;
+  place-items:center;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+.qtyBtn:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.18);
+}
+.qtyBtn:active{ transform: scale(.98); }
+
+.qtyGlyph{ font-size: 18px; line-height: 1; }
+.qtyNum{
+  min-width: 28px;
+  text-align:center;
+  font-weight: 950;
+  letter-spacing: -.2px;
+}
+
+/* cart bottom */
+.cartRow{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.cartRowLabel{ color: rgba(255,255,255,.72); }
+
+.cartFine{
+  margin-top: 12px;
+  color: rgba(255,255,255,.65);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.fineLine{
+  display:flex;
+  gap: 10px;
+  align-items:flex-start;
+  margin-top: 8px;
+}
+.fineDot{
+  width: 8px; height: 8px;
+  border-radius: 999px;
+  margin-top: 4px;
+  background: rgba(201,122,58,.90);
+  box-shadow: 0 0 0 3px rgba(201,122,58,.16);
+}
+/* ---------- SHOP product grid cards ---------- */
+.shopGrid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.prodMedia{
+  position: relative;
+  border-radius: 16px;
   overflow: hidden;
-  touch-action: none;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.25);
+  aspect-ratio: 1/1;
+}
+
+.prodImg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.prodImgFront{ opacity: 1; }
+.prodImgBack{ opacity: 0; }
+
+.prodMedia:not(.noBack):hover .prodImgFront{ opacity: 0; }
+.prodMedia:not(.noBack):hover .prodImgBack{ opacity: 1; }
+
+/* klein premium “zoom” effect */
+.prodMedia:not(.noBack):hover .prodImg{
+  transform: scale(1.02);
+}
+
+.prodMediaFallback{
+  display:grid;
+  place-items:center;
+  height:100%;
+  color: rgba(255,255,255,.65);
+  font-size: 12px;
 }

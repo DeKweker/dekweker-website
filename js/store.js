@@ -9,6 +9,7 @@ function load() {
   try {
     const raw = localStorage.getItem(LS_KEY);
     if (!raw) return;
+
     const parsed = JSON.parse(raw);
     if (parsed && typeof parsed === "object" && parsed.cart && typeof parsed.cart === "object") {
       _state.cart = parsed.cart;
@@ -22,15 +23,19 @@ function save() {
   } catch (_) {}
 }
 
+function syncBadgeSafe() {
+  try {
+    window.__CART_BADGE_SYNC__?.();
+  } catch (_) {}
+}
+
 load();
 
 /* ---------------------------
    Public API
 --------------------------- */
 export function getState() {
-  return {
-    cart: _state.cart
-  };
+  return { cart: _state.cart };
 }
 
 export function addToCart(id, meta = {}, qty = 1) {
@@ -39,7 +44,7 @@ export function addToCart(id, meta = {}, qty = 1) {
 
   const n = Math.max(1, Math.round(Number(qty) || 1));
 
-  // cart key: als je later varianten wil (maat), kun je dit uitbreiden:
+  // cart key: later uitbreidbaar voor varianten (maat, kleur, ...)
   // const key = meta?.variant_size ? `${pid}::size:${meta.variant_size}` : pid;
   const key = pid;
 
@@ -53,8 +58,9 @@ export function addToCart(id, meta = {}, qty = 1) {
   };
 
   save();
+  syncBadgeSafe();
 
-  // ✅ TOAST terug
+  // Toast: productnaam tonen
   const name = _state.cart[key]?.meta?.name || "Toegevoegd";
   safeToast("In mandje", name);
 }
@@ -64,9 +70,11 @@ export function setQty(id, qty) {
   if (!key) return;
 
   const n = Math.round(Number(qty) || 0);
+
   if (n <= 0) {
     delete _state.cart[key];
     save();
+    syncBadgeSafe();
     return;
   }
 
@@ -77,23 +85,21 @@ export function setQty(id, qty) {
   }
 
   save();
+  syncBadgeSafe();
 }
 
 export function clearCart() {
   _state.cart = {};
   save();
+  syncBadgeSafe();
 }
 
 export function cartCount() {
   return Object.values(_state.cart).reduce((sum, it) => sum + (Number(it?.qty) || 0), 0);
 }
 
-export function cartTotal() {
-  return cartItemsDetailed().reduce((sum, it) => sum + (Number(it.price) || 0) * (Number(it.qty) || 0), 0);
-}
-
 export function cartItemsDetailed() {
-  // shape die jouw cart.js verwacht: {id, qty, name, price, tag, image}
+  // shape die cart.js verwacht: {key,id,qty,name,price,tag,image,...}
   return Object.entries(_state.cart).map(([key, it]) => {
     const meta = it?.meta || {};
     return {
@@ -112,13 +118,24 @@ export function cartItemsDetailed() {
   });
 }
 
+export function cartTotal() {
+  return cartItemsDetailed().reduce(
+    (sum, it) => sum + (Number(it.price) || 0) * (Number(it.qty) || 0),
+    0
+  );
+}
+
 /* ---------------------------
    Helpers
 --------------------------- */
 function sanitizeMeta(m) {
   const meta = m && typeof m === "object" ? m : {};
+
+  // ✅ accepteer zowel name als title (shop.js gebruikt title)
+  const name = meta.name ?? meta.title ?? "";
+
   return {
-    name: meta.name ? String(meta.name) : "",
+    name: name ? String(name) : "",
     price: Number(meta.price || 0),
     tag: meta.tag ? String(meta.tag) : "",
     image: meta.image ? String(meta.image) : "",

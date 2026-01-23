@@ -24,8 +24,21 @@ function routeInfoFromHash() {
 }
 
 function shouldShowCart(routeHash, count) {
-  // toon cart knop op shop altijd, of als er items zijn
   return routeHash === "#shop" || count > 0;
+}
+
+function getEls() {
+  return {
+    drawer: document.querySelector(".mobileDrawer"),
+    overlay: document.querySelector(".mobileOverlay"),
+    toggleBtn: document.querySelector("[data-menu-toggle]"),
+  };
+}
+
+function setMenuAria(isOpen) {
+  const { toggleBtn, drawer } = getEls();
+  if (toggleBtn) toggleBtn.setAttribute("aria-expanded", String(!!isOpen));
+  if (drawer) drawer.setAttribute("aria-hidden", String(!isOpen));
 }
 
 function syncCartBadgeAndVisibility() {
@@ -33,12 +46,10 @@ function syncCartBadgeAndVisibility() {
   const count = Number(cartCount?.() ?? 0);
   const show = shouldShowCart(route.hash, count);
 
-  // badge teksten updaten
   document.querySelectorAll("[data-cart-count], #cartCount, .cartCount").forEach((el) => {
     if (el) el.textContent = String(count);
   });
 
-  // cart knop tonen/verbergen
   const cartBtn = document.querySelector("[data-open-cart]");
   if (cartBtn) cartBtn.style.display = show ? "" : "none";
 }
@@ -62,24 +73,32 @@ function headerHTML() {
       </nav>
 
       <div class="actions">
-        <div class="pill currentPill">${escapeHtml(route.label)}</div>
+        <div class="currentPill">${escapeHtml(route.label)}</div>
 
-        <button class="btn ghost cartBtn" type="button" data-open-cart aria-label="Open cart"
+        <button class="btn btnSecondary cartBtn" type="button" data-open-cart aria-label="Open cart"
           style="display:${showCart ? "inline-flex" : "none"}">
           Cart <span class="cartCount" id="cartCount" data-cart-count>${count}</span>
         </button>
 
-        <button class="btn ghost hamburger" type="button" data-menu-toggle aria-label="Open menu">
+        <button
+          class="btn btnQuiet hamburger"
+          type="button"
+          data-menu-toggle
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="kwMobileDrawer"
+        >
           Menu
         </button>
       </div>
     </div>
 
     <div class="mobileOverlay" data-menu-close></div>
-    <aside class="mobileDrawer" aria-label="Menu">
+
+    <aside class="mobileDrawer" id="kwMobileDrawer" aria-label="Menu" aria-hidden="true">
       <div class="mobileDrawerHead">
         <div class="mobileTitle">Menu</div>
-        <button class="btn ghost" type="button" data-menu-toggle aria-label="Sluit menu">Sluit</button>
+        <button class="btn btnQuiet" type="button" data-menu-toggle aria-label="Sluit menu">Sluit</button>
       </div>
 
       <div class="mobileDrawerBody">
@@ -94,19 +113,26 @@ function headerHTML() {
 }
 
 function openMenu() {
-  document.querySelector(".mobileDrawer")?.classList.add("open");
-  document.querySelector(".mobileOverlay")?.classList.add("open");
+  const { drawer, overlay } = getEls();
+  drawer?.classList.add("open");
+  overlay?.classList.add("open");
   document.body.classList.add("no-scroll");
+  setMenuAria(true);
 }
 
 function closeMenu() {
-  document.querySelector(".mobileDrawer")?.classList.remove("open");
-  document.querySelector(".mobileOverlay")?.classList.remove("open");
+  const { drawer, overlay, toggleBtn } = getEls();
+  drawer?.classList.remove("open");
+  overlay?.classList.remove("open");
   document.body.classList.remove("no-scroll");
+  setMenuAria(false);
+
+  // ✅ focus terug veilig op toggle, voorkomt aria-hidden warning in sommige gevallen
+  toggleBtn?.focus?.();
 }
 
 function toggleMenu() {
-  const drawer = document.querySelector(".mobileDrawer");
+  const { drawer } = getEls();
   if (!drawer) return;
   drawer.classList.contains("open") ? closeMenu() : openMenu();
 }
@@ -117,46 +143,39 @@ export function renderHeader() {
 
   host.innerHTML = headerHTML();
 
-  // 1 delegated handler (geen losse listeners per knop)
   host.onclick = (e) => {
     const t = e.target;
 
     if (t?.closest?.("[data-open-cart]")) {
-      if (typeof window.__OPEN_CART__ === "function") window.__OPEN_CART__();
+      // ✅ sluit menu altijd vóór je de cart opent (scroll issues weg)
+      closeMenu();
+      window.__OPEN_CART__?.();
       return;
     }
-
     if (t?.closest?.("[data-menu-toggle]")) {
       toggleMenu();
       return;
     }
-
     if (t?.closest?.("[data-menu-close]")) {
       closeMenu();
       return;
     }
   };
 
-  // escape sluit menu
-  host.onkeydown = (e) => {
-    if (e.key === "Escape") closeMenu();
-  };
-
-  // expose sync hook (store/cart gebruikt dit)
   window.__CART_BADGE_SYNC__ = syncCartBadgeAndVisibility;
-
-  // direct sync
   syncCartBadgeAndVisibility();
 
-  // bind global once
   if (!_wired) {
     _wired = true;
-    window.addEventListener("hashchange", () => {
-      closeMenu();
-      // app.js rendert ook header op route change, maar dit is veilig:
-      // re-render header zodat active state klopt
-      renderHeader();
-      syncCartBadgeAndVisibility();
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeMenu();
+        // cart sluit je via cart.js listener
+      }
     });
   }
+}
+
+export function closeHeaderMenu() {
+  closeMenu();
 }
