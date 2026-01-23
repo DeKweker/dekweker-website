@@ -353,3 +353,301 @@
   .heroChalet{ padding: 24px; }
   .availImg{ height: 130px; }
 }
+/* =========================
+   MUSIC polish (align with Shop/Home)
+========================= */
+
+/* page head / intro */
+.musicTop{
+  display:block;
+}
+
+.musicTop h1{
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: -.6px;
+  line-height: 1.05;
+}
+
+.musicTop p{
+  margin: 8px 0 0;
+  color: rgba(255,255,255,.72);
+  line-height: 1.55;
+}
+
+/* CTA row: same rhythm as Shop */
+.musicTop .ctaRow{
+  margin-top: 12px !important;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items:center;
+}
+
+/* section kicker / small labels (if present) */
+.musicTop .kicker,
+.musicTop .mutedSmall{
+  margin-top: 10px;
+}
+
+/* Spotlight card block */
+.musicSpotlight{
+  margin-top: 14px;
+}
+
+.musicSpotlight .panel{
+  padding: 16px;
+}
+
+/* Make the “spotlight” feel like Shop cards */
+.musicSpotlight h2,
+.musicSpotlight h3{
+  margin: 0 0 6px;
+  font-weight: 950;
+  letter-spacing: -.3px;
+}
+
+.musicSpotlight .lead,
+.musicSpotlight p{
+  margin: 0;
+  color: rgba(255,255,255,.74);
+  line-height: 1.6;
+}
+
+/* YouTube embed sizing: cleaner, consistent */
+.musicSpotlight iframe,
+.musicSpotlight .videoEmbed{
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(0,0,0,.25);
+}
+
+/* Spotify block spacing */
+.musicSpotify{
+  margin-top: 14px;
+}
+
+.musicSpotify iframe{
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Context panel at bottom (Rugged & Raw / Kwartier West / NUMB) */
+.musicContext{
+  margin-top: 14px;
+  padding: 16px;
+}
+
+.musicContext h3{
+  margin: 0 0 8px;
+  font-weight: 950;
+  letter-spacing: -.3px;
+}
+
+.musicContext p{
+  margin: 0;
+  color: rgba(255,255,255,.72);
+  line-height: 1.6;
+}
+
+/* Small pills inside music (if any) */
+.musicContext .tagsRow,
+.musicTop .tagsRow{
+  margin-top: 10px;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Responsive headline scale */
+@media (max-width: 900px){
+  .musicTop h1{ font-size: 30px; }
+}
+/* =========================
+   MUSIC — align with Shop/Home
+========================= */
+.musicTop h1{
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: -.6px;
+  line-height: 1.05;
+}
+.musicTop p{
+  margin: 8px 0 0;
+  color: rgba(255,255,255,.72);
+  line-height: 1.55;
+}
+.musicTopCtas{ margin-top: 12px; }
+
+.musicKick{ margin-bottom: 10px; }
+
+.musicH2{
+  margin: 0 0 10px;
+  font-weight: 950;
+  letter-spacing: -.3px;
+}
+.musicLead{
+  margin: 0 0 12px;
+  color: rgba(255,255,255,.85);
+  line-height: 1.6;
+}
+.musicPara{
+  margin: 0 0 14px;
+  color: rgba(255,255,255,.72);
+  line-height: 1.6;
+}
+.musicCredits{
+  margin: 0;
+  color: rgba(255,255,255,.70);
+  line-height: 1.6;
+}
+.musicHint{
+  margin: 14px 0 0;
+  color: rgba(255,255,255,.60);
+  line-height: 1.6;
+}
+.musicSpotCtas{ margin-top: 14px; }
+
+/* Spotlight layout: text + video (like a premium panel section) */
+.musicSpotlight{
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 900px){
+  .musicSpotlight{ grid-template-columns: 1fr; }
+}
+
+/* YouTube wrap */
+.ytWrap{
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.25);
+}
+.ytWrap iframe{
+  width: 100%;
+  height: 100%;
+  display:block;
+}
+
+/* Bottom cards grid */
+.musicBelow{
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 900px){
+  .musicBelow{ grid-template-columns: 1fr; }
+}
+
+.musicCard{
+  padding: 16px;
+}
+.musicCardHead h3{
+  margin: 0;
+  font-weight: 950;
+  letter-spacing: -.3px;
+}
+.musicCardHead p{
+  margin: 6px 0 0;
+}
+
+/* Spotify frame */
+.spotifyFrameWrap iframe{
+  margin-top: 12px;
+  border-radius: 16px;
+  overflow: hidden;
+  remind: none;
+  border: 0;
+  width: 100%;
+}
+
+/* Notes styling (keeps your current dot+line vibe) */
+.musicNotes{ margin-top: 10px; }
+.noteLine{
+  display:flex;
+  gap: 10px;
+  align-items:flex-start;
+  margin-top: 10px;
+  color: rgba(255,255,255,.74);
+  line-height: 1.55;
+}
+.noteDot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  margin-top: 6px;
+  background: rgba(201,122,58,.90);
+  box-shadow: 0 0 0 3px rgba(201,122,58,.16);
+}
+
+.musicContextCtas{ margin-top: 14px; }
+
+/* headline scale */
+@media (max-width: 900px){
+  .musicTop h1{ font-size: 30px; }
+}
+/* ===== MUSIC micro-polish (safe, scoped) ===== */
+
+/* 1) CTA's: iets dichter bij de intro, minder “lucht” */
+.musicTopCtas{
+  margin-top: 10px;
+}
+
+/* 2) Spotlight: iets strakker ritme + video voelt meer “panel” */
+.musicSpotlight{
+  gap: 16px;              /* net iets meer adem tussen tekst/video */
+  margin-top: 12px;
+}
+
+.musicSpotText .soft{
+  margin: 12px 0;
+}
+
+/* Video card: zelfde vibe als panels (subtiele rand + schaduw) */
+.musicSpotMedia .ytWrap{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(10,10,10,.45);
+  box-shadow: 0 18px 55px rgba(0,0,0,.45);
+}
+
+/* mini glow aan de onderkant zoals je site-basis */
+.musicSpotMedia .ytWrap::after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0 0;
+  height: 70px;
+  pointer-events:none;
+  background: radial-gradient(circle at 50% 120%, rgba(201,122,58,.18), rgba(0,0,0,0) 60%);
+}
+
+/* Zorg dat iframe netjes meevormt */
+.musicSpotMedia .ytWrap{
+  position: relative;
+  overflow: hidden;
+}
+.musicSpotMedia .ytWrap iframe{
+  border: 0;
+  display: block;
+}
+
+/* 3) Bottom cards: iets meer ‘panel’ consistentie */
+.musicCard{
+  padding: 16px;
+}
+.musicBelow{
+  gap: 14px;
+  margin-top: 14px;
+}

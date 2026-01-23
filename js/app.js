@@ -271,14 +271,14 @@ function wireBioToggle() {
 /* ---------------------------
    MUSIC
 --------------------------- */
-function renderMusic(app) {
+function renderMusic(app) { 
   app.innerHTML = `
     <section class="panel panelWide">
       <div class="musicTop">
         <h1>Music</h1>
         <p>Releases en beelden — helder, zonder ruis.</p>
 
-        <div class="ctaRow" style="margin-top:14px;">
+        <div class="ctaRow musicTopCtas">
           <a class="btn btnPrimary" href="${SPOTIFY_ARTIST_URL}" target="_blank" rel="noopener noreferrer">Open in Spotify</a>
           <a class="btn btnSecondary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Bekijk op YouTube</a>
         </div>
@@ -286,35 +286,35 @@ function renderMusic(app) {
 
       <div class="musicSpotlight">
         <div class="musicSpotText">
-          <div class="kickerWarm" style="margin-bottom:10px;">
+          <div class="kickerWarm musicKick">
             <span class="dotWarm"></span> Uitgelicht
           </div>
 
-          <h2 style="margin:0 0 10px;">Lekt Em (officiële videoclip)</h2>
+          <h2 class="musicH2">Lekt Em (officiële videoclip)</h2>
 
-          <p style="margin:0 0 12px;color:rgba(255,255,255,.85);line-height:1.6;">
+          <p class="musicLead">
             <strong>Eerste videoclip.</strong><br>
             Geen intro, maar een markering.
           </p>
 
-          <p style="margin:0 0 14px;color:rgba(255,255,255,.72);line-height:1.6;">
+          <p class="musicPara">
             De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, identiteit en afkomst.
             In <em>Lekt Em</em> valt beeld en tekst samen: sober, direct, zonder franjes.
           </p>
 
-          <hr style="border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0;">
+          <hr class="soft">
 
-          <p style="margin:0;color:rgba(255,255,255,.7);line-height:1.6;">
+          <p class="musicCredits">
             <strong>Regie</strong> · Jan Maes<br>
             <strong>Camera</strong> · Patrick Nishimwe<br>
             <strong>Edit</strong> · Jason Moens
           </p>
 
-          <p style="margin:14px 0 0;color:rgba(255,255,255,.6);line-height:1.6;">
+          <p class="musicHint">
             Alles wat je zoekt staat op één plek: clip, releases, context.
           </p>
 
-          <div class="ctaRow" style="margin-top:14px;">
+          <div class="ctaRow musicSpotCtas">
             <a class="btn btnPrimary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Kijk op YouTube</a>
             <a class="btn btnSecondary" href="#shop">Shop</a>
             <a class="btn btnQuiet" href="#contact">Contact</a>
@@ -333,52 +333,51 @@ function renderMusic(app) {
             ></iframe>
           </div>
         </div>
+      </div>
 
-        <div class="musicBelow">
-          <div class="musicCard">
-            <div class="musicCardHead">
-              <h3>Spotify</h3>
-              <p class="mutedSmall">Releases en features, netjes gebundeld.</p>
-            </div>
-
-            <div class="spotifyFrameWrap">
-              <iframe
-                style="border-radius:16px;"
-                src="${SPOTIFY_EMBED_URL}"
-                width="100%"
-                height="420"
-                frameborder="0"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                title="De Kweker on Spotify"
-              ></iframe>
-            </div>
+      <div class="musicBelow">
+        <div class="musicCard panel">
+          <div class="musicCardHead">
+            <h3>Spotify</h3>
+            <p class="mutedSmall">Releases en features, netjes gebundeld.</p>
           </div>
 
-          <div class="musicCard">
-            <div class="musicCardHead">
-              <h3>Context</h3>
-              <p class="mutedSmall">Waar het gemaakt wordt — zonder het verhaal over te nemen.</p>
+          <div class="spotifyFrameWrap">
+            <iframe
+              src="${SPOTIFY_EMBED_URL}"
+              width="100%"
+              height="420"
+              frameborder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              title="De Kweker on Spotify"
+            ></iframe>
+          </div>
+        </div>
+
+        <div class="musicCard panel">
+          <div class="musicCardHead">
+            <h3>Context</h3>
+            <p class="mutedSmall">Waar het gemaakt wordt — zonder het verhaal over te nemen.</p>
+          </div>
+
+          <div class="musicNotes">
+            <div class="noteLine">
+              <span class="noteDot"></span>
+              <span><strong>Rugged &amp; Raw</strong> is waar releases landen — structuur, geen slogan.</span>
+            </div>
+            <div class="noteLine">
+              <span class="noteDot"></span>
+              <span><strong>Kwartier West</strong> is het collectief — uitwisseling, scherpte, onafhankelijkheid.</span>
+            </div>
+            <div class="noteLine">
+              <span class="noteDot"></span>
+              <span><strong>NUMB</strong> draagt de klank — ruimte en spanning die tekst laat ademen.</span>
             </div>
 
-            <div class="musicNotes">
-              <div class="noteLine">
-                <span class="noteDot"></span>
-                <span><strong>Rugged &amp; Raw</strong> is waar releases landen — structuur, geen slogan.</span>
-              </div>
-              <div class="noteLine">
-                <span class="noteDot"></span>
-                <span><strong>Kwartier West</strong> is het collectief — uitwisseling, scherpte, onafhankelijkheid.</span>
-              </div>
-              <div class="noteLine">
-                <span class="noteDot"></span>
-                <span><strong>NUMB</strong> draagt de klank — ruimte en spanning die tekst laat ademen.</span>
-              </div>
-
-              <div class="ctaRow" style="margin-top:14px;">
-                <a class="btn btnPrimary" href="#contact">Contact</a>
-                <a class="btn btnSecondary" href="#shop">Shop</a>
-              </div>
+            <div class="ctaRow musicContextCtas">
+              <a class="btn btnPrimary" href="#contact">Contact</a>
+              <a class="btn btnSecondary" href="#shop">Shop</a>
             </div>
           </div>
         </div>

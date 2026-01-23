@@ -131,6 +131,33 @@ export async function renderShopHome() {
   setActiveShopNav(null);
 }
 
+/* ---------------------------
+   BULLETPROOF media helpers
+--------------------------- */
+function mediaBoxStyle({ radius = 16, aspect = "1 / 1" } = {}) {
+  // Inline styles on purpose: protects against missing/overwritten CSS
+  return [
+    `position:relative`,
+    `aspect-ratio:${aspect}`,
+    `width:100%`,
+    `border-radius:${radius}px`,
+    `overflow:hidden`,
+    `background:rgba(255,255,255,.04)`,
+    `border:1px solid rgba(255,255,255,.08)`
+  ].join(";");
+}
+
+function mediaImgStyle() {
+  return [
+    `position:absolute`,
+    `inset:0`,
+    `width:100%`,
+    `height:100%`,
+    `object-fit:cover`,
+    `display:block`
+  ].join(";");
+}
+
 function productCard(p) {
   const front = p.image || "";
   const back = p.imageBack || "";
@@ -139,9 +166,17 @@ function productCard(p) {
   return `
     <article class="panel" style="padding:14px;">
       <a class="prodMediaLink" href="#shop/${esc(p.category)}/${esc(p.slug)}">
-        <div class="prodMedia ${hasBack ? "" : "noBack"}">
-          ${front ? `<img class="prodImg prodImgFront" src="${front}" alt="${esc(p.title)}" loading="lazy">` : ""}
-          ${hasBack ? `<img class="prodImg prodImgBack" src="${back}" alt="${esc(p.title)} (back)" loading="lazy">` : ""}
+        <div class="prodMedia ${hasBack ? "" : "noBack"}" style="${mediaBoxStyle({ radius: 16, aspect: "1 / 1" })}">
+          ${
+            front
+              ? `<img class="prodImg prodImgFront" src="${front}" alt="${esc(p.title)}" loading="lazy" decoding="async" style="${mediaImgStyle()}">`
+              : ""
+          }
+          ${
+            hasBack
+              ? `<img class="prodImg prodImgBack" src="${back}" alt="${esc(p.title)} (back)" loading="lazy" decoding="async" style="${mediaImgStyle()};opacity:0;">`
+              : ""
+          }
           ${!front ? `<div class="prodMediaFallback">Geen image</div>` : ""}
         </div>
       </a>
@@ -177,17 +212,40 @@ export async function renderShopCategory(category) {
       <span class="current">${esc(cap(cat))}</span>
     </div>
 
-    ${items.length === 0 ? `
+    ${
+      items.length === 0
+        ? `
       <div class="panel" style="padding:14px;">
         <div style="font-weight:950;letter-spacing:-.2px;">Nog geen items hier.</div>
         <div class="mutedSmall" style="margin-top:6px;">Kom straks terug. Eerst komt vinyl &amp; CD.</div>
       </div>
-    ` : `
+    `
+        : `
       <div class="shopGrid">
         ${items.map(productCard).join("")}
       </div>
-    `}
+    `
+    }
   `;
+
+  // Flip back image on hover/focus, but keep it safe even if CSS got reset.
+  // (Only touches inside this mount, no global side-effects.)
+  mount.querySelectorAll(".prodMedia").forEach(media => {
+    const frontImg = media.querySelector(".prodImgFront");
+    const backImg = media.querySelector(".prodImgBack");
+    if (!frontImg || !backImg) return;
+
+    const showBack = () => { backImg.style.opacity = "1"; frontImg.style.opacity = "0"; };
+    const showFront = () => { backImg.style.opacity = "0"; frontImg.style.opacity = "1"; };
+
+    // Default
+    showFront();
+
+    media.addEventListener("mouseenter", showBack);
+    media.addEventListener("mouseleave", showFront);
+    media.addEventListener("focusin", showBack);
+    media.addEventListener("focusout", showFront);
+  });
 
   mount.querySelectorAll("[data-add]").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -252,9 +310,17 @@ export async function renderProductDetail(category, slug) {
 
     <div class="productDetail">
       <div>
-        <div class="productMedia prodMedia ${hasBack ? "" : "noBack"}">
-          ${front ? `<img class="prodImg prodImgFront" src="${front}" alt="${esc(p.title)}" loading="lazy">` : ""}
-          ${hasBack ? `<img class="prodImg prodImgBack" src="${back}" alt="${esc(p.title)} (back)" loading="lazy">` : ""}
+        <div class="productMedia prodMedia ${hasBack ? "" : "noBack"}" style="${mediaBoxStyle({ radius: 16, aspect: "1 / 1" })};max-width:520px;margin:0 auto;">
+          ${
+            front
+              ? `<img class="prodImg prodImgFront" src="${front}" alt="${esc(p.title)}" loading="lazy" decoding="async" style="${mediaImgStyle()}">`
+              : ""
+          }
+          ${
+            hasBack
+              ? `<img class="prodImg prodImgBack" src="${back}" alt="${esc(p.title)} (back)" loading="lazy" decoding="async" style="${mediaImgStyle()};opacity:0;">`
+              : ""
+          }
           ${!front ? `<div class="productMediaFallback">Geen image</div>` : ""}
         </div>
       </div>
@@ -278,6 +344,20 @@ export async function renderProductDetail(category, slug) {
       </div>
     </div>
   `;
+
+  // Flip on hover/focus in detail too (safe)
+  const media = mount.querySelector(".productMedia.prodMedia");
+  const frontImg = media?.querySelector(".prodImgFront");
+  const backImg = media?.querySelector(".prodImgBack");
+  if (media && frontImg && backImg) {
+    const showBack = () => { backImg.style.opacity = "1"; frontImg.style.opacity = "0"; };
+    const showFront = () => { backImg.style.opacity = "0"; frontImg.style.opacity = "1"; };
+    showFront();
+    media.addEventListener("mouseenter", showBack);
+    media.addEventListener("mouseleave", showFront);
+    media.addEventListener("focusin", showBack);
+    media.addEventListener("focusout", showFront);
+  }
 
   document.getElementById("buyBtn")?.addEventListener("click", () => {
     addToCart(
