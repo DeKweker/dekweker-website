@@ -345,3 +345,51 @@ body.cart-open{
     margin: 0;
   }
 }
+/* =========================
+   Content meta labels (NOT chips / NOT buttons)
+   Only inside content rows
+========================= */
+
+#app .tagsRow .tag,
+#app .tagsRow .tagWarm{
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+
+  color: rgba(255,255,255,.70) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: .12px !important;
+
+  cursor: default !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+/* Add separators like metadata */
+
+
+#app .tagsRow .tag + .tag,
+#app .tagsRow .tag + .tagWarm,
+#app .tagsRow .tagWarm + .tag,
+#app .tagsRow .tagWarm + .tagWarm{
+  margin-left: 10px;
+  position: relative;
+}
+
+
+#app .tagsRow .tag + .tag::before,
+#app .tagsRow .tag + .tagWarm::before,
+#app .tagsRow .tagWarm + .tag::before,
+#app .tagsRow .tagWarm + .tagWarm::before
+{
+  content: "•";
+  position: absolute;
+  left: -10px;
+  color: rgba(255,255,255,.28);
+  
+}
+#app .tagsRow .tagWarm{ color: rgba(255,220,195,.78) !important; }
+
+
