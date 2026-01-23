@@ -291,11 +291,42 @@ hr.soft{
   box-shadow: 0 0 0 3px rgba(201,122,58,.16);
 }
 /* ---------- SHOP product grid cards ---------- */
+/* ---------- SHOP product grid cards (fix poster-cards) ---------- */
+.shopGrid{ 
+  display:grid; 
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+  gap: 14px; }
+
+/* ---------- SHOP category grid: avoid "poster" cards when only 1 item ---------- */
 .shopGrid{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
+  /* je hebt dit al: display:grid; ... */
+  justify-content: center;           /* ✅ center columns when there are few items */
+  align-items: start;
 }
+
+/* clamp each card size inside the grid */
+.shopGrid > .panel{
+  width: 100%;
+  max-width: 420px;                  /* ✅ prevents the huge poster look */
+  margin: 0 auto;
+}
+
+/* keep media sane inside card */
+.shopGrid .prodMedia,
+.shopGrid .prodMedia.prodMedia{
+  max-width: 100%;
+}
+
+/* Optional: on wide screens, allow multiple columns but keep them "card sized" */
+@media (min-width: 900px){
+  .shopGrid{
+    grid-template-columns: repeat(auto-fit, minmax(260px, 420px));
+    gap: 16px;
+  }
+}
+
+
+
 
 .prodMedia{
   position: relative;
