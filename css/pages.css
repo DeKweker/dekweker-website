@@ -226,3 +226,130 @@
   margin-right: 24px;
   transform: translateY(4px) translateX(-14px);
 }
+/* =========================
+   HOME POLISH (ANCHOR-SAFE)
+   Paste at END of pages.css
+========================= */
+
+/* ---------- HERO ---------- */
+.heroChalet{
+  /* iets meer “premium air” */
+  padding: 40px;
+  gap: 26px;
+}
+
+.heroTitle{
+  letter-spacing: -1.4px;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.heroChalet .lead{
+  max-width: 56ch;
+  color: rgba(255,248,235,.78);
+  line-height: 1.65;
+}
+
+/* CTA rij: netter alignen zonder layout breken */
+.heroChalet .ctaRow{
+  margin-top: 20px;
+  gap: 12px;
+}
+
+/* Mini-cards: iets rustiger contrast */
+.heroAside .cardMini{
+  background: rgba(0,0,0,.22);
+  border-color: rgba(255,255,255,.10);
+}
+.heroAside .cardMini p{
+  color: rgba(255,255,255,.72);
+  line-height: 1.55;
+}
+
+/* ---------- NOW AVAILABLE ---------- */
+.availPanel{
+  overflow: hidden;
+}
+
+.availLeft h2{
+  letter-spacing: -0.6px;
+}
+
+.availLeft p{
+  color: rgba(255,255,255,.80);
+  line-height: 1.65;
+}
+
+/* tagsRow in Now Available: optisch “labels”, geen button-feel (zonder !important) */
+.availLeft .tagsRow .tag,
+.availLeft .tagsRow .tagWarm{
+  background: transparent;
+  border-color: rgba(255,255,255,.16);
+  color: rgba(255,255,255,.74);
+}
+
+/* Covers: iets meer presence */
+.availImg{
+  height: 150px;
+  filter: saturate(1.06) contrast(1.03);
+}
+
+/* ---------- BIO ---------- */
+.bioHero{
+  gap: 18px;
+}
+
+/* Linker bio-kant: hiërarchie & ademruimte */
+.bioLeft .bioTitle{
+  margin: 10px 0 6px;
+  letter-spacing: -0.6px;
+}
+
+.bioLeft .bioLead{
+  margin: 0;
+  color: rgba(255,255,255,.78);
+  line-height: 1.65;
+}
+
+/* Tags in bio links: ook label-feel */
+.bioLeft .tagsRow .tag{
+  background: transparent;
+  border-color: rgba(255,255,255,.16);
+  color: rgba(255,255,255,.74);
+}
+
+/* Bio rechterkant: titel + toggle netjes naast elkaar */
+.bioTextHead{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.bioTextTitle{
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* Bio body: beter leesbaar */
+.bioBody p{
+  margin: 0 0 12px;
+  line-height: 1.7;
+  color: rgba(255,255,255,.76);
+}
+.bioBody p:last-child{ margin-bottom: 0; }
+
+/* Quote: net iets subtieler */
+.bioQuote{
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.74);
+}
+
+/* ---------- Responsive finesse ---------- */
+@media (max-width: 980px){
+  .heroChalet{ padding: 24px; }
+  .availImg{ height: 130px; }
+}

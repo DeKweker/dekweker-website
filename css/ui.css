@@ -477,4 +477,21 @@ body.cart-open{
   display: grid;
   gap: 10px;
 }
+/* =========================
+   Album covers — micro contrast boost
+========================= */
+
+.prodMedia img,
+.productMedia img{
+  filter:
+    contrast(1.04)
+    saturate(1.03);
+}
+
+/* subtiele rand-lichting zodat cover loskomt van bg */
+.prodMedia{
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.45),
+    0 0 0 1px rgba(255,255,255,.06) inset;
+}
 
