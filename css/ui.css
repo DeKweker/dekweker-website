@@ -494,4 +494,28 @@ body.cart-open{
     0 10px 35px rgba(0,0,0,.45),
     0 0 0 1px rgba(255,255,255,.06) inset;
 }
+/* CONTENT tags are labels (scoped) */
+#app .tag,
+#app .tagWarm{
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  color: rgba(255,255,255,.70) !important;
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  cursor: default !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+#app .tag:hover,
+#app .tagWarm:hover,
+#app .tag:active,
+#app .tagWarm:active,
+#app .tag:focus,
+#app .tagWarm:focus{
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
 
