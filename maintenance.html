@@ -5,14 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>De Kweker — West-Vlaamse rapper uit Brugge (8000)</title>
 
+  <!-- Maintenance = niet indexeren -->
   <meta name="robots" content="noindex,nofollow" />
+    <!-- Open Graph (social sharing) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="De Kweker" />
+  <meta property="og:url" content="https://www.kwkr.be/" />
+  <meta property="og:title" content="De Kweker — West-Vlaamse rapper uit Brugge (8000)" />
+<meta property="og:description" content="De Kweker is een rapper uit Brugge die in het West-Vlaams rapt over mentale druk, identiteit en afkomst.">  <meta property="og:image" content="https://www.kwkr.be/assets/og-cover.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="De Kweker — West-Vlaamse rapper uit Brugge (8000)" />
+<meta name="twitter:description" content="De Kweker is een rapper uit Brugge die in het West-Vlaams rapt over mentale druk, identiteit en afkomst.">
+  <meta name="twitter:image" content="https://www.kwkr.be/assets/og-cover.jpg" />
+
+
+  <!-- Favicons -->
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
 
+  <!-- Theme -->
   <meta name="theme-color" content="#0b0b0b" />
 
   <style>
@@ -20,21 +38,32 @@
       --bg:#0b0b0b;
       --fg:rgba(255,255,255,.92);
       --muted:rgba(255,255,255,.70);
+      --glass:rgba(0,0,0,.38);
       --stroke:rgba(255,255,255,.10);
-      --accent:#ff8a1c;
+      --accent:#ff8a1c; /* jouw oranje vibe */
     }
+
     *{ box-sizing:border-box; }
     html,body{ height:100%; margin:0; background:var(--bg); }
     body{ min-height:100svh; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
 
+    /* Background image */
     .bg{
-      position:fixed; inset:0;
-      background:url("/assets/maintenance-bg.jpg") no-repeat;
+      position:fixed;
+      inset:0;
+      background-image:url("/assets/maintenance-bg.jpg");
+      background-repeat:no-repeat;
       background-size:cover;
+      /* focus op de “grondlijn” waar de spruiten staan */
       background-position:50% 72%;
+      transform: translateZ(0);
     }
+
+    /* Vignette + depth */
     .bg::before{
-      content:""; position:absolute; inset:0;
+      content:"";
+      position:absolute;
+      inset:0;
       background:
         radial-gradient(1200px 700px at 50% 35%, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 70%, rgba(0,0,0,.88) 100%),
         linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.65));
@@ -42,6 +71,20 @@
       pointer-events:none;
     }
 
+    /* Subtle grain (Spotify/Apple-ish) */
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,.06), rgba(255,255,255,0) 55%),
+        radial-gradient(circle at 80% 0%, rgba(255,255,255,.04), rgba(255,255,255,0) 60%),
+        radial-gradient(circle at 50% 100%, rgba(255,138,28,.10), rgba(255,138,28,0) 55%);
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    /* Layout */
     .wrap{
       position:relative;
       min-height:100svh;
@@ -52,6 +95,7 @@
       padding-bottom: max(18px, env(safe-area-inset-bottom));
     }
 
+    /* Premium “card” overlay */
     .card{
       width:min(720px, 100%);
       border-radius: 22px;
@@ -64,7 +108,9 @@
     }
 
     .kicker{
-      display:flex; align-items:center; gap:10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
       color: var(--muted);
       font-size: 12px;
       letter-spacing:.12em;
@@ -94,10 +140,10 @@
     .row{
       margin-top:14px;
       display:flex;
-      gap:10px;
       flex-wrap:wrap;
+      gap:10px;
       align-items:center;
-      justify-content:flex-start;
+      justify-content:space-between;
     }
 
     .pill{
@@ -112,9 +158,32 @@
       font-size: 13px;
     }
 
+    .link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius:999px;
+      background: rgba(255,138,28,.10);
+      border:1px solid rgba(255,138,28,.22);
+      color: rgba(255,255,255,.92);
+      text-decoration:none;
+      font-size: 13px;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .link:active{ transform: scale(.98); }
+    .spark{
+      width:10px;height:10px;border-radius:999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(255,138,28,.45);
+    }
+
+    /* Mobile focus: keep content + sprout line visible */
     @media (max-width: 720px){
       .bg{ background-position:50% 78%; }
+      .wrap{ align-items:flex-end; }
       .card{ border-radius: 20px; }
+      .row{ justify-content:flex-start; }
     }
   </style>
 </head>
@@ -124,11 +193,12 @@
   <main class="wrap">
     <section class="card" aria-label="Maintenance">
       <div class="kicker"><span class="dot"></span> nog • aan't • kweken</div>
-      <h1>Website & webshop </h1>
-      <p class="sub">coming soon.</p>
+      <h1>Zwoar in de kweek</h1>
+      <p class="sub">De Kweker is aan ’t zaaien achter de schermen.</p>
 
       <div class="row">
-        <div class="pill">www.kwkr.be</div>
+        <div class="pill">kwkr.be</div>
+        <a class="link" href="/maintenance.html"><span class="spark"></span> Meer info</a>
       </div>
     </section>
   </main>
