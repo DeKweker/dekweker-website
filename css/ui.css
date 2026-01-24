@@ -519,3 +519,27 @@ body.cart-open{
   transform: none !important;
 }
 
+/* =========================
+   Fix: btnPrimary hover text color
+   (paste at VERY bottom)
+========================= */
+
+:root{
+  --warm: rgba(205,132,66,.95);
+  --warmTextOnDark: rgba(205,132,66,.95);
+}
+
+/* Primary button is orange by default.
+   On hover it becomes dark -> text must turn warm/orange. */
+#app .btn.btnPrimary:hover,
+#app a.btn.btnPrimary:hover,
+#app button.btn.btnPrimary:hover{
+  color: var(--warmTextOnDark) !important;
+}
+
+/* also cover keyboard focus */
+#app .btn.btnPrimary:focus-visible,
+#app a.btn.btnPrimary:focus-visible,
+#app button.btn.btnPrimary:focus-visible{
+  color: var(--warmTextOnDark) !important;
+}

@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Je hebt OG + title/description al. Laat die staan in jouw versie. -->
+  <meta name="robots" content="index,follow" />
+
+  <!-- CSS van je site (anker) -->
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/layout.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/pages.css" />
+
+  <!-- Landing-only polish (veilig: prefix "landing-") -->
+  <style>
+    /* Houdt je bestaande site-stijl, maar maakt landing consistent en rustig */
+    .landingWrap{ width: var(--container); margin: 0 auto; padding: 22px 0 40px; }
+
+    .landingHero{
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 900px){
+      .landingHero{ grid-template-columns: 1fr; }
+    }
+
+    .landingKicker{
+      display:flex; align-items:center; gap:10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      margin-bottom: 10px;
+    }
+    .landingDot{
+      width: 9px; height: 9px; border-radius: 999px;
+      background: rgba(201,122,58,.90);
+      box-shadow: 0 0 0 3px rgba(201,122,58,.16);
+    }
+
+    .landingH1{
+      font-size: clamp(38px, 5vw, 64px);
+      line-height: 1.02;
+      margin: 0 0 10px;
+      letter-spacing: -.8px;
+      font-weight: 950;
+    }
+    .landingLead{
+      margin: 0;
+      max-width: 56ch;
+      color: rgba(255,255,255,.80);
+      line-height: 1.6;
+    }
+
+    .landingCtas{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
+
+    .landingAsideGrid{ display:grid; gap: 12px; }
+    .landingLinkCard{
+      display:flex; justify-content:space-between; gap: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(10,10,10,.55);
+      text-decoration:none;
+      color: rgba(255,255,255,.92);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .landingLinkCard:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.16);
+      background: rgba(10,10,10,.62);
+    }
+    .landingLinkTitle{ font-weight: 950; letter-spacing:-.2px; }
+    .landingLinkSub{ margin-top: 4px; font-size: 12px; color: rgba(255,255,255,.65); }
+    .landingLinkHint{ font-size: 12px; color: rgba(255,255,255,.70); align-self:center; }
+
+    .landingSectionHead{ margin: 0 0 10px; }
+    .landingSectionTitle{
+      margin: 0;
+      font-size: 20px;
+      font-weight: 950;
+      letter-spacing: -.3px;
+    }
+    .landingSectionSub{
+      margin: 6px 0 0;
+      color: rgba(255,255,255,.65);
+      font-size: 12px;
+    }
+
+    .landingFeature{
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 14px;
+      align-items: start;
+      margin-top: 14px;
+    }
+    @media (max-width: 900px){
+      .landingFeature{ grid-template-columns: 1fr; }
+    }
+
+    .landingCredits{
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.78);
+      line-height: 1.6;
+      font-size: 13px;
+    }
+    .landingCredits strong{ color: rgba(255,255,255,.92); }
+
+    .landingYtWrap{
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.25);
+      aspect-ratio: 16 / 9;
+    }
+    .landingYtWrap iframe{ width:100%; height:100%; border:0; display:block; }
+
+    .landingContactGrid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    @media (max-width: 900px){
+      .landingContactGrid{ grid-template-columns: 1fr; }
+    }
+
+    .landingFooterRow{
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: rgba(255,255,255,.65);
+      font-size: 12px;
+    }
+    .landingFooterRow a{ color: rgba(255,255,255,.85); text-decoration:none; }
+    .landingFooterRow a:hover{ text-decoration: underline; }
+  </style>
+
+  <!-- JSON-LD: consistent sameAs -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "De Kweker",
+    "alternateName": "De Kweker (rapper)",
+    "description": "De Kweker is een rapper uit Brugge (8000). West-Vlaamse rap over mentale druk, identiteit en afkomst. Sober en direct — tekst eerst.",
+    "url": "https://kwkr.be/",
+    "sameAs": [
+      "https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG?si=Su4OGxUlQA6rkwXOIUIxZA",
+      "https://www.youtube.com/@De.Kweker",
+      "https://soundcloud.com/dekweker",
+      "https://www.instagram.com/dekweker_"
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <!-- Header: houd het simpel, geen router/JS nodig -->
+  <header id="site-header">
+    <div class="topbar">
+      <div class="brand">
+        <a class="brandLink" href="#top" aria-label="De Kweker">De Kweker</a>
+      </div>
+
+      <nav class="navLinks" aria-label="Navigatie">
+        <a class="navLink" href="#top">Home</a>
+        <a class="navLink" href="#uitgelicht">Uitgelicht</a>
+        <a class="navLink" href="#contact">Contact</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btnSecondary" href="#contact">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" role="main">
+    <div class="landingWrap" id="top">
+      <!-- HERO -->
+      <section class="panel panelWide">
+        <div class="landingHero">
+          <div>
+            <div class="landingKicker">
+              <span class="landingDot"></span>
+              <span>De Kweker · Brugge (8000)</span>
+            </div>
+
+            <h1 class="landingH1">Muziek.<br> Zonder filter</h1>
+
+            <p class="landingLead">
+              West-Vlaamse rap over mentale druk, afkomst en identiteit.
+              Sober en direct — tekst eerst.
+            </p>
+
+            <div class="landingCtas">
+              <a class="btn btnPrimary" href="https://www.youtube.com/watch?v=8Q0LB68kxRw" target="_blank" rel="noopener noreferrer">Bekijk clip</a>
+              <a class="btn btnQuiet" href="#contact">Contact</a>
+            </div>
+          </div>
+
+          <aside class="landingAsideGrid" aria-label="Officiële platformen">
+            <a class="landingLinkCard" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG?si=Su4OGxUlQA6rkwXOIUIxZA" target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="landingLinkTitle">Spotify</div>
+                <div class="landingLinkSub">Releases & features</div>
+              </div>
+              <div class="landingLinkHint">Open →</div>
+            </a>
+
+            <a class="landingLinkCard" href="https://www.youtube.com/@De.Kweker" target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="landingLinkTitle">YouTube</div>
+                <div class="landingLinkSub">Clips & visuals</div>
+              </div>
+              <div class="landingLinkHint">Open →</div>
+            </a>
+
+            <a class="landingLinkCard" href="https://soundcloud.com/dekweker" target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="landingLinkTitle">SoundCloud</div>
+                <div class="landingLinkSub">Extra’s & schetsen</div>
+              </div>
+              <div class="landingLinkHint">Open →</div>
+            </a>
+          </aside>
+        </div>
+      </section>
+
+      <!-- FEATURE -->
+      <section class="panel panelWide" id="uitgelicht" style="margin-top:14px;">
+        <div class="landingSectionHead">
+          <h2 class="landingSectionTitle">Uitgelicht</h2>
+          <p class="landingSectionSub">Lekt Em — officiële videoclip</p>
+        </div>
+
+        <div class="landingFeature">
+          <div>
+            <p style="margin:0;color:rgba(255,255,255,.80);line-height:1.6;">
+              Geen intro, maar een markering. Beeld en tekst vallen samen: sober, direct, zonder franjes.
+            </p>
+
+            <div class="landingCredits">
+              <div><strong>Regie</strong> · Jan Maes</div>
+              <div><strong>Camera</strong> · Patrick Nishimwe</div>
+              <div><strong>Edit</strong> · Jason Moens</div>
+            </div>
+
+            <div class="landingCtas">
+              <a class="btn btnPrimary" href="https://www.youtube.com/watch?v=8Q0LB68kxRw" target="_blank" rel="noopener noreferrer">Kijk op YouTube</a>
+              <a class="btn btnSecondary" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG?si=Su4OGxUlQA6rkwXOIUIxZA" target="_blank" rel="noopener noreferrer">Luister op Spotify</a>
+            </div>
+          </div>
+
+          <div class="landingYtWrap" aria-label="YouTube embed">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/8Q0LB68kxRw"
+              title="De Kweker — Lekt Em (officiële videoclip)"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="panel panelWide" id="contact" style="margin-top:14px;">
+        <div class="landingSectionHead">
+          <h2 class="landingSectionTitle">Contact</h2>
+          <a href="mailto:info@kwkr.be">info@kwkr.be</a>
+          <p class="landingSectionSub">Officiële links — 
+        </div>
+
+        <div class="landingContactGrid">
+          <a class="landingLinkCard" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG?si=Su4OGxUlQA6rkwXOIUIxZA" target="_blank" rel="noopener noreferrer">
+            <div>
+              <div class="landingLinkTitle">Spotify</div>
+              <div class="landingLinkSub">Artiest pagina</div>
+            </div>
+            <div class="landingLinkHint">Open </div>
+          </a>
+
+          <a class="landingLinkCard" href="https://www.youtube.com/@De.Kweker" target="_blank" rel="noopener noreferrer">
+            <div>
+              <div class="landingLinkTitle">YouTube</div>
+              <div class="landingLinkSub">Kanaal</div>
+            </div>
+            <div class="landingLinkHint">Open </div>
+          </a>
+
+          <a class="landingLinkCard" href="https://soundcloud.com/dekweker" target="_blank" rel="noopener noreferrer">
+            <div>
+              <div class="landingLinkTitle">SoundCloud</div>
+              <div class="landingLinkSub">Tracks & extra’s</div>
+            </div>
+            <div class="landingLinkHint">Open </div>
+          </a>
+
+          <a class="landingLinkCard" href="https://www.instagram.com/dekweker_" target="_blank" rel="noopener noreferrer">
+            <div>
+              <div class="landingLinkTitle">Instagram</div>
+              <div class="landingLinkSub">Volg me!</div>
+            </div>
+            <div class="landingLinkHint">Open </div>
+          </a>
+        </div>
+
+        <div class="landingFooterRow">
+          <div>Brugge (8000)</div>
+          <div>
+            <a href="mailto:info@kwkr.be">info@kwkr.be</a>
+            <span style="opacity:.5;margin:0 8px;">·</span>
+            <a href="https://www.youtube.com/watch?v=8Q0LB68kxRw" target="_blank" rel="noopener noreferrer">Clip</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</body>
+</html>
