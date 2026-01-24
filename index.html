@@ -15,7 +15,6 @@
 
   <!-- Landing-only polish (veilig: prefix "landing-") -->
   <style>
-    /* Houdt je bestaande site-stijl, maar maakt landing consistent en rustig */
     .landingWrap{ width: var(--container); margin: 0 auto; padding: 22px 0 40px; }
 
     .landingHero{
@@ -100,8 +99,8 @@
       .landingFeature{ grid-template-columns: 1fr; }
     }
 
-    .landingCredits{
-      margin-top: 14px;
+    .landingInfoBox{
+      margin-top: 12px;
       padding: 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.08);
@@ -110,7 +109,7 @@
       line-height: 1.6;
       font-size: 13px;
     }
-    .landingCredits strong{ color: rgba(255,255,255,.92); }
+    .landingInfoBox strong{ color: rgba(255,255,255,.92); }
 
     .landingYtWrap{
       border-radius: 16px;
@@ -145,29 +144,176 @@
     }
     .landingFooterRow a{ color: rgba(255,255,255,.85); text-decoration:none; }
     .landingFooterRow a:hover{ text-decoration: underline; }
+
+    /* --- Bio (small frame + lees meer) --- */
+    .landingBioGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (min-width: 900px){
+      .landingBioGrid{
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .landingBioLeft .tagsRow{ margin-top: 10px; }
+    /* tags on content should look like labels, not buttons */
+    #app .tagsRow .tag,
+    #app .tagsRow .tagWarm{
+      background: transparent !important;
+      border: 1px solid rgba(255,255,255,.14) !important;
+      color: rgba(255,255,255,.70) !important;
+      cursor: default !important;
+      pointer-events: none !important;
+      user-select: none !important;
+    }
+
+    .landingBioHead{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .landingBioTitle{
+      margin: 0;
+      font-size: 16px;
+      font-weight: 950;
+      letter-spacing: -.2px;
+    }
+
+    .landingBioBody{
+      color: rgba(255,255,255,.78);
+      line-height: 1.65;
+      font-size: 13px;
+    }
+    .landingBioBody p{ margin: 0 0 10px; }
+    .landingBioBody p:last-child{ margin-bottom: 0; }
+
+    /* clamp */
+    .landingBioClamp{
+      max-height: 120px;
+      overflow: hidden;
+      position: relative;
+    }
+    .landingBioClamp::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height: 52px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.55));
+      pointer-events:none;
+    }
+    .landingBioClamp.isOpen{
+      max-height: none;
+      overflow: visible;
+    }
+    .landingBioClamp.isOpen::after{ display:none; }
+
+    .landingQuote{
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display:flex;
+      gap: 10px;
+      color: rgba(255,255,255,.70);
+    }
+    .landingQuoteMark{
+      font-weight: 950;
+      font-size: 18px;
+      line-height: 1;
+      opacity: .9;
+    }
+    .landingQuoteText{ line-height: 1.55; }
+    /* Fix: "Lees meer" knop in Bio — donker & discreet */
+#bio .btn.btnQuiet{
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.85);
+}
+
+#bio .btn.btnQuiet:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.22);
+  color: #fff;
+}
+/* BIO – herstel site.html ritme */
+#bio .bioGrid{
+  align-items: start;
+}
+
+#bio .bioGrid > div:first-child{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#bio .bioGrid > div:last-child{
+  padding-left: 14px;
+  border-left: 1px solid rgba(255,255,255,.08);
+}
+
+@media (max-width: 900px){
+  #bio .bioGrid > div:last-child{
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding-top: 14px;
+  }
+}
+/* zachte inline links zoals op site.html */
+.linkSoft{
+  color: rgba(255,255,255,.85);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.18);
+}
+
+.linkSoft:hover{
+  border-bottom-color: rgba(201,122,58,.9);
+}
+/* Lees meer correct verankeren zoals site.html */
+#bioMoreBtn{
+  align-self: flex-start;
+}
+
+
   </style>
 
-  <!-- JSON-LD: consistent sameAs -->
+  <!-- JSON-LD: consistent sameAs + extra context -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "De Kweker",
     "alternateName": "De Kweker (rapper)",
-    "description": "De Kweker is een rapper uit Brugge (8000). West-Vlaamse rap over mentale druk, identiteit en afkomst. Sober en direct — tekst eerst.",
+    "inLanguage": "nl-BE",
+    "genre": ["Hip hop", "Vlaamse hiphop"],
+    "description": "De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit. Zijn muziek is sober en direct, zonder pose of opsmuk.",
+    "homeLocation": { "@type": "Place", "name": "Brugge, België" },
+    "birthPlace": { "@type": "Place", "name": "Brugge, België" },
+    "affiliation": { "@type": "Organization", "name": "Rugged & Raw" },
+    "memberOf": [{ "@type": "Organization", "name": "Kwartier West" }],
     "url": "https://kwkr.be/",
     "sameAs": [
-      "https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG?si=Su4OGxUlQA6rkwXOIUIxZA",
+      "https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG",
       "https://www.youtube.com/@De.Kweker",
       "https://soundcloud.com/dekweker",
       "https://www.instagram.com/dekweker_"
+    ],
+    "subjectOf": [
+      {
+        "@type": "CreativeWork",
+        "name": "Pokoe Magazine – De Kweker – v(err)oader",
+        "url": "https://pokoemagazine.nl/de-kweker-verroader/"
+      }
     ]
   }
   </script>
 </head>
 
 <body>
-  <!-- Header: houd het simpel, geen router/JS nodig -->
   <header id="site-header">
     <div class="topbar">
       <div class="brand">
@@ -176,6 +322,7 @@
 
       <nav class="navLinks" aria-label="Navigatie">
         <a class="navLink" href="#top">Home</a>
+        <a class="navLink" href="#bio">Bio</a>
         <a class="navLink" href="#uitgelicht">Uitgelicht</a>
         <a class="navLink" href="#contact">Contact</a>
       </nav>
@@ -188,6 +335,7 @@
 
   <main id="app" role="main">
     <div class="landingWrap" id="top">
+
       <!-- HERO -->
       <section class="panel panelWide">
         <div class="landingHero">
@@ -211,7 +359,7 @@
           </div>
 
           <aside class="landingAsideGrid" aria-label="Officiële platformen">
-            <a class="landingLinkCard" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG?si=Su4OGxUlQA6rkwXOIUIxZA" target="_blank" rel="noopener noreferrer">
+            <a class="landingLinkCard" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG" target="_blank" rel="noopener noreferrer">
               <div>
                 <div class="landingLinkTitle">Spotify</div>
                 <div class="landingLinkSub">Releases & features</div>
@@ -234,9 +382,122 @@
               </div>
               <div class="landingLinkHint">Open →</div>
             </a>
+
+            <a class="landingLinkCard" href="https://www.instagram.com/dekweker_" target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="landingLinkTitle">Instagram</div>
+                <div class="landingLinkSub">Updates & snippets</div>
+              </div>
+              <div class="landingLinkHint">Open →</div>
+            </a>
           </aside>
         </div>
       </section>
+
+    <!-- BIO (zelfde ritme als site.html) -->
+<section class="panel panelWide" id="bio" style="margin-top:14px;">
+  <div class="bioHead" style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+    <div>
+      <h2 style="margin:0;">Bio</h2>
+      <div class="mutedSmall" style="margin-top:6px;">Kern + context, zonder promo-taal.</div>
+
+      <div class="kickerWarm" style="margin-top:10px;">
+        <span class="dotWarm"></span> De Kweker · Brugge (8000)
+      </div>
+    </div>
+
+    <button class="btn btnQuiet" type="button" id="bioMoreBtn">Lees meer</button>
+  </div>
+
+  <div class="bioGrid" style="display:grid; grid-template-columns: 1fr 1.2fr; gap: 18px; margin-top:14px;">
+    <!-- LINKS -->
+    <div>
+      <div style="font-weight:950; letter-spacing:-.3px; font-size:20px;">
+        West-Vlaamse rap. Inhoud eerst. Geen pose.
+      </div>
+
+      <div class="bioTags" style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px;">
+        <span class="pill">Releases via <strong>Rugged &amp; Raw</strong></span>
+        <span class="pill">Verbonden aan <strong>Kwartier West</strong></span>
+        <span class="pill">Klank &amp; productie met <strong>NUMB</strong></span>
+      </div>
+
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+  <a class="linkSoft" href="https://www.youtube.com/watch?v=8Q0LB68kxRw" target="_blank">Lekt Em</a>
+  <a class="linkSoft" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG" target="_blank">Spotify</a>
+  <a class="linkSoft" href="#contact">Contact</a>
+</div>
+
+    </div>
+
+    <!-- RECHTS -->
+    <div>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+        <h3 style="margin:0 0 6px; font-weight:950; letter-spacing:-.3px;">Verhaal</h3>
+
+      </div>
+
+      <div class="bioText" style="margin-top:10px; color:rgba(255,255,255,.80); line-height:1.7;">
+        <p style="margin:0 0 10px;">
+          De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit.
+          Zijn muziek is sober en direct, zonder pose of opsmuk, en vertrekt vanuit persoonlijke ervaringen in plaats van trends.
+        </p>
+
+        <p style="margin:0 0 10px;">
+          In zijn teksten balanceert hij tussen introspectie en confrontatie: kwetsbaar waar het moet, hard waar het niet anders kan.
+          De Kweker maakt geen bravoure-rap, maar gebruikt hiphop als middel om dingen te benoemen die meestal verzwegen blijven.
+        </p>
+
+        <!-- hidden extra -->
+        <div id="bioMoreText" style="display:none;">
+          <p style="margin:0 0 10px;">
+            Hij is verbonden aan het collectief Kwartier West en releaset zijn muziek via Rugged &amp; Raw,
+            twee contexten die zijn onafhankelijke en underground benadering versterken zonder zijn verhaal te sturen.
+          </p>
+
+          <p style="margin:0;">
+            De Kweker bouwt gestaag aan een eigen traject binnen de Vlaamse hiphop,
+            met de focus op inhoud, consistentie en geloofwaardigheid boven zichtbaarheid of hype.
+          </p>
+
+          <div style="margin-top:12px;">
+            <a class="btn btnSecondary" href="https://pokoemagazine.nl/de-kweker-verroader/" target="_blank" rel="noopener noreferrer">
+              Pokoe Magazine · v(err)oader
+            </a>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,.08); color:rgba(255,255,255,.68);">
+          <span style="opacity:.6; font-size:22px; position:relative; top:4px;">“</span>
+          Therapie voor mezelf, en hopelijk voor jullie.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @media (max-width: 900px){
+      #bio .bioGrid{ grid-template-columns: 1fr !important; }
+    }
+  </style>
+</section>
+
+<script>
+  // BIO "Lees meer" — lokaal, breekt niets anders
+  (function(){
+    const btn = document.getElementById("bioMoreBtn");
+    const more = document.getElementById("bioMoreText");
+    if(!btn || !more) return;
+
+    let open = false;
+    btn.addEventListener("click", () => {
+      open = !open;
+      more.style.display = open ? "block" : "none";
+      btn.textContent = open ? "Minder" : "Lees meer";
+    });
+  })();
+</script>
+
 
       <!-- FEATURE -->
       <section class="panel panelWide" id="uitgelicht" style="margin-top:14px;">
@@ -251,7 +512,7 @@
               Geen intro, maar een markering. Beeld en tekst vallen samen: sober, direct, zonder franjes.
             </p>
 
-            <div class="landingCredits">
+            <div class="landingInfoBox" aria-label="Credits">
               <div><strong>Regie</strong> · Jan Maes</div>
               <div><strong>Camera</strong> · Patrick Nishimwe</div>
               <div><strong>Edit</strong> · Jason Moens</div>
@@ -259,7 +520,7 @@
 
             <div class="landingCtas">
               <a class="btn btnPrimary" href="https://www.youtube.com/watch?v=8Q0LB68kxRw" target="_blank" rel="noopener noreferrer">Kijk op YouTube</a>
-              <a class="btn btnSecondary" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG?si=Su4OGxUlQA6rkwXOIUIxZA" target="_blank" rel="noopener noreferrer">Luister op Spotify</a>
+              <a class="btn btnSecondary" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG" target="_blank" rel="noopener noreferrer">Luister op Spotify</a>
             </div>
           </div>
 
@@ -279,17 +540,20 @@
       <section class="panel panelWide" id="contact" style="margin-top:14px;">
         <div class="landingSectionHead">
           <h2 class="landingSectionTitle">Contact</h2>
-          <a href="mailto:info@kwkr.be">info@kwkr.be</a>
-          <p class="landingSectionSub">Officiële links — 
+          <p class="landingSectionSub">Bookings, collabs of iets dat klopt: mail is het snelst.</p>
+        </div>
+
+        <div style="margin-top:8px;">
+          <a class="textLink" href="mailto:info@kwkr.be">info@kwkr.be</a>
         </div>
 
         <div class="landingContactGrid">
-          <a class="landingLinkCard" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG?si=Su4OGxUlQA6rkwXOIUIxZA" target="_blank" rel="noopener noreferrer">
+          <a class="landingLinkCard" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG" target="_blank" rel="noopener noreferrer">
             <div>
               <div class="landingLinkTitle">Spotify</div>
-              <div class="landingLinkSub">Artiest pagina</div>
+              <div class="landingLinkSub">Artiestpagina</div>
             </div>
-            <div class="landingLinkHint">Open </div>
+            <div class="landingLinkHint">Open →</div>
           </a>
 
           <a class="landingLinkCard" href="https://www.youtube.com/@De.Kweker" target="_blank" rel="noopener noreferrer">
@@ -297,7 +561,7 @@
               <div class="landingLinkTitle">YouTube</div>
               <div class="landingLinkSub">Kanaal</div>
             </div>
-            <div class="landingLinkHint">Open </div>
+            <div class="landingLinkHint">Open →</div>
           </a>
 
           <a class="landingLinkCard" href="https://soundcloud.com/dekweker" target="_blank" rel="noopener noreferrer">
@@ -305,15 +569,15 @@
               <div class="landingLinkTitle">SoundCloud</div>
               <div class="landingLinkSub">Tracks & extra’s</div>
             </div>
-            <div class="landingLinkHint">Open </div>
+            <div class="landingLinkHint">Open →</div>
           </a>
 
           <a class="landingLinkCard" href="https://www.instagram.com/dekweker_" target="_blank" rel="noopener noreferrer">
             <div>
               <div class="landingLinkTitle">Instagram</div>
-              <div class="landingLinkSub">Volg me!</div>
+              <div class="landingLinkSub">Updates</div>
             </div>
-            <div class="landingLinkHint">Open </div>
+            <div class="landingLinkHint">Open →</div>
           </a>
         </div>
 
@@ -322,12 +586,29 @@
           <div>
             <a href="mailto:info@kwkr.be">info@kwkr.be</a>
             <span style="opacity:.5;margin:0 8px;">·</span>
-            <a href="https://www.youtube.com/watch?v=8Q0LB68kxRw" target="_blank" rel="noopener noreferrer">Clip</a>
+            <a href="https://www.youtube.com/watch?v=8Q0LB68kxRw" target="_blank" rel="noopener noreferrer">Lekt Em</a>
+            <span style="opacity:.5;margin:0 8px;">·</span>
+            <a href="https://pokoemagazine.nl/de-kweker-verroader/" target="_blank" rel="noopener noreferrer">Pokoe</a>
           </div>
         </div>
       </section>
 
     </div>
   </main>
+
+  <!-- Bio toggle (landing-only, safe) -->
+  <script>
+    (function(){
+      const btn = document.getElementById("bioToggle");
+      const body = document.getElementById("bioBody");
+      if(!btn || !body) return;
+
+      btn.addEventListener("click", function(){
+        const open = body.classList.toggle("isOpen");
+        btn.textContent = open ? "Lees minder" : "Lees meer";
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    })();
+  </script>
 </body>
 </html>
