@@ -1,12 +1,8 @@
 {
-  "redirects": [
-    {
-      "source": "/media/:path*",
-      "destination": "https://drive.google.com/uc?export=view&id=1IKZk5SO5ce4MtJ8Dy3rleCREh0LExtCU",
-      "permanent": false
-    }
-  ],
   "rewrites": [
+    { "source": "/context", "destination": "/context/de-kweker-context.pdf" },
+    { "source": "/context/(.*)", "destination": "/context/$1" },
     { "source": "/(.*)", "destination": "/landing.html" }
   ]
 }
+
