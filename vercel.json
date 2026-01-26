@@ -1,8 +1,16 @@
 {
   "rewrites": [
     { "source": "/context", "destination": "/context/de-kweker-context.pdf" },
-    { "source": "/context/(.*)", "destination": "/context/$1" },
-    { "source": "/(.*)", "destination": "/landing.html" }
+    { "source": "/context/(.)", "destination": "/context/$1" },
+
+    { "source": "/site.html", "destination": "/index.html" },
+    { "source": "/shop", "destination": "/index.html" },
+    { "source": "/shop/(.)", "destination": "/index.html" },
+    { "source": "/music", "destination": "/index.html" },
+    { "source": "/music/(.)", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" },
+    { "source": "/contact/(.)", "destination": "/index.html" },
+
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
-
