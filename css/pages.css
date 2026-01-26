@@ -650,3 +650,91 @@
   gap: 14px;
   margin-top: 14px;
 }
+/* =========================================
+   LANDING (index.html) — orange accents onderkant
+   Plak dit HELEMAAL ONDERAAN in /css/pages.css
+   (of /css/components.css als je daar “page tweaks” zet)
+========================================= */
+
+:root{
+  /* gebruikt je bestaande oranje als die bestaat; anders fallback */
+  --kw-accent: var(--warm, var(--accent, #d97a2b));
+}
+
+/* 1) Bio: “Lees meer” + quote-mark subtiel oranje */
+#bio #bioToggle{
+  color: var(--kw-accent);
+}
+#bio #bioToggle:hover{
+  color: rgba(255,255,255,.92);
+  text-decoration: underline;
+  text-decoration-color: var(--kw-accent);
+  text-underline-offset: 3px;
+}
+#bio .bioQuoteMark{
+  color: var(--kw-accent);
+}
+
+/* optioneel: dun accent-streepje links in Bio-titel */
+#bio .bioTitle{
+  position: relative;
+}
+#bio .bioTitle::before{
+  content:"";
+  position:absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--kw-accent);
+  opacity: .9;
+}
+
+/* 2) Contact: mailadres oranje (actiepunt) */
+#contact a[href^="mailto:"]{
+  color: var(--kw-accent);
+  font-weight: 850;
+}
+#contact a[href^="mailto:"]:hover{
+  color: rgba(255,255,255,.92);
+  text-decoration: underline;
+  text-decoration-color: var(--kw-accent);
+  text-underline-offset: 3px;
+}
+
+/* 3) Contact: “Open →” in cards oranje + hover pop */
+#contact .landingLinkHint{
+  color: var(--kw-accent);
+  font-weight: 800;
+}
+#contact .landingLinkCard:hover .landingLinkHint{
+  color: rgba(255,255,255,.92);
+}
+
+/* 4) Onderste footer-rij: accent op de links zonder schreeuw */
+#contact .landingFooterRow a{
+  color: rgba(255,255,255,.82);
+}
+#contact .landingFooterRow a:hover{
+  color: rgba(255,255,255,.95);
+  text-decoration: underline;
+  text-decoration-color: var(--kw-accent);
+  text-underline-offset: 3px;
+}
+
+/* 5) Kleine “line glow” boven contact, heel subtiel */
+#contact.panelWide{
+  box-shadow:
+    0 -1px 0 rgba(255,255,255,.06) inset,
+    0 0 0 1px rgba(255,255,255,.08) inset;
+}
+#contact.panelWide::before{
+  content:"";
+  display:block;
+  height: 1px;
+  margin: -2px 0 14px;
+  background: linear-gradient(90deg, transparent, var(--kw-accent), transparent);
+  opacity: .35;
+}

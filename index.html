@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-  <title>De Kweker — West-Vlaamse rapper uit Brugge (8000)</title>
-  <meta name="description" content="De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit. Sober en direct — tekst eerst." />
+  <title>De Kweker — Brugge (8000)</title>
+  <meta name="description" content="De Kweker is een rapper uit Brugge (8000). West-Vlaams. Muziek die dicht op het leven zit — zonder uitleg ernaast." />
   <meta name="robots" content="index,follow" />
 
   <link rel="canonical" href="https://kwkr.be/" />
@@ -13,8 +13,8 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="De Kweker" />
-  <meta property="og:title" content="De Kweker — West-Vlaamse rapper uit Brugge (8000)" />
-  <meta property="og:description" content="De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit. Sober en direct — tekst eerst." />
+  <meta property="og:title" content="De Kweker — Brugge (8000)" />
+  <meta property="og:description" content="De Kweker is een rapper uit Brugge (8000). West-Vlaams. Muziek die dicht op het leven zit — zonder uitleg ernaast." />
   <meta property="og:image" content="https://kwkr.be/assets/og-cover.jpg" />
   <meta property="og:url" content="https://kwkr.be/" />
 
@@ -39,6 +39,22 @@
 
   <!-- Landing-only helpers: veilig & scoped -->
   <style>
+    /* ===== Oranje accent (subtiel, niet schreeuwerig) ===== */
+    :root{
+      --kwkr-accent: rgba(255, 154, 60, .92);     /* warm orange */
+      --kwkr-accent-soft: rgba(255, 154, 60, .16);
+      --kwkr-accent-line: rgba(255, 154, 60, .28);
+      --kwkr-accent-glow: rgba(255, 154, 60, .10);
+    }
+    .accentWarm{ color: var(--kwkr-accent); }
+    .accentLine{
+      height: 1px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent, var(--kwkr-accent-line), transparent);
+      opacity: .9;
+      margin: 12px 0;
+    }
+
     /* container zoals je site gebruikt */
     .landingWrap{
       width: var(--container);
@@ -72,9 +88,7 @@
     }
 
     /* Zorg dat de toggleknop niet ‘raar’ doet */
-    #bioToggle{
-      white-space: nowrap;
-    }
+    #bioToggle{ white-space: nowrap; }
 
     /* Uitgelicht + embed blok consistent */
     .landingFeature{
@@ -95,18 +109,33 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.25);
       aspect-ratio: 16 / 9;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 12px 40px rgba(0,0,0,.35);
     }
     .landingYtWrap iframe{ width:100%; height:100%; border:0; display:block; }
 
+    /* credits: beetje warmte, minder saai */
     .landingCredits{
       margin-top: 12px;
-      padding: 12px;
+      padding: 12px 12px 12px 14px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.08);
       background: rgba(0,0,0,.18);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 0 0 1px var(--kwkr-accent-glow);
+      position: relative;
       color: rgba(255,255,255,.78);
       line-height: 1.6;
       font-size: 13px;
+    }
+    .landingCredits:before{
+      content:"";
+      position:absolute;
+      left: 0;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      border-radius: 2px;
+      background: var(--kwkr-accent-line);
+      opacity: .9;
     }
     .landingCredits strong{ color: rgba(255,255,255,.92); }
 
@@ -132,16 +161,28 @@
       backdrop-filter: blur(10px);
       text-decoration:none;
       color: rgba(255,255,255,.92);
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+      position: relative;
+      overflow: hidden;
+    }
+    .landingLinkCard:after{
+      content:"";
+      position:absolute;
+      inset: 0;
+      background: radial-gradient(800px 220px at 18% 0%, var(--kwkr-accent-soft), transparent 60%);
+      opacity: .65;
+      pointer-events:none;
     }
     .landingLinkCard:hover{
       transform: translateY(-1px);
       border-color: rgba(255,255,255,.16);
       background: rgba(10,10,10,.62);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset, 0 14px 40px rgba(0,0,0,.35);
     }
     .landingLinkTitle{ font-weight: 950; letter-spacing: -.2px; }
     .landingLinkSub{ margin-top: 6px; color: rgba(255,255,255,.70); font-size: 13px; line-height: 1.45; }
-    .landingLinkHint{ align-self:center; color: rgba(255,255,255,.70); font-size: 12px; }
+    .landingLinkHint{ align-self:center; color: rgba(255,255,255,.72); font-size: 12px; }
 
     .landingFooterRow{
       margin-top: 16px;
@@ -159,14 +200,14 @@
     .landingFooterRow a:hover{ text-decoration: underline; }
   </style>
 
-  <!-- JSON-LD: Person + sameAs + Pokoe -->
+  <!-- JSON-LD: Person + sameAs + Pokoe (in dezelfde “kweker” taal) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "De Kweker",
     "alternateName": "De Kweker (rapper)",
-    "description": "De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit. Zijn muziek is sober en direct, zonder pose of opsmuk, en vertrekt vanuit persoonlijke ervaringen in plaats van trends. In zijn teksten balanceert hij tussen introspectie en confrontatie: kwetsbaar waar het moet, hard waar het niet anders kan. Hij is verbonden aan het collectief Kwartier West en releaset zijn muziek via Rugged & Raw, twee contexten die zijn onafhankelijke en underground benadering versterken zonder zijn verhaal te sturen. De Kweker bouwt gestaag aan een eigen traject binnen de Vlaamse hiphop, met de focus op inhoud, consistentie en geloofwaardigheid boven zichtbaarheid of hype.",
+    "description": "De Kweker is een rapper uit Brugge (8000). Hij rapt in het West-Vlaams. Muziek die dicht op het leven zit — zonder uitleg ernaast. Verbonden aan Kwartier West. Releases via Rugged & Raw.",
     "inLanguage": "nl-BE",
     "homeLocation": { "@type": "Place", "name": "Brugge, België" },
     "birthPlace": { "@type": "Place", "name": "Brugge, België" },
@@ -221,8 +262,8 @@
         <h1 class="heroTitle" style="margin-top:10px;">Muziek.<br/>Zonder filter.</h1>
 
         <p class="lead" style="max-width:58ch;">
-          West-Vlaamse rap over mentale druk, afkomst en identiteit.
-          Sober en direct — tekst eerst.
+          West-Vlaamse rap.<br/>
+          <span class="accentWarm">Geen uitleg ernaast.</span>
         </p>
 
         <div class="ctaRow" style="margin-top:14px;">
@@ -258,13 +299,17 @@
         <div class="landingFeature">
           <div>
             <p style="margin:0;color:rgba(255,255,255,.82);line-height:1.6;">
-              Geen intro, maar een markering. Beeld en tekst vallen samen: sober, direct, zonder zever.
+              Geen intro. Gewoon neerzetten.
+              Beeld en tekst zitten op elkaar.
             </p>
 
-            <div class="landingCredits">
+            <div class="accentLine" aria-hidden="true"></div>
+
+            <div class="landingCredits" aria-label="Credits Lekt Em">
               <div><strong>Regie</strong> · Jan Maes</div>
               <div><strong>Camera</strong> · Patrick Nishimwe</div>
               <div><strong>Edit</strong> · Jason Moens</div>
+              <div><strong>Klank</strong> · <span class="accentWarm">NUMB</span></div>
             </div>
 
             <div class="ctaRow" style="margin-top:14px;">
@@ -291,7 +336,7 @@
         </div>
       </section>
 
-      <!-- BIO (met jouw kanon tekst) -->
+      <!-- BIO -->
       <section class="panel panelWide" id="bio" style="margin-top:14px;">
         <div class="bioHero">
           <div class="bioLeft">
@@ -300,7 +345,8 @@
             <h2 class="bioTitle">De Kweker.</h2>
 
             <p class="bioLead">
-              Geen pose. Geen rol. Wat blijft als de ruis wegvalt.
+              Geen zever. Eigen kweek.<br/>
+              Wat overblijft als het stil wordt.
             </p>
 
             <div class="tagsRow" style="margin-top:10px;">
@@ -327,55 +373,63 @@
 
             <div class="bioBody" id="bioText">
               <p>
-                De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit.
-                Zijn muziek is sober en direct, zonder pose of opsmuk, en vertrekt vanuit persoonlijke ervaringen in plaats van trends.
+                De Kweker is een rapper uit Brugge (8000).
+                Hij rapt in het West-Vlaams.
+                Omdat dat is hoe er gedacht en gesproken wordt.
               </p>
 
               <p>
-                In zijn teksten balanceert hij tussen introspectie en confrontatie: kwetsbaar waar het moet, hard waar het niet anders kan.
-                De Kweker maakt geen bravoure-rap, maar gebruikt hiphop als middel om dingen te benoemen die meestal verzwegen blijven.
+                De muziek blijft dicht bij de kern.
+                Geen omwegen, geen verpakking.
+                Wat erin zit, komt uit eigen leven, niet uit wat op dat moment werkt.
               </p>
 
               <p>
-                Hij is verbonden aan het collectief <strong>Kwartier West</strong> en releaset zijn muziek via <strong>Rugged &amp; Raw</strong>,
-                twee contexten die zijn onafhankelijke en underground benadering versterken zonder zijn verhaal te sturen.
+                De teksten zijn persoonlijk, maar niet vrijblijvend.
+                Soms ingetogen, soms confronterend.
+                Niet om indruk te maken, maar omdat het zo gezegd moet worden.
               </p>
 
               <p>
-                De Kweker bouwt gestaag aan een eigen traject binnen de Vlaamse hiphop, met de focus op inhoud, consistentie en
-                geloofwaardigheid boven zichtbaarheid of hype.
+                De Kweker maakt deel uit van <strong>Kwartier West</strong>
+                en brengt zijn muziek uit via <strong>Rugged &amp; Raw</strong>.
+                Twee omgevingen die ruimte laten, zonder richting op te leggen.
               </p>
             </div>
 
             <div class="bioQuote">
               <span class="bioQuoteMark">“</span>
-              <span class="bioQuoteText">Therapie voor mezelf, en hopelijk voor jullie.</span>
+              <span class="bioQuoteText">Therapie voor mezelf, en misschien ook voor jullie.</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- CONTACT (zoals je echte site: clean) -->
+      <!-- CONTACT -->
       <section class="panel panelWide" id="contact" style="margin-top:14px;">
         <div class="kickerWarm"><span class="dotWarm"></span> Contact</div>
-        <h2 style="margin:10px 0 8px;">Bookings & info</h2>
+        <h2 style="margin:10px 0 8px;">Bookings & links</h2>
 
         <div class="landingGrid2">
           <div class="panel" style="padding:16px;">
             <h3 style="margin:0 0 6px;">Mail</h3>
-            <p class="mutedSmall" style="margin:0 0 10px;">Zet liefst onderwerp + datum/plaats als het over booking gaat.</p>
+            <p class="mutedSmall" style="margin:0 0 10px;">
+              Voor bookings: onderwerp + datum/plaats.
+            </p>
             <a class="textLink" href="mailto:info@kwkr.be">info@kwkr.be</a>
           </div>
 
           <div class="panel" style="padding:16px;">
-            <h3 style="margin:0 0 6px;">Officiële links</h3>
-            <p class="mutedSmall" style="margin:0 0 10px;">Alles op één lijn, overal hetzelfde.</p>
+            <h3 style="margin:0 0 6px;">Links</h3>
+            <p class="mutedSmall" style="margin:0 0 10px;">
+              Overal dezelfde lijn.
+            </p>
 
             <div class="landingGrid2" style="margin-top:0;">
               <a class="landingLinkCard" href="https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG" target="_blank" rel="noopener noreferrer">
                 <div>
                   <div class="landingLinkTitle">Spotify</div>
-                  <div class="landingLinkSub">Artiest pagina</div>
+                  <div class="landingLinkSub">Artiestpagina</div>
                 </div>
                 <div class="landingLinkHint">Open →</div>
               </a>
@@ -393,6 +447,7 @@
 
         <div class="landingFooterRow">
           <div>Brugge (8000)</div>
+          <div> © 2026 De Kweker. Alle rechten voorbehouden.</div>
           <div>
             <a href="https://pokoemagazine.nl/de-kweker-verroader/" target="_blank" rel="noopener noreferrer">Pokoe</a>
             <span style="opacity:.5;margin:0 8px;">·</span>
@@ -405,6 +460,7 @@
 
     </div>
   </main>
+  
 
   <!-- Bio toggle (no dependencies) -->
   <script>

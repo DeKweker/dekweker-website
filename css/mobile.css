@@ -199,3 +199,41 @@ body.no-scroll{
     opacity: .7;
   }
 }
+/* =========================
+   Mobile: minder donker bovenaan
+   (zonder je warme kleurlaag kapot te maken)
+   Plak helemaal onderaan in css/mobile.css
+========================= */
+@media (max-width: 900px){
+
+  /* 1) Raak je bestaande body::before/after backgrounds NIET aan.
+        We temperen enkel de donkerste overlay laag.
+        In 99% setups is body::after de "shade/vignette" laag. */
+  body::after{
+    opacity: .55 !important; /* probeer .45 als je nóg lichter wil */
+  }
+
+  /* 2) Extra zachte "lichtkap" bovenaan, los van je bestaande layers */
+  #app{
+    position: relative;
+  }
+  #app::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    /* lichte warm/neutral top fade */
+    background: radial-gradient(140% 70% at 50% 0%,
+      rgba(255,255,255,.10) 0%,
+      rgba(205,132,66,.10) 22%,
+      rgba(0,0,0,0) 58%
+    );
+  }
+
+  /* 3) Zorg dat je echte content boven die overlay blijft */
+  #site-header, #app > *{
+    position: relative;
+    z-index: 1;
+  }
+}
