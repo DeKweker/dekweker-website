@@ -98,38 +98,38 @@ function renderHome(app) {
       <div class="heroMain">
         <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Tunnelvisie</div>
 
-        <div class="editionRow" style="margin-top:10px;">
-          <span class="counterBadge">
+        <div class="editionRow">
+          <span class="counterBadge counterBadgeWarm">
             <strong id="editionCount" data-edition-sold>1</strong>
-            <small>/</small>
+            <small class="counterSlash">/</small>
             <small id="editionTotal" data-edition-total>${EDITION_TOTAL}</small>
-            <span>Genummerde vinyl</span>
+            <span class="counterLabel">Genummerde vinyl</span>
           </span>
         </div>
 
-        <h1 class="heroTitle">ALBUM RELEASE.<br/>Tunnelvisie.</h1>
+        <h1 class="heroTitle heroTitleAccent">ALBUM RELEASE.<br/>Tunnelvisie.</h1>
 
         <p class="lead">
           Eerlijke miserie, echte emoties, een blik op de tweestrijd in mezelf.
         </p>
 
-        <div class="ctaRow">
-          <a class="btn btnPrimary" href="#shop">Kopen</a>
+        <div class="ctaRow heroCtas">
+          <a class="btn btnPrimary btnWarmFocus" href="#shop">Kopen</a>
           <a class="btn btnSecondary" href="#music">Luister</a>
           <a class="btn btnQuiet" href="#contact">Contact</a>
         </div>
       </div>
 
       <aside class="heroAside">
-        <div class="cardMini">
+        <div class="cardMini cardMiniWarm">
           <h3>Gemaakt om te voelen</h3>
           <p>Geschreven voor mezelf, uitgebracht voor jullie.</p>
         </div>
-        <div class="cardMini">
+        <div class="cardMini cardMiniWarm">
           <h3>Beperkte oplage</h3>
           <p>Vinyl pressing wordt beperkt tot 150stuks. Dit is dus een collector stuk.</p>
         </div>
-        <div class="cardMini">
+        <div class="cardMini cardMiniWarm">
           <h3>Emotie is de basis</h3>
           <p>Geen kostuum. Geen filter. Gewoon wat het is.</p>
         </div>
@@ -141,146 +141,132 @@ function renderHome(app) {
       <div class="availGrid">
         <div class="availLeft">
           <div class="kickerWarm"><span class="dotWarm"></span> Nu beschikbaar</div>
-          <h2 style="margin:10px 0 8px;">Tunnelvisie</h2>
 
-          <p style="margin:0 0 10px;color:rgba(255,255,255,.85);line-height:1.6;">
+          <h2 class="availTitle">Tunnelvisie</h2>
+
+          <p class="availDesc">
             Op vinyl &amp; CD — op = op.<br/>
-            Vinyl pressing start pas na <strong>100 pre-orders</strong>.
+            Vinyl pressing start pas na <strong class="accentWarm">100 pre-orders</strong>.
           </p>
 
-          <div class="tagsRow" style="margin:10px 0 0;">
+          <div class="tagsRow availTags">
             <span class="tag">Beperkte oplage</span>
             <span class="tag">Collector item</span>
-            <span class="tag tagWarm">Genummerd <span style="opacity:.9;">#</span><span data-edition-sold>1</span>/<span data-edition-total>${EDITION_TOTAL}</span></span>
+            <span class="tag tagWarm">
+              Genummerd <span class="tagHash">#</span><span data-edition-sold>1</span>/<span data-edition-total>${EDITION_TOTAL}</span>
+            </span>
           </div>
 
-          <div class="ctaRow" style="margin-top:14px;">
-            <a class="btn btnPrimary" href="#shop">Naar de shop</a>
+          <div class="ctaRow availCtas">
+            <a class="btn btnPrimary btnWarmFocus" href="#shop">Naar de shop</a>
             <a class="btn btnSecondary" href="#music">Eerst luisteren</a>
           </div>
         </div>
 
         <div class="availRight" aria-hidden="true">
-          <a class="availImgWrap" href="#shop/vinyl" title="Vinyl">
+          <a class="availImgWrap availImgWrapWarm" href="#shop/vinyl" title="Vinyl">
             <img
               class="availImg"
               src="./assets/products/vinyl/tunnelvisie-front.webp"
               alt="Tunnelvisie — Vinyl"
               loading="lazy"
             />
-            <div class="availTag">Vinyl</div>
+            <div class="availTag availTagWarm">Vinyl</div>
           </a>
 
-          <a class="availImgWrap" href="#shop/cd" title="CD">
+          <a class="availImgWrap availImgWrapWarm" href="#shop/cd" title="CD">
             <img
               class="availImg"
               src="./assets/products/cd/tunnelvisie-front-cd.webp"
               alt="Tunnelvisie — CD"
               loading="lazy"
             />
-            <div class="availTag">CD</div>
+            <div class="availTag availTagWarm">CD</div>
           </a>
         </div>
       </div>
     </section>
 
-<!-- Bio -->
-<section class="panel panelWide">
-  <div class="bioHero">
-    <div class="bioLeft">
-      <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Brugge (8000)</div>
+    <!-- Bio -->
+    <section class="panel panelWide" id="bio">
+      <div class="bioHero">
+        <div class="bioLeft">
+          <div class="kickerWarm"><span class="dotWarm"></span> De Kweker • Brugge (8000)</div>
 
-      <h2 class="bioTitle">De Kweker.</h2>
+          <h2 class="bioTitle">De Kweker.</h2>
 
-      <p class="bioLead">
-        Geen pose. Geen rol. Wat blijft als de ruis wegvalt.
-      </p>
+          <p class="bioLead">
+            Geen pose. Geen rol. Wat blijft als de ruis wegvalt.
+          </p>
 
-      <div class="tagsRow" style="margin-top:10px;">
-        <span class="tag">Releases via <strong>Rugged &amp; Raw</strong></span>
-        <span class="tag">Verbonden aan <strong>Kwartier West</strong></span>
-        <span class="tag">Klank &amp; productie met <strong>NUMB</strong></span>
+          <div class="tagsRow bioTags">
+            <span class="tag">Releases via <strong>Rugged &amp; Raw</strong></span>
+            <span class="tag">Verbonden aan <strong>Kwartier West</strong></span>
+            <span class="tag">Klank &amp; productie met <strong>NUMB</strong></span>
+          </div>
+
+          <div class="ctaRow bioCtas">
+            <a class="btn btnPrimary btnWarmFocus" href="#music">Music</a>
+            <a class="btn btnSecondary" href="#shop">Shop</a>
+            <a class="btn btnQuiet" href="#contact">Contact</a>
+          </div>
+        </div>
+
+        <div class="bioRight isCollapsed" id="bioPanel">
+          <div class="bioTextHead">
+            <h3 class="bioTextTitle">Verhaal</h3>
+            <button class="btn btnQuiet btnWarmLink" id="bioToggle" type="button" aria-expanded="false" aria-controls="bioText">
+              Lees meer
+            </button>
+          </div>
+
+          <div class="bioBody" id="bioText">
+            <p>
+              De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit.
+              Zijn muziek is sober en direct, zonder pose of opsmuk, en vertrekt vanuit persoonlijke ervaringen in plaats van trends.
+            </p>
+
+            <p>
+              In zijn teksten balanceert hij tussen introspectie en confrontatie: kwetsbaar waar het moet, hard waar het niet anders kan.
+              De Kweker maakt geen bravoure-rap, maar gebruikt hiphop als middel om dingen te benoemen die meestal verzwegen blijven.
+            </p>
+
+            <p>
+              Hij is verbonden aan het collectief <strong>Kwartier West</strong> en releaset zijn muziek via <strong>Rugged &amp; Raw</strong>,
+              twee contexten die zijn onafhankelijke en underground benadering versterken zonder zijn verhaal te sturen.
+            </p>
+
+            <p>
+              De Kweker bouwt gestaag aan een eigen traject binnen de Vlaamse hiphop, met de focus op inhoud, consistentie en
+              geloofwaardigheid boven zichtbaarheid of hype.
+            </p>
+          </div>
+
+          <div class="bioQuote">
+            <span class="bioQuoteMark">“</span>
+            <span class="bioQuoteText">Therapie voor mezelf, en hopelijk voor jullie.</span>
+          </div>
+        </div>
       </div>
-
-      <div class="ctaRow" style="margin-top:14px;">
-        <a class="btn btnPrimary" href="#music">Music</a>
-        <a class="btn btnSecondary" href="#shop">Shop</a>
-        <a class="btn btnQuiet" href="#contact">Contact</a>
-      </div>
-    </div>
-
-    <!-- ✅ starts collapsed by default -->
-    <div class="bioRight isCollapsed" id="bioPanel">
-      <div class="bioTextHead">
-        <h3 class="bioTextTitle">Verhaal</h3>
-        <button class="btn btnQuiet" id="bioToggle" type="button" aria-expanded="false" aria-controls="bioText">
-          Lees meer
-        </button>
-      </div>
-
-      <div class="bioBody" id="bioText">
-        <p>
-          De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, afkomst en identiteit.
-          Zijn muziek is sober en direct, zonder pose of opsmuk, en vertrekt vanuit persoonlijke ervaringen in plaats van trends.
-        </p>
-
-        <p>
-          In zijn teksten balanceert hij tussen introspectie en confrontatie: kwetsbaar waar het moet, hard waar het niet anders kan.
-          De Kweker maakt geen bravoure-rap, maar gebruikt hiphop als middel om dingen te benoemen die meestal verzwegen blijven.
-        </p>
-
-        <p>
-          Hij is verbonden aan het collectief <strong>Kwartier West</strong> en releaset zijn muziek via <strong>Rugged &amp; Raw</strong>,
-          twee contexten die zijn onafhankelijke en underground benadering versterken zonder zijn verhaal te sturen.
-        </p>
-
-        <p>
-          De Kweker bouwt gestaag aan een eigen traject binnen de Vlaamse hiphop, met de focus op inhoud, consistentie en
-          geloofwaardigheid boven zichtbaarheid of hype.
-        </p>
-      </div>
-
-      <div class="bioQuote">
-        <span class="bioQuoteMark">“</span>
-        <span class="bioQuoteText">Therapie voor mezelf, en hopelijk voor jullie.</span>
-      </div>
-    </div>
-  </div>
-</section>
-
+    </section>
   `;
 
   syncEditionUI();
 }
 
-function wireBioToggle() {
-  const btn = document.getElementById("bioToggle");
-  const body = document.getElementById("bioBody");
-  if (!btn || !body) return;
-
-  const freshBtn = btn.cloneNode(true);
-  btn.parentNode.replaceChild(freshBtn, btn);
-
-  freshBtn.addEventListener("click", () => {
-    const open = body.classList.toggle("open");
-    freshBtn.textContent = open ? "Lees minder" : "Lees meer";
-    freshBtn.setAttribute("aria-expanded", open ? "true" : "false");
-  });
-}
-
 /* ---------------------------
    MUSIC
 --------------------------- */
-function renderMusic(app) { 
+function renderMusic(app) {
   app.innerHTML = `
     <section class="panel panelWide">
       <div class="musicTop">
         <h1>Music</h1>
-        <p>Releases en beelden — helder, zonder ruis.</p>
+        <p>Releases en beelden. Klaar en simpel.</p>
 
         <div class="ctaRow musicTopCtas">
-          <a class="btn btnPrimary" href="${SPOTIFY_ARTIST_URL}" target="_blank" rel="noopener noreferrer">Open in Spotify</a>
-          <a class="btn btnSecondary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Bekijk op YouTube</a>
+          <a class="btn btnPrimary" href="${SPOTIFY_ARTIST_URL}" target="_blank" rel="noopener noreferrer">Spotify</a>
+          <a class="btn btnSecondary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">YouTube</a>
         </div>
       </div>
 
@@ -290,16 +276,16 @@ function renderMusic(app) {
             <span class="dotWarm"></span> Uitgelicht
           </div>
 
-          <h2 class="musicH2">Lekt Em (officiële videoclip)</h2>
+          <h2 class="musicH2">Lekt Em — officiële videoclip</h2>
 
           <p class="musicLead">
-            <strong>Eerste videoclip.</strong><br>
-            Geen intro, maar een markering.
+            <strong>Eerste clip.</strong><br>
+            Recht in beeld.
           </p>
 
           <p class="musicPara">
-            De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams rapt over mentale druk, identiteit en afkomst.
-            In <em>Lekt Em</em> valt beeld en tekst samen: sober, direct, zonder franjes.
+            <em>Lekt Em</em> zet neer wie De Kweker is: Brugge (8000), West-Vlaams.
+            Beeld en tekst zitten op elkaar.
           </p>
 
           <hr class="soft">
@@ -307,15 +293,16 @@ function renderMusic(app) {
           <p class="musicCredits">
             <strong>Regie</strong> · Jan Maes<br>
             <strong>Camera</strong> · Patrick Nishimwe<br>
-            <strong>Edit</strong> · Jason Moens
+            <strong>Edit</strong> · Jason Moens<br>
+            <strong>Klank</strong> · <span class="accentWarm">NUMB</span>
           </p>
 
           <p class="musicHint">
-            Alles wat je zoekt staat op één plek: clip, releases, context.
+            De rest staat bij de muziek.
           </p>
 
           <div class="ctaRow musicSpotCtas">
-            <a class="btn btnPrimary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Kijk op YouTube</a>
+            <a class="btn btnPrimary" href="${YT_URL}" target="_blank" rel="noopener noreferrer">Kijk</a>
             <a class="btn btnSecondary" href="#shop">Shop</a>
             <a class="btn btnQuiet" href="#contact">Contact</a>
           </div>
@@ -339,7 +326,7 @@ function renderMusic(app) {
         <div class="musicCard panel">
           <div class="musicCardHead">
             <h3>Spotify</h3>
-            <p class="mutedSmall">Releases en features, netjes gebundeld.</p>
+            <p class="mutedSmall">Alles samen. Geen omweg.</p>
           </div>
 
           <div class="spotifyFrameWrap">
@@ -350,29 +337,29 @@ function renderMusic(app) {
               frameborder="0"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               loading="lazy"
-              title="De Kweker on Spotify"
+              title="De Kweker op Spotify"
             ></iframe>
           </div>
         </div>
 
         <div class="musicCard panel">
           <div class="musicCardHead">
-            <h3>Context</h3>
-            <p class="mutedSmall">Waar het gemaakt wordt — zonder het verhaal over te nemen.</p>
+            <h3>Rond de muziek</h3>
+            <p class="mutedSmall">Met wie, en waar.</p>
           </div>
 
           <div class="musicNotes">
             <div class="noteLine">
               <span class="noteDot"></span>
-              <span><strong>Rugged &amp; Raw</strong> is waar releases landen — structuur, geen slogan.</span>
+              <span><strong>Rugged &amp; Raw</strong> — releases.</span>
             </div>
             <div class="noteLine">
               <span class="noteDot"></span>
-              <span><strong>Kwartier West</strong> is het collectief — uitwisseling, scherpte, onafhankelijkheid.</span>
+              <span><strong>Kwartier West</strong> — crew.</span>
             </div>
             <div class="noteLine">
               <span class="noteDot"></span>
-              <span><strong>NUMB</strong> draagt de klank — ruimte en spanning die tekst laat ademen.</span>
+              <span><strong>NUMB</strong> — klank.</span>
             </div>
 
             <div class="ctaRow musicContextCtas">
@@ -461,6 +448,26 @@ function handleCheckoutResult() {
 }
 
 /* ---------------------------
+   BIO toggle (single source of truth)
+--------------------------- */
+function wireBioToggleDelegated() {
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("#bioToggle");
+    if (!btn) return;
+
+    const panel = document.querySelector("#bioPanel");
+    if (!panel) return;
+
+    const wasCollapsed = panel.classList.contains("isCollapsed");
+    panel.classList.toggle("isCollapsed");
+
+    const expanded = wasCollapsed;
+    btn.textContent = expanded ? "Lees minder" : "Lees meer";
+    btn.setAttribute("aria-expanded", expanded ? "true" : "false");
+  });
+}
+
+/* ---------------------------
    Router
 --------------------------- */
 function renderPage() {
@@ -484,7 +491,6 @@ function renderPage() {
 
   if (route === "/home") {
     renderHome(app);
-    wireBioToggle();
     return;
   }
 
@@ -499,11 +505,9 @@ function renderPage() {
   }
 
   renderHome(app);
-  wireBioToggle();
 }
 
 window.addEventListener("hashchange", () => {
-  // feels cleaner: close menu before page swap
   closeHeaderMenu?.();
   renderPage();
 });
@@ -511,24 +515,8 @@ window.addEventListener("hashchange", () => {
 window.addEventListener("DOMContentLoaded", () => {
   ensureUIRoot();
   handleCheckoutResult();
+  wireBioToggleDelegated(); // ✅ once
   renderPage();
 
   if (cartCount() > 0) syncCartBadge();
-});
-document.addEventListener("click", (e) => {
-  const btn = e.target.closest("#bioToggle");
-  if (!btn) return;
-
-  const panel = document.querySelector("#bioPanel");
-  if (!panel) return;
-
-  const wasCollapsed = panel.classList.contains("isCollapsed");
-
-  // toggle class
-  panel.classList.toggle("isCollapsed");
-
-  // update button text + aria
-  const expanded = wasCollapsed; // if it was collapsed, now it’s expanded
-  btn.textContent = expanded ? "Lees minder" : "Lees meer";
-  btn.setAttribute("aria-expanded", expanded ? "true" : "false");
 });

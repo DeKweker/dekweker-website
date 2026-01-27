@@ -1,22 +1,26 @@
 /* css/ui.css
-   UI system: buttons, links, tags, chips
+   UI system: buttons, links, tags, chips, counters
+   RULE: no page/shop/cart/bio/layout rules here.
 */
 
 :root{
   --warm: rgba(205,127,73,.95);
   --warm2: rgba(255,170,90,.55);
-  --ink: rgba(0,0,0,.35);
-  --glass: rgba(14,14,16,.42);
-  --glass2: rgba(14,14,16,.55);
+
   --line: rgba(255,255,255,.12);
   --line2: rgba(255,255,255,.18);
+
   --text: rgba(255,255,255,.92);
   --muted: rgba(255,255,255,.68);
+
   --shadow: 0 18px 45px rgba(0,0,0,.38);
   --radius: 999px;
   --focus: 2px solid rgba(205,127,73,.60);
 }
 
+/* =========================
+   Buttons
+========================= */
 .btn{
   -webkit-tap-highlight-color: transparent;
   -webkit-appearance: none;
@@ -26,6 +30,7 @@
   border: 1px solid var(--line);
   background: rgba(18,18,20,.35);
   color: var(--text);
+
   padding: 10px 14px;
   border-radius: var(--radius);
 
@@ -58,7 +63,7 @@
 .btn:active{ transform: scale(.98); }
 .btn:focus-visible{ outline: var(--focus); outline-offset: 2px; }
 
-/* ✅ Ghost modifier (used by menu.js + toast.js) */
+/* Ghost modifier (used by menu.js + toast.js) */
 .btn.ghost{
   background: rgba(18,18,20,.18);
   border-color: rgba(255,255,255,.10);
@@ -70,6 +75,7 @@
   color: rgba(255,255,255,.92);
 }
 
+/* Variants */
 .btnPrimary{
   background: linear-gradient(180deg, rgba(205,127,73,.95), rgba(165,96,55,.92));
   border-color: rgba(255,200,150,.18);
@@ -112,6 +118,9 @@
   justify-content: center;
 }
 
+/* =========================
+   Links
+========================= */
 .textLink{
   color: rgba(255,255,255,.80);
   text-decoration: none;
@@ -126,38 +135,59 @@
   border-color: rgba(205,127,73,.55);
 }
 
+/* =========================
+   Tags (used as chips/labels)
+========================= */
+.tagsRow{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top: 10px;
+}
+
 .tag{
   display: inline-flex;
   align-items: center;
   gap: 8px;
+
   padding: 7px 10px;
   border-radius: 999px;
+
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(14,14,16,.22);
   color: rgba(255,255,255,.72);
+
   font-size: 12px;
   font-weight: 650;
   letter-spacing: .15px;
   user-select: none;
 }
+
 .tagWarm{
-  border-color: rgba(205,127,73,.18);
-  background: rgba(205,127,73,.10);
+  border-color: rgba(205,127,73,.22);
+  background: rgba(205,127,73,.12);
   color: rgba(255,220,195,.92);
 }
 
+/* =========================
+   Counter badge (edition / counts)
+========================= */
 .counterBadge{
   display:inline-flex;
   align-items:center;
   gap: 8px;
+
   padding: 7px 10px;
   border-radius: 999px;
+
   border: 1px solid rgba(205,127,73,.18);
   background: rgba(205,127,73,.10);
   color: rgba(255,220,195,.92);
+
   font-weight: 750;
   font-size: 12px;
 }
+
 .counterBadge strong{
   color: rgba(255,255,255,.92);
   font-weight: 850;
@@ -167,6 +197,9 @@
   font-weight: 700;
 }
 
+/* =========================
+   Chips (clickable filters)
+========================= */
 .chip{
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -175,10 +208,13 @@
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(14,14,16,.24);
   color: rgba(255,255,255,.74);
+
   padding: 7px 10px;
   border-radius: 999px;
+
   font-size: 12px;
   font-weight: 700;
+
   cursor: pointer;
   transition: background .12s ease, border-color .12s ease, transform .12s ease, color .12s ease;
   will-change: transform;
@@ -190,168 +226,34 @@
 }
 .chip:active{ transform: scale(.98); }
 .chip:focus-visible{ outline: var(--focus); outline-offset: 2px; }
+
 .chip.isActive{
   border-color: rgba(205,127,73,.28);
   background: rgba(205,127,73,.12);
   color: rgba(255,220,195,.95);
 }
 
-.actionsRow{ display:flex; flex-wrap:wrap; gap:10px; }
-.tagsRow{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
+/* =========================
+   Layout helpers
+========================= */
+.actionsRow{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
 
 @media (prefers-reduced-motion: reduce){
   .btn, .chip{ transition: none; }
   .btn:active, .chip:active{ transform: none; }
 }
+
 /* =========================
-   CART — absolute priority
+   Content meta labels
+   ONLY for Now Available (availTags)
 ========================= */
 
-#cartOverlay{
-  position: fixed;
-  inset: 0;
-  z-index: 9000; /* hoger dan mobile menu */
-}
-
-#cartOverlay.open{
-  display: block;
-}
-
-#cartDrawer{
-  position: fixed;
-  z-index: 9001;
-}
-
-#cartDrawer.open{
-  display: block;
-}
-/* =========================================
-   HOTFIX: Cart drawer zichtbaar + scroll lock correct
-   + Shop front/back hover flip + sane sizing
-========================================= */
-
-/* --- Cart layering --- */
-#cartOverlay.overlay{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .18s ease;
-  z-index: 9000;
-}
-#cartOverlay.overlay.open{
-  opacity: 1;
-  pointer-events: auto;
-}
-
-#cartDrawer.cart{
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100dvh;
-  width: min(420px, 92vw);
-  background: rgba(10,10,10,.92);
-  border-left: 1px solid rgba(255,255,255,.08);
-  transform: translateX(110%);
-  transition: transform .22s ease;
-  z-index: 9010; /* ✅ boven overlay */
-  overflow: hidden;
-}
-#cartDrawer.cart.open{
-  transform: translateX(0);
-}
-
-body.cart-open{
-  overflow: hidden;
-}
-
-/* --- Zorg dat buttons in cart niet “plain” worden als er ergens een reset leeft --- */
-#cartDrawer .btn{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .5rem;
-}
-
-/* =========================================
-   Shop: front/back hover flip (category + detail)
-========================================= */
-
-.prodMedia,
-.productMedia.prodMedia{
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.08);
-}
-
-/* voorkom “gigantisch” op detail */
-.productMedia.prodMedia{
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-/* overlap */
-.prodMedia .prodImg{
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.prodMedia .prodImgFront,
-.prodMedia .prodImgBack{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity .18s ease, transform .22s ease;
-}
-
-/* default: enkel front */
-.prodMedia .prodImgFront{ opacity: 1; transform: scale(1); }
-.prodMedia .prodImgBack{ opacity: 0; transform: scale(1.02); }
-
-/* alleen flip als er back is */
-.prodMedia:not(.noBack):hover .prodImgFront{ opacity: 0; transform: scale(1.01); }
-.prodMedia:not(.noBack):hover .prodImgBack{ opacity: 1; transform: scale(1); }
-
-/* klik/touch: ook bij focus */
-.prodMedia:not(.noBack):focus-within .prodImgFront{ opacity: 0; }
-.prodMedia:not(.noBack):focus-within .prodImgBack{ opacity: 1; }
-
-/* aspect-ratio zodat het niet “rekt” */
-.prodMedia{
-  aspect-ratio: 1 / 1;
-}
-.productMedia.prodMedia{
-  aspect-ratio: 1 / 1;
-}
-
-/* --- Product detail layout sane --- */
-.productDetail{
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  align-items: start;
-}
-@media (min-width: 900px){
-  .productDetail{
-    grid-template-columns: 520px 1fr;
-    gap: 18px;
-  }
-  .productMedia.prodMedia{
-    margin: 0;
-  }
-}
-/* =========================
-   Content meta labels (NOT chips / NOT buttons)
-   Only inside content rows
-========================= */
-
-#app .tagsRow .tag,
-#app .tagsRow .tagWarm{
+#app .availTags .tag,
+#app .availTags .tagWarm{
   background: none !important;
   border: none !important;
   padding: 0 !important;
@@ -367,179 +269,24 @@ body.cart-open{
   user-select: none !important;
 }
 
-/* Add separators like metadata */
-
-
-#app .tagsRow .tag + .tag,
-#app .tagsRow .tag + .tagWarm,
-#app .tagsRow .tagWarm + .tag,
-#app .tagsRow .tagWarm + .tagWarm{
+#app .availTags .tag + .tag,
+#app .availTags .tag + .tagWarm,
+#app .availTags .tagWarm + .tag,
+#app .availTags .tagWarm + .tagWarm{
   margin-left: 10px;
   position: relative;
 }
 
-
-#app .tagsRow .tag + .tag::before,
-#app .tagsRow .tag + .tagWarm::before,
-#app .tagsRow .tagWarm + .tag::before,
-#app .tagsRow .tagWarm + .tagWarm::before
-{
+#app .availTags .tag + .tag::before,
+#app .availTags .tag + .tagWarm::before,
+#app .availTags .tagWarm + .tag::before,
+#app .availTags .tagWarm + .tagWarm::before{
   content: "•";
   position: absolute;
   left: -10px;
   color: rgba(255,255,255,.28);
-  
-}
-#app .tagsRow .tagWarm{ color: rgba(255,220,195,.78) !important; }
-
-/* =========================
-   BIO — collapsible story (premium + SEO)
-========================= */
-
-.bioHero{
-  display: grid;
-  gap: 18px;
-  align-items: start;
 }
 
-/* 2 columns on desktop */
-@media (min-width: 900px){
-  .bioHero{
-    grid-template-columns: 1.05fr .95fr;
-    gap: 18px;
-  }
-}
-
-.bioTextHead{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 6px 0 10px;
-}
-
-.bioTextTitle{
-  margin: 0;
-}
-
-/* Toggle: subtle, not a big CTA */
-#bioToggle.btn.btnQuiet{
-  padding: 7px 10px;
-  font-size: 12.5px;
-  border-radius: 999px;
-}
-
-/* The “small frame” for the long bio (SEO stays in DOM) */
-.bioBody{
-  position: relative;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(0,0,0,.18);
-  border-radius: 18px;
-  padding: 16px 16px;
-  box-shadow: 0 12px 35px rgba(0,0,0,.28);
-}
-
-/* Text rhythm */
-.bioBody p{
-  margin: 0 0 11px;
-  color: rgba(255,255,255,.74);
-  line-height: 1.6;
-}
-.bioBody p:last-child{ margin-bottom: 0; }
-
-/* Collapsed: clamp height + fade */
-#bioPanel.isCollapsed .bioBody{
-  max-height: 168px;   /* polish: feels right */
-  overflow: hidden;
-}
-
-#bioPanel.isCollapsed .bioBody::after{
-  content:"";
-  position:absolute;
-  left:0; right:0; bottom:0;
-  height: 68px;
-  pointer-events:none;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0),
-    rgba(0,0,0,.65)
-  );
-}
-
-/* Quote sits cleaner */
-.bioQuote{
-  margin-top: 12px;
-  opacity: .92;
-}
-
-/* Optional: make the right side feel “stacked” */
-.bioRight{
-  display: grid;
-  gap: 10px;
-}
-/* =========================
-   Album covers — micro contrast boost
-========================= */
-
-.prodMedia img,
-.productMedia img{
-  filter:
-    contrast(1.04)
-    saturate(1.03);
-}
-
-/* subtiele rand-lichting zodat cover loskomt van bg */
-.prodMedia{
-  box-shadow:
-    0 10px 35px rgba(0,0,0,.45),
-    0 0 0 1px rgba(255,255,255,.06) inset;
-}
-/* CONTENT tags are labels (scoped) */
-#app .tag,
-#app .tagWarm{
-  background: transparent !important;
-  border: 1px solid rgba(255,255,255,.14) !important;
-  color: rgba(255,255,255,.70) !important;
-  padding: 6px 10px !important;
-  border-radius: 999px !important;
-  font-size: 12px !important;
-  line-height: 1 !important;
-  cursor: default !important;
-  pointer-events: none !important;
-  user-select: none !important;
-}
-#app .tag:hover,
-#app .tagWarm:hover,
-#app .tag:active,
-#app .tagWarm:active,
-#app .tag:focus,
-#app .tagWarm:focus{
-  background: transparent !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-
-/* =========================
-   Fix: btnPrimary hover text color
-   (paste at VERY bottom)
-========================= */
-
-:root{
-  --warm: rgba(205,132,66,.95);
-  --warmTextOnDark: rgba(205,132,66,.95);
-}
-
-/* Primary button is orange by default.
-   On hover it becomes dark -> text must turn warm/orange. */
-#app .btn.btnPrimary:hover,
-#app a.btn.btnPrimary:hover,
-#app button.btn.btnPrimary:hover{
-  color: var(--warmTextOnDark) !important;
-}
-
-/* also cover keyboard focus */
-#app .btn.btnPrimary:focus-visible,
-#app a.btn.btnPrimary:focus-visible,
-#app button.btn.btnPrimary:focus-visible{
-  color: var(--warmTextOnDark) !important;
+#app .availTags .tagWarm{
+  color: rgba(255,220,195,.78) !important;
 }

@@ -1,19 +1,73 @@
 /* css/components.css
    Components: SHOP + CART + small helpers
    (No header/menu code here — that's layout.css + mobile.css)
+
+   IMPORTANT:
+   - Keep page-specific heavy styling in pages.css
+   - components.css = reusable blocks + Shop/Cart components
 */
 
 :root{
   --container: min(1100px, calc(100% - 32px));
 }
 
-/* ---------- Helpers ---------- */
-.mutedSmall{ font-size: 12px; color: rgba(255,255,255,.62); }
+/* =========================================================
+   Helpers
+========================================================= */
+.mutedSmall{
+  font-size: 12px;
+  color: rgba(255,255,255,.62);
+}
 
 hr.soft{
   border: 0;
   border-top: 1px solid rgba(255,255,255,.08);
   margin: 14px 0;
+}
+
+/* Respect reduced motion (premium + accessible) */
+@media (prefers-reduced-motion: reduce){
+  *{
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   PAGE HEAD POLISH — Shop + Music aligned
+   (safe: only targets these heads)
+   Note: Music-specific layout stays in pages.css.
+========================================================= */
+.shopPageHead,
+.musicTop{
+  padding: 4px 0 2px;
+}
+
+.shopPageHead h1,
+.musicTop h1{
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.05;
+  font-weight: 950;
+  letter-spacing: -.6px;
+}
+
+.shopPageHead .mutedSmall,
+.musicTop .mutedSmall,
+.shopPageHead p,
+.musicTop p{
+  margin: 10px 0 0;
+  max-width: 62ch;
+  color: rgba(255,255,255,.70);
+  line-height: 1.55;
+}
+
+@media (max-width: 900px){
+  .shopPageHead h1,
+  .musicTop h1{
+    font-size: 30px;
+  }
 }
 
 /* =========================================================
@@ -40,17 +94,33 @@ hr.soft{
 
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(10,10,10,.55);
-  backdrop-filter: blur(10px);
 
   text-decoration:none;
   color: rgba(255,255,255,.92);
 
-  transition: transform .12s ease, border-color .12s ease, background .12s ease;
+  box-shadow: 0 18px 45px rgba(0,0,0,.22);
+  transition: transform .12s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
 }
+@supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
+  .shopCategoryCard{
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
 .shopCategoryCard:hover{
   transform: translateY(-1px);
   border-color: rgba(255,255,255,.16);
   background: rgba(10,10,10,.62);
+  box-shadow: 0 22px 60px rgba(0,0,0,.26);
+}
+.shopCategoryCard:active{
+  transform: translateY(0);
+}
+
+.shopCategoryCard:focus-visible{
+  outline: 2px solid rgba(205,132,66,.65);
+  outline-offset: 3px;
 }
 
 .shopCategoryTitle{
@@ -66,14 +136,65 @@ hr.soft{
 
 /* --- Breadcrumb --- */
 .shopBreadcrumb{
-  margin: 8px 0 12px;
+  margin: 10px 0 14px;
   color: rgba(255,255,255,.65);
   font-size: 12px;
 }
-.shopBreadcrumb a{ color: rgba(255,255,255,.85); text-decoration: none; }
+.shopBreadcrumb a{
+  color: rgba(255,255,255,.85);
+  text-decoration: none;
+}
 .shopBreadcrumb a:hover{ text-decoration: underline; }
 .shopBreadcrumb .sep{ opacity: .5; margin: 0 6px; }
 .shopBreadcrumb .current{ color: rgba(255,255,255,.90); }
+
+/* --- Shop nav pills --- */
+.shopNav{
+  margin-top: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.shopNavLink{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 12px;
+  border-radius: 999px;
+
+  text-decoration: none;
+  color: rgba(255,255,255,.82);
+
+  background: rgba(14,14,16,.22);
+  border: 1px solid rgba(255,255,255,.10);
+
+  font-weight: 750;
+  font-size: 12.5px;
+  letter-spacing: .1px;
+
+  transition: background .12s ease, border-color .12s ease, transform .12s ease, color .12s ease;
+}
+.shopNavLink:hover{
+  background: rgba(14,14,16,.34);
+  border-color: rgba(255,255,255,.16);
+  color: rgba(255,255,255,.92);
+}
+.shopNavLink:active{ transform: scale(.99); }
+
+.shopNavLink:focus-visible{
+  outline: 2px solid rgba(205,132,66,.65);
+  outline-offset: 3px;
+}
+
+/* Active category = warm accent */
+.shopNavLink.active{
+  background: rgba(201,122,58,.14);
+  border-color: rgba(201,122,58,.26);
+  color: rgba(255,220,195,.95);
+}
 
 /* --- Product category grid (FIX poster-cards) --- */
 .shopGrid{
@@ -87,8 +208,9 @@ hr.soft{
 .shopGrid > .panel{
   width: 100%;
   max-width: 420px;
-  margin: 0 auto;       /* center inside each grid column */
-  align-self: start;    /* prevents weird stretch */
+  margin: 0 auto;
+  align-self: start;
+  border-radius: 18px;
 }
 
 /* optional: make columns feel “card-sized” on large screens */
@@ -333,6 +455,10 @@ hr.soft{
   border-color: rgba(255,255,255,.18);
 }
 .qtyBtn:active{ transform: scale(.98); }
+.qtyBtn:focus-visible{
+  outline: 2px solid rgba(205,132,66,.65);
+  outline-offset: 3px;
+}
 
 .qtyGlyph{ font-size: 18px; line-height: 1; }
 .qtyNum{
@@ -402,120 +528,14 @@ hr.soft{
   outline: 2px solid rgba(205,132,66,.65);
   outline-offset: 2px;
 }
-/* =========================================
-   PAGE HEAD POLISH — Shop + Music aligned
-   (safe: only targets these heads)
-========================================= */
 
-/* Shared head rhythm */
-.shopPageHead,
-.musicTop{
-  padding: 4px 0 2px;
-}
+/* Slightly cleaner separation under head */
+#shopMount{ margin-top: 4px; }
 
-.shopPageHead h1,
-.musicTop h1{
-  margin: 0;
-  font-size: 34px;          /* match feel */
-  line-height: 1.05;
-  font-weight: 950;
-  letter-spacing: -.6px;
-}
+/* Optional small hint helper used in shop */
+.shopHint{ opacity: .85; }
 
-.shopPageHead .mutedSmall,
-.musicTop .mutedSmall,
-.musicTop p,
-.shopPageHead p{
-  margin: 10px 0 0;
-  max-width: 62ch;
-  color: rgba(255,255,255,.70);
-  line-height: 1.55;
-}
-
-/* Space between head and actions/nav */
-.shopNav{
-  margin-top: 14px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-/* Make Shop nav look like premium pills (not full buttons) */
-.shopNavLink{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 8px 12px;
-  border-radius: 999px;
-
-  text-decoration: none;
-  color: rgba(255,255,255,.82);
-
-  background: rgba(14,14,16,.22);
-  border: 1px solid rgba(255,255,255,.10);
-
-  font-weight: 750;
-  font-size: 12.5px;
-  letter-spacing: .1px;
-
-  transition: background .12s ease, border-color .12s ease, transform .12s ease, color .12s ease;
-}
-
-.shopNavLink:hover{
-  background: rgba(14,14,16,.34);
-  border-color: rgba(255,255,255,.16);
-  color: rgba(255,255,255,.92);
-}
-
-.shopNavLink:active{
-  transform: scale(.99);
-}
-
-/* Active category = warm accent, like your primary vibe */
-.shopNavLink.active{
-  background: rgba(201,122,58,.14);
-  border-color: rgba(201,122,58,.26);
-  color: rgba(255,220,195,.95);
-}
-
-/* Breadcrumb spacing matches the new rhythm */
-.shopBreadcrumb{
-  margin: 10px 0 14px;
-}
-
-/* Make the section under the head start “clean” like Music */
-#shopMount{
-  margin-top: 4px;
-}
-
-/* Optional: slightly tighter on mobile */
-@media (max-width: 900px){
-  .shopPageHead h1,
-  .musicTop h1{
-    font-size: 30px;
-  }
-}
-/* =========================================================
-   POLISH — Shop categories + Shop grid cards (anchor-safe)
-   ========================================================= */
-
-/* 1) Category cards: meer premium, zelfde panel-feel */
-.shopCategoryCard{
-  box-shadow: 0 18px 45px rgba(0,0,0,.22);
-}
-.shopCategoryCard:hover{
-  box-shadow: 0 22px 60px rgba(0,0,0,.26);
-}
-.shopHint{
-  opacity: .85;
-}
-
-/* 2) Shop grid cards: consistent spacing + rounding */
-.shopGrid{
-  align-items: start;
-}
-.shopGrid > .panel{
-  border-radius: 18px;
+/* warm accent utility (used in multiple pages, safe) */
+.accentWarm{
+  color: rgba(255, 154, 60, .92);
 }
