@@ -1,292 +1,689 @@
-/* css/ui.css
-   UI system: buttons, links, tags, chips, counters
-   RULE: no page/shop/cart/bio/layout rules here.
+/* css/pages.css
+   Page-level styles only.
+   Goal: landing/home parity + single source of truth.
+   Depends on: base.css, ui.css, layout.css, components.css, mobile.css
 */
 
+/* =========================================================
+   TOKENS (page-level only)
+========================================================= */
 :root{
-  --warm: rgba(205,127,73,.95);
-  --warm2: rgba(255,170,90,.55);
+  --accent-warm: var(--kwkr-accent, var(--warm, rgba(201,122,58,.92)));
+  --accent-warm-soft: rgba(201,122,58,.18);
+  --accent-warm-line: rgba(201,122,58,.35);
 
-  --line: rgba(255,255,255,.12);
-  --line2: rgba(255,255,255,.18);
+  --panel-bg: rgba(14,14,16,.22);
+  --panel-bg-strong: rgba(12,12,12,.46);
+  --panel-border: rgba(255,255,255,.10);
+  --panel-shadow: 0 24px 80px rgba(0,0,0,.38);
 
-  --text: rgba(255,255,255,.92);
-  --muted: rgba(255,255,255,.68);
+  --text-hi: rgba(255,255,255,.92);
+  --text-mid: rgba(255,255,255,.78);
+  --text-lo: rgba(255,255,255,.70);
 
-  --shadow: 0 18px 45px rgba(0,0,0,.38);
-  --radius: 999px;
-  --focus: 2px solid rgba(205,127,73,.60);
+  /* “SPA-look” glass progression: matte top → clearer mid → soft bottom */
+  --glass-top: rgba(255,255,255,.055);
+  --glass-mid: rgba(255,255,255,.020);
+  --glass-bot: rgba(0,0,0,.12);
 }
 
-/* =========================
-   Buttons
-========================= */
-.btn{
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  border: 1px solid var(--line);
-  background: rgba(18,18,20,.35);
-  color: var(--text);
-
-  padding: 10px 14px;
-  border-radius: var(--radius);
-
-  font-weight: 650;
-  font-size: 14px;
-  letter-spacing: .2px;
-  text-decoration: none;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-  line-height: 1.05;
-
-  transition:
-    transform .12s ease,
-    background .12s ease,
-    border-color .12s ease,
-    box-shadow .12s ease,
-    opacity .12s ease;
-
-  will-change: transform;
+/* =========================================================
+   PRIMARY BUTTON — READABILITY + CONSISTENT HOVER
+   Fix: “zwart op zwart / onleesbaar” on hover
+   (keeps classes/structure, just stabilizes colors)
+========================================================= */
+.btn.btnPrimary,
+a.btn.btnPrimary{
+  color: rgba(12,10,8,.92);
+  background: var(--accent-warm);
+  border-color: rgba(201,122,58,.55);
+  text-shadow: none;
 }
 
-.btn:hover{ border-color: var(--line2); background: rgba(18,18,20,.48); }
-.btn:active{ transform: scale(.98); }
-.btn:focus-visible{ outline: var(--focus); outline-offset: 2px; }
-
-/* Ghost modifier (used by menu.js + toast.js) */
-.btn.ghost{
-  background: rgba(18,18,20,.18);
-  border-color: rgba(255,255,255,.10);
-  color: rgba(255,255,255,.82);
+.btn.btnPrimary:hover,
+.btn.btnPrimary:focus-visible,
+a.btn.btnPrimary:hover,
+a.btn.btnPrimary:focus-visible{
+  color: rgba(12,10,8,.94) !important;
+  background: rgba(214,132,64,.96);
+  border-color: rgba(255,230,205,.20);
+  filter: brightness(1.02) saturate(1.03);
 }
-.btn.ghost:hover{
-  background: rgba(18,18,20,.30);
-  border-color: rgba(255,255,255,.16);
+
+.btn.btnPrimary:focus-visible,
+a.btn.btnPrimary:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(201,122,58,.22);
+}
+
+/* Secondary/Quiet never lose readability */
+.btn.btnSecondary,
+.btn.btnQuiet,
+a.btn.btnSecondary,
+a.btn.btnQuiet{
   color: rgba(255,255,255,.92);
 }
 
-/* Variants */
-.btnPrimary{
-  background: linear-gradient(180deg, rgba(205,127,73,.95), rgba(165,96,55,.92));
-  border-color: rgba(255,200,150,.18);
-  color: rgba(20,12,8,.92);
-  box-shadow: 0 10px 30px rgba(205,127,73,.18), 0 18px 50px rgba(0,0,0,.25);
-}
-.btnPrimary:hover{
-  box-shadow: 0 12px 34px rgba(205,127,73,.22), 0 22px 60px rgba(0,0,0,.28);
-  border-color: rgba(255,210,160,.26);
-}
-
-.btnSecondary{
-  background: rgba(18,18,20,.30);
-  border-color: rgba(255,255,255,.14);
-  color: var(--text);
-}
-.btnSecondary:hover{
-  background: rgba(18,18,20,.44);
-  border-color: rgba(255,255,255,.20);
+/* =========================================================
+   SHARED GLASS POLISH — panels/cads (SPA reference → landing follows)
+   - matte top
+   - clearer middle
+   - gentle bottom fade
+   Applied to existing selectors only (no new required classes)
+========================================================= */
+.heroChalet,
+.availPanel,
+.cardMini,
+#bioPanel,
+.musicSpotMedia .ytWrap{
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--panel-shadow);
 }
 
-.btnQuiet{
-  background: rgba(18,18,20,.18);
-  border-color: rgba(255,255,255,.10);
-  color: var(--muted);
-  font-weight: 600;
+/* Base backgrounds (keep existing feel but align progression) */
+.heroChalet,
+.availPanel{
+  background: var(--panel-bg);
 }
-.btnQuiet:hover{
-  background: rgba(18,18,20,.30);
-  color: var(--text);
+.cardMini{
+  background: var(--panel-bg-strong);
+}
+#bioPanel{
+  background: rgba(0,0,0,.16);
+}
+.musicSpotMedia .ytWrap{
+  background: rgba(10,10,10,.40);
 }
 
-.iconBtn{
-  width: 40px;
-  height: 40px;
-  padding: 0;
+/* The “mat → helder → rounded bottom” optical layer */
+.heroChalet::before,
+.availPanel::before,
+.cardMini::before,
+#bioPanel::before,
+.musicSpotMedia .ytWrap::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--glass-top) 0%,
+      var(--glass-mid) 38%,
+      rgba(255,255,255,.000) 62%,
+      var(--glass-bot) 100%
+    );
+  opacity: .95;
+}
+
+/* Backdrop blur (single truth) */
+@supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
+  .heroChalet,
+  .availPanel,
+  #bioPanel{
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+  }
+}
+@supports ((backdrop-filter: blur(6px)) or (-webkit-backdrop-filter: blur(6px))){
+  .cardMini{
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+}
+
+/* =========================================================
+   SECTION ACCENT LINE (subtle chapter anchor)
+========================================================= */
+.panelWide{ position: relative; }
+.panelWide::before{
+  content:"";
+  position:absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,122,58,.55), transparent);
+  opacity: .55;
+  pointer-events: none;
+}
+
+/* =========================================================
+   HOME — HERO (SPA)
+========================================================= */
+.heroChalet{
+  margin-top: 18px;
+  padding: 44px;
+  display: grid;
+  grid-template-columns: 1.12fr .88fr;
+  gap: 26px;
+  align-items: start;
+
+  border-radius: 22px;
+}
+
+.heroChalet::after{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 28%, rgba(201,122,58,.18), rgba(0,0,0,0) 55%),
+    radial-gradient(circle at 72% 68%, rgba(255,170,110,.10), rgba(0,0,0,0) 60%);
+  opacity: .85;
+}
+
+.heroTitle{
+  margin-top: 12px;
+  font-size: clamp(40px, 4.5vw, 64px);
+  line-height: .98;
+  font-weight: 950;
+  letter-spacing: -1.5px;
+  color: rgba(255,248,235,.96);
+  text-wrap: balance;
+  position: relative;
+}
+
+.heroTitle::before{
+  content:"";
+  position:absolute;
+  left: -18px;
+  top: .15em;
+  width: 4px;
+  height: 1.1em;
   border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  background: var(--accent-warm);
+  box-shadow: 0 0 0 4px rgba(201,122,58,.18);
 }
 
-/* =========================
-   Links
-========================= */
-.textLink{
-  color: rgba(255,255,255,.80);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,.18);
-  padding-bottom: 1px;
-  transition: color .12s ease, border-color .12s ease;
-  cursor: pointer;
-  font-weight: 600;
-}
-.textLink:hover{
-  color: rgba(255,255,255,.92);
-  border-color: rgba(205,127,73,.55);
-}
-
-/* =========================
-   Tags (used as chips/labels)
-========================= */
-.tagsRow{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
+.heroChalet .lead{
   margin-top: 10px;
+  max-width: 58ch;
+  color: rgba(255,248,235,.78);
+  line-height: 1.65;
 }
 
-.tag{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.ctaRow{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
 
-  padding: 7px 10px;
-  border-radius: 999px;
+.heroChalet .btnPrimary{
+  box-shadow:
+    0 8px 24px rgba(201,122,58,.35),
+    0 0 0 1px rgba(201,122,58,.35) inset;
+}
 
+/* Right column cards */
+.heroAside{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardMini{
+  padding: 16px;
+  border-radius: 18px;
   border: 1px solid rgba(255,255,255,.10);
-  background: rgba(14,14,16,.22);
-  color: rgba(255,255,255,.72);
-
-  font-size: 12px;
-  font-weight: 650;
-  letter-spacing: .15px;
-  user-select: none;
+  box-shadow: 0 16px 55px rgba(0,0,0,.28);
 }
 
-.tagWarm{
-  border-color: rgba(205,127,73,.22);
-  background: rgba(205,127,73,.12);
-  color: rgba(255,220,195,.92);
+/* Warm “lift” glow */
+.cardMini::after{
+  content:"";
+  position:absolute;
+  inset:auto -20% -40% -20%;
+  height: 140px;
+  pointer-events:none;
+  background: radial-gradient(circle at 50% 0%, rgba(201,122,58,.16), rgba(0,0,0,0) 62%);
+  opacity: .9;
 }
 
-/* =========================
-   Counter badge (edition / counts)
-========================= */
-.counterBadge{
-  display:inline-flex;
-  align-items:center;
-  gap: 8px;
+.cardMini h3{
+  font-size: 14px;
+  font-weight: 950;
+  color: rgba(255,248,235,.92);
+  margin: 0 0 6px;
+}
+.cardMini p{
+  margin: 0;
+  color: rgba(255,255,255,.74);
+  line-height: 1.55;
+}
 
-  padding: 7px 10px;
+/* =========================================================
+   HOME — NOW AVAILABLE (SPA)
+========================================================= */
+.availPanel{
+  border-radius: 22px;
+  background: rgba(14,14,16,.20);
+  box-shadow: 0 22px 78px rgba(0,0,0,.34);
+}
+
+/* Keep bottom warm bloom (consistent with hero) */
+.availPanel::after{
+  content:"";
+  position:absolute;
+  inset:auto -30% -55% -30%;
+  height: 260px;
+  pointer-events:none;
+  background: radial-gradient(circle at 50% 0%, rgba(201,122,58,.18), rgba(0,0,0,0) 62%);
+  opacity: .95;
+}
+
+/* Subtle baseline accent (keep) */
+.availPanel > *{ position: relative; } /* ensure content above overlays */
+
+.availGrid{
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.availLeft .availTitle,
+.availLeft h2{
+  margin: 10px 0 8px;
+  letter-spacing: -.6px;
+  position: relative;
+}
+
+.availLeft .availTitle::before,
+.availLeft h2::before{
+  content:"";
+  position:absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 22px;
   border-radius: 999px;
-
-  border: 1px solid rgba(205,127,73,.18);
-  background: rgba(205,127,73,.10);
-  color: rgba(255,220,195,.92);
-
-  font-weight: 750;
-  font-size: 12px;
+  background: var(--accent-warm);
 }
 
-.counterBadge strong{
-  color: rgba(255,255,255,.92);
-  font-weight: 850;
-}
-.counterBadge small{
-  color: rgba(255,255,255,.60);
-  font-weight: 700;
+.availLeft .availDesc,
+.availLeft p{
+  color: rgba(255,255,255,.82);
+  line-height: 1.65;
 }
 
-/* =========================
-   Chips (clickable filters)
-========================= */
-.chip{
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance:none;
+.availRight{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  justify-content: end;
+}
+
+.availImgWrap{
+  position: relative;
+  display: block;
+  border-radius: 18px;
+  overflow: hidden;
 
   border: 1px solid rgba(255,255,255,.12);
-  background: rgba(14,14,16,.24);
-  color: rgba(255,255,255,.74);
+  background: rgba(0,0,0,.20);
 
-  padding: 7px 10px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.42);
+  transform: translateZ(0);
+  transition: transform .22s ease;
+}
+
+.availImg{
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+
+  filter: saturate(1.07) contrast(1.04);
+  transition: transform .22s ease, filter .22s ease;
+}
+
+.availImgWrap:hover{ transform: translateY(-2px); }
+.availImgWrap:hover .availImg{
+  transform: scale(1.03);
+  filter: saturate(1.10) contrast(1.06);
+}
+
+.availTag{
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 6px 10px;
   border-radius: 999px;
-
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: .2px;
 
-  cursor: pointer;
-  transition: background .12s ease, border-color .12s ease, transform .12s ease, color .12s ease;
-  will-change: transform;
-}
-.chip:hover{
-  background: rgba(14,14,16,.36);
-  border-color: rgba(255,255,255,.18);
-  color: rgba(255,255,255,.86);
-}
-.chip:active{ transform: scale(.98); }
-.chip:focus-visible{ outline: var(--focus); outline-offset: 2px; }
-
-.chip.isActive{
-  border-color: rgba(205,127,73,.28);
-  background: rgba(205,127,73,.12);
-  color: rgba(255,220,195,.95);
+  color: rgba(255,235,210,.95);
+  background: rgba(0,0,0,.50);
+  border: 1px solid rgba(201,122,58,.45);
 }
 
-/* =========================
-   Layout helpers
-========================= */
-.actionsRow{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
+@supports ((backdrop-filter: blur(6px)) or (-webkit-backdrop-filter: blur(6px))){
+  .availTag{
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
 }
 
-@media (prefers-reduced-motion: reduce){
-  .btn, .chip{ transition: none; }
-  .btn:active, .chip:active{ transform: none; }
+/* =========================================================
+   BIO — unified (Landing + SPA)
+   - keep SPA layout + story card + lees meer button
+========================================================= */
+.bioHero{
+  display: grid;
+  gap: 18px;
+  align-items: start;
 }
 
-/* =========================
-   Content meta labels
-   ONLY for Now Available (availTags)
-========================= */
+@media (min-width: 900px){
+  .bioHero{ grid-template-columns: 1.05fr .95fr; }
+}
 
-#app .availTags .tag,
-#app .availTags .tagWarm{
+.bioLeft .bioTitle{
+  margin: 10px 0 6px;
+  letter-spacing: -.7px;
+  position: relative;
+}
+
+.bioLeft .bioTitle::before{
+  content:"";
+  position:absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--accent-warm);
+  box-shadow: 0 0 0 4px rgba(201,122,58,.18);
+  opacity: .95;
+}
+
+.bioLeft .bioLead{
+  margin: 0;
+  color: rgba(255,255,255,.80);
+  line-height: 1.7;
+}
+
+/* Tags: SPA-style labels (no “chips” look) */
+.bioLeft .tagsRow{ margin-top: 12px; }
+
+.bioLeft .tagsRow .tag,
+.bioLeft .tagsRow .tagWarm{
   background: none !important;
   border: none !important;
   padding: 0 !important;
   border-radius: 0 !important;
-
-  color: rgba(255,255,255,.70) !important;
+  color: rgba(255,255,255,.72) !important;
   font-size: 12px !important;
-  font-weight: 600 !important;
+  font-weight: 650 !important;
   letter-spacing: .12px !important;
-
-  cursor: default !important;
   pointer-events: none !important;
-  user-select: none !important;
 }
 
-#app .availTags .tag + .tag,
-#app .availTags .tag + .tagWarm,
-#app .availTags .tagWarm + .tag,
-#app .availTags .tagWarm + .tagWarm{
+.bioLeft .tagsRow .tag + .tag,
+.bioLeft .tagsRow .tag + .tagWarm,
+.bioLeft .tagsRow .tagWarm + .tag{
   margin-left: 10px;
   position: relative;
 }
-
-#app .availTags .tag + .tag::before,
-#app .availTags .tag + .tagWarm::before,
-#app .availTags .tagWarm + .tag::before,
-#app .availTags .tagWarm + .tagWarm::before{
+.bioLeft .tagsRow .tag + .tag::before,
+.bioLeft .tagsRow .tag + .tagWarm::before,
+.bioLeft .tagsRow .tagWarm + .tag::before{
   content: "•";
   position: absolute;
   left: -10px;
   color: rgba(255,255,255,.28);
 }
 
-#app .availTags .tagWarm{
-  color: rgba(255,220,195,.78) !important;
+/* Right side “Verhaal” card */
+#bioPanel{
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 12px 35px rgba(0,0,0,.28);
+}
+
+#bioPanel .bioTextHead{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 10px;
+}
+
+#bioPanel .bioBody{
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.10);
+  border-radius: 16px;
+  padding: 14px;
+  position: relative;
+}
+
+#bioPanel.isCollapsed .bioBody{
+  max-height: 168px;
+  overflow: hidden;
+}
+#bioPanel.isCollapsed .bioBody::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height: 68px;
+  pointer-events:none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.65));
+}
+
+/* Bio text readability */
+.bioBody p{
+  margin: 0 0 12px;
+  line-height: 1.75;
+  color: rgba(255,255,255,.78);
+}
+.bioBody p:last-child{ margin-bottom: 0; }
+
+/* Lees meer button warm + consistent */
+#bioToggle{
+  border-color: rgba(201,122,58,.35);
+  background: rgba(201,122,58,.14);
+  color: rgba(255,220,195,.95);
+  font-weight: 800;
+}
+#bioToggle:hover{
+  background: rgba(201,122,58,.20);
+  border-color: rgba(201,122,58,.45);
+  color: rgba(255,255,255,.92);
+}
+
+/* Quote */
+.bioQuote{
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.07);
+  color: rgba(255,255,255,.72);
+}
+.bioQuoteMark{ color: var(--accent-warm); }
+
+/* =========================================================
+   MUSIC — SPA (/music)
+========================================================= */
+.musicTop{
+  display: block;
+  padding-bottom: 8px;
+}
+.musicTop h1{
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: -.6px;
+  line-height: 1.05;
+  font-weight: 950;
+}
+.musicTop p{
+  margin: 10px 0 0;
+  max-width: 62ch;
+  color: rgba(255,255,255,.72);
+  line-height: 1.6;
+}
+.musicTop .ctaRow{ margin-top: 12px; }
+
+.musicSpotlight{
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 900px){
+  .musicSpotlight{ grid-template-columns: 1fr; }
+}
+.musicKick{ margin-bottom: 10px; opacity: .95; }
+
+.musicH2{
+  margin: 0 0 10px;
+  font-weight: 950;
+  letter-spacing: -.35px;
+  line-height: 1.15;
+}
+.musicLead{
+  margin: 0 0 12px;
+  color: rgba(255,255,255,.86);
+  line-height: 1.65;
+}
+.musicPara{
+  margin: 0 0 14px;
+  color: rgba(255,255,255,.74);
+  line-height: 1.65;
+}
+.musicCredits{
+  margin: 0;
+  color: rgba(255,255,255,.72);
+  line-height: 1.65;
+}
+.musicHint{
+  margin: 14px 0 0;
+  color: rgba(255,255,255,.60);
+  line-height: 1.55;
+}
+.musicSpotCtas{ margin-top: 14px; }
+
+.musicSpotMedia .ytWrap{
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 18px 55px rgba(0,0,0,.45);
+}
+.musicSpotMedia .ytWrap iframe{
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+.musicSpotMedia .ytWrap::after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0 0;
+  height: 76px;
+  pointer-events:none;
+  background: radial-gradient(circle at 50% 120%, rgba(201,122,58,.18), rgba(0,0,0,0) 62%);
+}
+
+.musicBelow{
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 900px){
+  .musicBelow{ grid-template-columns: 1fr; }
+}
+.musicCard{ padding: 16px; }
+.musicCardHead h3{
+  margin: 0;
+  font-weight: 950;
+  letter-spacing: -.3px;
+}
+.musicCardHead p{ margin: 6px 0 0; }
+
+.spotifyFrameWrap iframe{
+  margin-top: 12px;
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* =========================================================
+   CONTACT — SPA (/contact)
+========================================================= */
+.contactPage .contactMail{
+  color: var(--accent-warm);
+  font-weight: 900;
+}
+.contactPage .contactMail:hover{
+  color: rgba(255,255,255,.92);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-warm);
+  text-underline-offset: 3px;
+}
+
+/* =========================================================
+   LANDING (index.html) — align polish with SPA
+   Safe: these classes/ids exist only on landing
+========================================================= */
+
+/* “Open →” badges on landing link-cards */
+.landingLinkHint{
+  color: var(--accent-warm);
+  font-weight: 800;
+}
+.landingLinkCard:hover .landingLinkHint{
+  color: rgba(255,255,255,.92);
+}
+
+/* mail in landing contact */
+#contact a[href^="mailto:"]{
+  color: var(--accent-warm);
+  font-weight: 900;
+}
+#contact a[href^="mailto:"]:hover{
+  color: rgba(255,255,255,.92);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-warm);
+  text-underline-offset: 3px;
+}
+
+/* footer links hover */
+.landingFooterRow a:hover{
+  color: rgba(255,255,255,.95);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-warm);
+  text-underline-offset: 3px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 980px){
+  .heroChalet{
+    grid-template-columns: 1fr;
+    padding: 26px;
+  }
+  .availGrid{ grid-template-columns: 1fr; }
+  .availRight{ justify-content: start; }
+  .availImg{ height: 130px; }
+}
+
+@media (max-width: 640px){
+  .heroTitle{ font-size: 38px; }
+  .heroTitle::before{ left: -12px; }
+  .heroChalet{ padding: 22px; }
+}
+
+@media (max-width: 900px){
+  .musicTop h1{ font-size: 30px; }
 }

@@ -1,20 +1,18 @@
 /* css/pages.css
    Page-level styles only.
-   Goal: zero duplicate/overwriting blocks + landing/home parity (warm accents).
+   Goal: landing/home parity + single source of truth.
    Depends on: base.css, ui.css, layout.css, components.css, mobile.css
 */
 
 /* =========================================================
-   TOKENS (warm accent that also works on landing)
-   - landing index.html defines: --kwkr-accent
-   - app site defines: --warm (ui.css)
+   TOKENS
 ========================================================= */
 :root{
   --accent-warm: var(--kwkr-accent, var(--warm, rgba(201,122,58,.92)));
   --accent-warm-soft: rgba(201,122,58,.18);
   --accent-warm-line: rgba(201,122,58,.35);
 
-  --panel-bg: rgba(10,10,10,.42);
+  --panel-bg: rgba(14,14,16,.22);
   --panel-border: rgba(255,255,255,.10);
   --panel-shadow: 0 24px 80px rgba(0,0,0,.38);
 
@@ -24,7 +22,239 @@
 }
 
 /* =========================================================
-   HOME — HERO
+   PILL SYSTEM (RESTORE POLISH, DO NOT BREAK UI.CSS)
+========================================================= */
+
+/* Core: .btn must be pill + consistent interaction feel */
+.btn,
+a.btn,
+button.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border-radius: 999px !important;
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1;
+  transform: translateZ(0);
+
+  transition:
+    background-color .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease,
+    filter .18s ease;
+}
+
+/* =========================================================
+   PRIMARY PILL — like category pills (Vinyl/CD/Digitaal/Merch)
+   Dark glass + warm tint/border. Not a bright orange block.
+========================================================= */
+.btn.btnPrimary,
+a.btn.btnPrimary{
+  padding: 9px 14px !important;              /* ✅ slightly bigger like category pills */
+  border: 1px solid rgba(201,122,58,.34) !important;
+  background: rgba(201,122,58,.12) !important; /* ✅ warm tinted glass */
+  color: rgba(255,230,205,.95) !important;     /* ✅ warm readable text */
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.22),
+    0 0 0 1px rgba(201,122,58,.18) inset;
+}
+
+.btn.btnPrimary:hover,
+.btn.btnPrimary:focus-visible,
+a.btn.btnPrimary:hover,
+a.btn.btnPrimary:focus-visible{
+  background: rgba(0,0,0,.55) !important;     /* ✅ hover goes darker */
+  border-color: rgba(201,122,58,.55) !important;
+  color: rgba(255,255,255,.96) !important;    /* ✅ ALWAYS readable */
+  text-shadow: 0 1px 0 rgba(0,0,0,.35);
+  transform: translateY(-1px);
+}
+
+.btn.btnPrimary:focus-visible,
+a.btn.btnPrimary:focus-visible{
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(201,122,58,.22),
+    0 10px 28px rgba(0,0,0,.22),
+    0 0 0 1px rgba(201,122,58,.22) inset;
+}
+
+/* =========================================================
+   SECONDARY / QUIET PILLS — a bit bigger + less subtle
+   (Luister/Contact/Eerst luisteren/Shop/Contact…)
+========================================================= */
+.btn.btnSecondary,
+.btn.btnQuiet,
+a.btn.btnSecondary,
+a.btn.btnQuiet{
+  padding: 9px 14px !important;              /* ✅ bigger around text */
+  border: 1px solid rgba(255,255,255,.18) !important;
+  background: rgba(255,255,255,.075) !important; /* ✅ less subtle */
+  color: rgba(255,255,255,.92) !important;
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.18),
+    0 0 0 1px rgba(255,255,255,.04) inset;
+}
+
+.btn.btnSecondary:hover,
+.btn.btnQuiet:hover,
+a.btn.btnSecondary:hover,
+a.btn.btnQuiet:hover{
+  background: rgba(255,255,255,.10) !important;
+  border-color: rgba(201,122,58,.40) !important;
+  color: rgba(255,255,255,.96) !important;
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   Any CTA row link that is NOT a .btn should still be a pill
+========================================================= */
+.ctaRow > a:not(.btn),
+.ctaRow > button:not(.btn),
+.musicTop > a:not(.btn),
+.musicTop a:not(.btn).pill,
+.musicSpotlight a:not(.btn).pill,
+.musicBelow a:not(.btn).pill{
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+
+  padding: 9px 14px !important;
+  border-radius: 999px !important;
+
+  border: 1px solid rgba(255,255,255,.18) !important;
+  background: rgba(255,255,255,.075) !important;
+  color: rgba(255,255,255,.92) !important;
+  text-decoration: none !important;
+
+  font-weight: 800 !important;
+  letter-spacing: .1px !important;
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.18),
+    0 0 0 1px rgba(255,255,255,.04) inset;
+
+  transition:
+    background-color .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease;
+}
+.ctaRow > a:not(.btn):hover,
+.ctaRow > button:not(.btn):hover,
+.musicTop > a:not(.btn):hover{
+  background: rgba(255,255,255,.10) !important;
+  border-color: rgba(201,122,58,.40) !important;
+  color: rgba(255,255,255,.96) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* =========================================================
+   HEADER SHOP/CART PILLS — keep readable + unified
+========================================================= */
+#site-header .btn,
+#site-header a.btn{
+  box-shadow: 0 10px 28px rgba(0,0,0,.22);
+}
+
+/* Cart badge: never a square block */
+#cartCount,
+[data-cart-count],
+.cartCount{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 6px;
+  margin-left: 6px;
+
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+
+  color: rgba(255,255,255,.95);
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(255,255,255,.16);
+}
+
+#site-header a.btn:hover #cartCount,
+#site-header a.btn:hover [data-cart-count],
+#site-header a.btn:hover .cartCount{
+  border-color: rgba(201,122,58,.40);
+  background: rgba(0,0,0,.55);
+}
+
+/* =========================================================
+   CART DRAWER — keep pills consistent + destructive intent
+========================================================= */
+#cartClose,
+.cartClose,
+button[aria-label="Close"],
+button[aria-label="Sluiten"]{
+  border-radius: 14px;
+}
+
+#cartDrawer .btn,
+.cartDrawer .btn{
+  border-radius: 999px !important;
+}
+
+/* “Mandje leegmaken” should never look broken */
+#cartDrawer .btnDanger,
+#cartDrawer .btn.btnDanger,
+.cartDrawer .btnDanger,
+.cartDrawer .btn.btnDanger{
+  border: 1px solid rgba(255,255,255,.18) !important;
+  background: rgba(255,255,255,.075) !important;
+  color: rgba(255,255,255,.92) !important;
+}
+#cartDrawer .btnDanger:hover,
+#cartDrawer .btn.btnDanger:hover,
+.cartDrawer .btnDanger:hover,
+.cartDrawer .btn.btnDanger:hover{
+  border-color: rgba(201,122,58,.45) !important;
+  background: rgba(0,0,0,.55) !important;
+  color: rgba(255,255,255,.96) !important;
+}
+
+/* Disabled should be calm, not “broken” */
+.btn:disabled,
+button:disabled{
+  opacity: .62;
+  cursor: not-allowed;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* =========================================================
+   SECTION ACCENT LINE (subtle chapter anchor)
+========================================================= */
+.panelWide{ position: relative; }
+.panelWide::before{
+  content:"";
+  position:absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,122,58,.55), transparent);
+  opacity: .55;
+  pointer-events: none;
+}
+
+/* =========================================================
+   HOME — HERO (SPA)
 ========================================================= */
 .heroChalet{
   margin-top: 18px;
@@ -45,12 +275,11 @@
 
 @supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
   .heroChalet{
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
   }
 }
 
-/* warm sweep like landing */
 .heroChalet::after{
   content:"";
   position:absolute;
@@ -62,7 +291,6 @@
   opacity: .85;
 }
 
-/* Title */
 .heroTitle{
   margin-top: 12px;
   font-size: clamp(40px, 4.5vw, 64px);
@@ -74,7 +302,6 @@
   position: relative;
 }
 
-/* small warm accent bar left of title */
 .heroTitle::before{
   content:"";
   position:absolute;
@@ -87,7 +314,6 @@
   box-shadow: 0 0 0 4px rgba(201,122,58,.18);
 }
 
-/* Lead in hero */
 .heroChalet .lead{
   margin-top: 10px;
   max-width: 58ch;
@@ -95,19 +321,11 @@
   line-height: 1.65;
 }
 
-/* CTA row layout (buttons are ui.css) */
 .ctaRow{
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 18px;
-}
-
-/* hero CTA extra warm presence */
-.heroChalet .btnPrimary{
-  box-shadow:
-    0 8px 24px rgba(201,122,58,.35),
-    0 0 0 1px rgba(201,122,58,.35) inset;
 }
 
 /* Right column cards */
@@ -157,12 +375,12 @@
 }
 
 /* =========================================================
-   HOME — NOW AVAILABLE
+   HOME — NOW AVAILABLE (SPA)
 ========================================================= */
 .availPanel{
   border-radius: 22px;
   border: 1px solid var(--panel-border);
-  background: rgba(10,10,10,.36);
+  background: rgba(14,14,16,.20);
   box-shadow: 0 22px 78px rgba(0,0,0,.34);
   position: relative;
   overflow: hidden;
@@ -170,12 +388,11 @@
 
 @supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
   .availPanel{
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
   }
 }
 
-/* warm sweep bottom */
 .availPanel::after{
   content:"";
   position:absolute;
@@ -186,14 +403,13 @@
   opacity: .95;
 }
 
-/* thin warm line */
 .availPanel::before{
   content:"";
   position:absolute;
   inset:auto 0 -1px 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--accent-warm), transparent);
-  opacity: .45;
+  opacity: .35;
 }
 
 .availGrid{
@@ -210,7 +426,6 @@
   position: relative;
 }
 
-/* warm bar on Now Available title */
 .availLeft .availTitle::before,
 .availLeft h2::before{
   content:"";
@@ -244,7 +459,7 @@
   overflow: hidden;
 
   border: 1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.24);
+  background: rgba(0,0,0,.20);
 
   box-shadow: 0 18px 55px rgba(0,0,0,.42);
   transform: translateZ(0);
@@ -289,25 +504,18 @@
   }
 }
 
-/* subtle warm glow on hover */
-.availImgWrap::after{
-  content:"";
-  position:absolute;
-  inset:-1px;
-  border-radius:inherit;
-  pointer-events:none;
-  opacity: 0;
-  transition: opacity .25s ease;
-  box-shadow:
-    0 0 24px rgba(255,160,90,.18),
-    0 0 60px rgba(255,140,80,.12);
-}
-.availImgWrap:hover::after{ opacity: 1; }
-
 /* =========================================================
-   BIO — shared (home + landing)
+   BIO — unified (Landing + SPA)
 ========================================================= */
-.bioHero{ gap: 20px; }
+.bioHero{
+  display: grid;
+  gap: 18px;
+  align-items: start;
+}
+
+@media (min-width: 900px){
+  .bioHero{ grid-template-columns: 1.05fr .95fr; }
+}
 
 .bioLeft .bioTitle{
   margin: 10px 0 6px;
@@ -315,7 +523,6 @@
   position: relative;
 }
 
-/* warm anchor line */
 .bioLeft .bioTitle::before{
   content:"";
   position:absolute;
@@ -336,20 +543,74 @@
   line-height: 1.7;
 }
 
-/* Toggle button: warm accent (home uses .btnWarmLink class, landing uses #bioToggle) */
-.btnWarmLink,
-#bioToggle{
-  color: var(--accent-warm);
+/* Tags: NON-clickable only (span). Clickables remain pills. */
+.bioLeft .tagsRow{ margin-top: 12px; }
+.bioLeft .tagsRow :is(span.tag, span.tagWarm){
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  color: rgba(255,255,255,.72) !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  letter-spacing: .12px !important;
+  pointer-events: none !important;
 }
-.btnWarmLink:hover,
-#bioToggle:hover{
-  color: rgba(255,255,255,.92);
-  text-decoration: underline;
-  text-decoration-color: var(--accent-warm);
-  text-underline-offset: 3px;
+.bioLeft .tagsRow :is(span.tag, span.tagWarm) + :is(span.tag, span.tagWarm){
+  margin-left: 10px;
+  position: relative;
+}
+.bioLeft .tagsRow :is(span.tag, span.tagWarm) + :is(span.tag, span.tagWarm)::before{
+  content: "•";
+  position: absolute;
+  left: -10px;
+  color: rgba(255,255,255,.28);
 }
 
-/* right side story readability */
+#bioPanel{
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.16);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 35px rgba(0,0,0,.28);
+}
+
+@supports ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))){
+  #bioPanel{
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+  }
+}
+
+#bioPanel .bioTextHead{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 10px;
+}
+
+#bioPanel .bioBody{
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.10);
+  border-radius: 16px;
+  padding: 14px;
+  position: relative;
+}
+
+#bioPanel.isCollapsed .bioBody{
+  max-height: 168px;
+  overflow: hidden;
+}
+#bioPanel.isCollapsed .bioBody::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height: 68px;
+  pointer-events:none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.65));
+}
+
 .bioBody p{
   margin: 0 0 12px;
   line-height: 1.75;
@@ -357,25 +618,28 @@
 }
 .bioBody p:last-child{ margin-bottom: 0; }
 
+#bioToggle{
+  border-color: rgba(201,122,58,.35);
+  background: rgba(201,122,58,.14);
+  color: rgba(255,220,195,.95);
+  font-weight: 800;
+}
+#bioToggle:hover{
+  color: rgba(255,255,255,.96);
+}
+
 .bioQuote{
   margin-top: 14px;
   padding-top: 12px;
   border-top: 1px solid rgba(255,255,255,.07);
   color: rgba(255,255,255,.72);
 }
-
-.bioQuoteMark{
-  color: var(--accent-warm);
-}
+.bioQuoteMark{ color: var(--accent-warm); }
 
 /* =========================================================
-   MUSIC — landing-level polish (SPA /music)
+   MUSIC — SPA (/music)
 ========================================================= */
-.musicTop{
-  display: block;
-  padding-bottom: 8px;
-}
-
+.musicTop{ display:block; padding-bottom: 8px; }
 .musicTop h1{
   margin: 0;
   font-size: 34px;
@@ -383,14 +647,12 @@
   line-height: 1.05;
   font-weight: 950;
 }
-
 .musicTop p{
   margin: 10px 0 0;
   max-width: 62ch;
   color: rgba(255,255,255,.72);
   line-height: 1.6;
 }
-
 .musicTop .ctaRow{ margin-top: 12px; }
 
 .musicSpotlight{
@@ -400,11 +662,9 @@
   gap: 16px;
   align-items: start;
 }
-
 @media (max-width: 900px){
   .musicSpotlight{ grid-template-columns: 1fr; }
 }
-
 .musicKick{ margin-bottom: 10px; opacity: .95; }
 
 .musicH2{
@@ -413,31 +673,26 @@
   letter-spacing: -.35px;
   line-height: 1.15;
 }
-
 .musicLead{
   margin: 0 0 12px;
   color: rgba(255,255,255,.86);
   line-height: 1.65;
 }
-
 .musicPara{
   margin: 0 0 14px;
   color: rgba(255,255,255,.74);
   line-height: 1.65;
 }
-
 .musicCredits{
   margin: 0;
   color: rgba(255,255,255,.72);
   line-height: 1.65;
 }
-
 .musicHint{
   margin: 14px 0 0;
   color: rgba(255,255,255,.60);
   line-height: 1.55;
 }
-
 .musicSpotCtas{ margin-top: 14px; }
 
 .musicSpotMedia .ytWrap{
@@ -446,18 +701,16 @@
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.12);
-  background: rgba(10,10,10,.45);
+  background: rgba(10,10,10,.40);
   box-shadow: 0 18px 55px rgba(0,0,0,.45);
   position: relative;
 }
-
 .musicSpotMedia .ytWrap iframe{
   width: 100%;
   height: 100%;
   display: block;
   border: 0;
 }
-
 .musicSpotMedia .ytWrap::after{
   content:"";
   position:absolute;
@@ -476,9 +729,7 @@
 @media (max-width: 900px){
   .musicBelow{ grid-template-columns: 1fr; }
 }
-
 .musicCard{ padding: 16px; }
-
 .musicCardHead h3{
   margin: 0;
   font-weight: 950;
@@ -509,11 +760,8 @@
 }
 
 /* =========================================================
-   LANDING (index.html) — restore missing warm accents
-   (safe: these classes/ids exist only on landing)
+   LANDING (index.html) — align polish with SPA
 ========================================================= */
-
-/* “Open →” badges on landing link-cards */
 .landingLinkHint{
   color: var(--accent-warm);
   font-weight: 800;
@@ -522,7 +770,6 @@
   color: rgba(255,255,255,.92);
 }
 
-/* bookings & links mail on landing */
 #contact a[href^="mailto:"]{
   color: var(--accent-warm);
   font-weight: 900;
@@ -534,7 +781,6 @@
   text-underline-offset: 3px;
 }
 
-/* landing footer links: warm underline on hover */
 .landingFooterRow a:hover{
   color: rgba(255,255,255,.95);
   text-decoration: underline;
@@ -563,337 +809,4 @@
 
 @media (max-width: 900px){
   .musicTop h1{ font-size: 30px; }
-}
-/* =========================
-   BIO (landing/home) — restore intended styling
-   Paste at VERY bottom of pages.css
-========================= */
-
-/* Right side panel frame */
-#bioPanel{
-  display: grid;
-  gap: 10px;
-}
-
-/* Collapsible behavior (your JS toggles .isCollapsed on #bioPanel) */
-#bioPanel.isCollapsed .bioBody{
-  max-height: 168px;
-  overflow: hidden;
-}
-#bioPanel.isCollapsed .bioBody::after{
-  content:"";
-  position:absolute;
-  left:0; right:0; bottom:0;
-  height: 68px;
-  pointer-events:none;
-  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.65));
-}
-
-/* Bio container rhythm */
-.bioTextHead{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 6px 0 10px;
-}
-.bioTextTitle{ margin: 0; }
-
-/* Make “Lees meer” warm again */
-#bioToggle.btn{
-  border-color: rgba(201,122,58,.35);
-  background: rgba(201,122,58,.14);
-  color: rgba(255,220,195,.95);
-  font-weight: 800;
-}
-#bioToggle.btn:hover{
-  background: rgba(201,122,58,.20);
-  border-color: rgba(201,122,58,.45);
-  color: rgba(255,255,255,.92);
-}
-
-/* Quote accent */
-.bioQuoteMark{
-  color: rgba(201,122,58,.92);
-}
-
-/* Bio tags should look like chips (not metadata) */
-.bioLeft .tag{
-  background: rgba(14,14,16,.22);
-  border: 1px solid rgba(255,255,255,.10);
-  color: rgba(255,255,255,.72);
-}
-.bioLeft .tagWarm{
-  border-color: rgba(201,122,58,.22);
-  background: rgba(201,122,58,.12);
-  color: rgba(255,220,195,.92);
-}
-/* =========================
-   HOTFIX — geel accenten terug (bio button + contact mail + footer links)
-   Paste at VERY bottom of pages.css
-========================= */
-
-:root{
-  --kw-warm: rgba(201,122,58,.92);
-  --kw-warm-soft: rgba(201,122,58,.18);
-  --kw-warm-line: rgba(201,122,58,.35);
-}
-
-/* Bio: “Lees meer” warm */
-#bioToggle.btn{
-  border-color: var(--kw-warm-line) !important;
-  background: var(--kw-warm-soft) !important;
-  color: rgba(255,220,195,.95) !important;
-  font-weight: 800 !important;
-}
-#bioToggle.btn:hover{
-  background: rgba(201,122,58,.22) !important;
-  border-color: rgba(201,122,58,.45) !important;
-  color: rgba(255,255,255,.92) !important;
-}
-
-/* Bio quote “ ” warm */
-.bioQuoteMark{
-  color: var(--kw-warm) !important;
-}
-
-/* Contact: mail altijd warm */
-.contactMail,
-#contact a[href^="mailto:"]{
-  color: var(--kw-warm) !important;
-  font-weight: 850 !important;
-  text-decoration: none !important;
-}
-.contactMail:hover,
-#contact a[href^="mailto:"]:hover{
-  color: rgba(255,255,255,.92) !important;
-  text-decoration: underline !important;
-  text-decoration-color: var(--kw-warm) !important;
-  text-underline-offset: 3px !important;
-}
-
-/* Footer links warm hover (landingFooterRow) */
-.landingFooterRow a:hover{
-  color: var(--kw-warm) !important;
-}
-/* =========================
-   HOTFIX — BIO header row + warm toggle
-   (plak HELEMAAL onderaan pages.css)
-========================= */
-
-#bio .bioTextHead{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:space-between !important;
-  gap: 12px !important;
-}
-
-#bio #bioToggle{
-  margin-left: auto !important;
-  border-color: rgba(201,122,58,.35) !important;
-  background: rgba(201,122,58,.14) !important;
-  color: rgba(255,220,195,.95) !important;
-  font-weight: 800 !important;
-}
-
-#bio #bioToggle:hover{
-  background: rgba(201,122,58,.20) !important;
-  border-color: rgba(201,122,58,.45) !important;
-  color: rgba(255,255,255,.92) !important;
-}
-
-#bio .bioQuoteMark{
-  color: rgba(201,122,58,.92) !important;
-}
-/* =========================
-   BIO — restore card separation (landing/home)
-   Paste at VERY bottom of pages.css
-========================= */
-
-#bio .bioHero{
-  display: grid;
-  gap: 18px;
-  align-items: start;
-}
-
-@media (min-width: 900px){
-  #bio .bioHero{
-    grid-template-columns: 1.05fr .95fr;
-  }
-}
-
-/* Make right side feel like a real card */
-#bio #bioPanel{
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(0,0,0,.18);
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 0 12px 35px rgba(0,0,0,.28);
-}
-
-/* Head row: title left, button right */
-#bio #bioPanel .bioTextHead{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 0 0 10px;
-}
-
-/* Keep your inner text frame subtle */
-#bio #bioPanel .bioBody{
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(0,0,0,.12);
-  border-radius: 16px;
-  padding: 14px;
-}
-
-/* Collapsed behavior */
-#bio #bioPanel.isCollapsed .bioBody{
-  max-height: 168px;
-  overflow: hidden;
-  position: relative;
-}
-#bio #bioPanel.isCollapsed .bioBody::after{
-  content:"";
-  position:absolute;
-  left:0; right:0; bottom:0;
-  height: 68px;
-  pointer-events:none;
-  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.65));
-}
-
-/* Warm button back */
-#bio #bioToggle{
-  border-color: rgba(201,122,58,.35);
-  background: rgba(201,122,58,.14);
-  color: rgba(255,220,195,.95);
-  font-weight: 800;
-}
-#bio #bioToggle:hover{
-  background: rgba(201,122,58,.20);
-  border-color: rgba(201,122,58,.45);
-  color: rgba(255,255,255,.92);
-}
-
-/* Quote accent */
-#bio .bioQuoteMark{
-  color: rgba(201,122,58,.92);
-}
-/* =========================
-   BIO — restore single card + text labels
-   (NO chips, NO pills, NO CTA look)
-========================= */
-
-/* 1. Maak bio opnieuw één duidelijke card */
-#bio .bioHero{
-  background: rgba(14,14,16,.28);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 22px;
-  padding: 22px;
-  box-shadow: 0 18px 45px rgba(0,0,0,.35);
-}
-
-/* 2. Interne split blijft, maar zonder aparte cards */
-#bio .bioLeft,
-#bio .bioRight{
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-}
-
-/* 3. Bio tags = tekstlabels, GEEN chips */
-#bio .tagsRow .tag,
-#bio .tagsRow .tagWarm{
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-
-  color: rgba(255,255,255,.70) !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  letter-spacing: .12px !important;
-
-  pointer-events: none !important;
-}
-
-/* kleine scheiding tussen labels */
-#bio .tagsRow .tag + .tag,
-#bio .tagsRow .tag + .tagWarm,
-#bio .tagsRow .tagWarm + .tag{
-  margin-left: 10px;
-  position: relative;
-}
-
-#bio .tagsRow .tag + .tag::before,
-#bio .tagsRow .tag + .tagWarm::before,
-#bio .tagsRow .tagWarm + .tag::before{
-  content: "•";
-  position: absolute;
-  left: -10px;
-  color: rgba(255,255,255,.28);
-}
-
-/* 4. Lees-meer blijft knop, warm accent */
-#bio #bioToggle{
-  border-color: rgba(201,122,58,.35);
-  background: rgba(201,122,58,.14);
-  color: rgba(255,220,195,.95);
-  font-weight: 800;
-}
-
-#bio #bioToggle:hover{
-  background: rgba(201,122,58,.20);
-  border-color: rgba(201,122,58,.45);
-}
-/* =========================
-   BIO — micro polish (SAFE)
-   no structure changes
-========================= */
-
-/* Bio labels: iets beter leesbaar */
-#bio .tagsRow{
-  margin-top: 12px;
-}
-#bio .tagsRow .tag{
-  color: rgba(255,255,255,.75) !important;
-}
-
-/* Rechter verhaal: net iets meer “card feel” */
-#bio .bioRight{
-  padding: 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.06);
-  background: rgba(0,0,0,.18);
-}
-/* =========================
-   SECTION ACCENT LINE
-   Subtiele oranje ankerlijn per hoofdstuk
-   (Bio, Contact, Music, etc.)
-========================= */
-
-.panelWide{
-  position: relative;
-}
-
-/* dunne warme lijn bovenaan de sectie */
-.panelWide::before{
-  content:"";
-  position:absolute;
-  top: 0;
-  left: 24px;
-  right: 24px;
-  height: 1px;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(201,122,58,.55),
-    transparent
-  );
-
-  opacity: .6;
-  pointer-events: none;
 }
