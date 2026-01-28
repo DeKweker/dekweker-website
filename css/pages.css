@@ -589,3 +589,55 @@
 .landingFooterDeeq .deeqLink:hover .deeqLogo{
   opacity: 1;
 }
+/* =========================
+   Landing footer — MOBILE FORCE (final)
+========================= */
+@media (max-width: 760px){
+
+  /* force stack */
+  #contact .landingFooterRow{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+  }
+
+  /* order: city → deeq → links */
+  #contact .landingFooterRow > div:nth-child(1){ order: 1; }
+  #contact .landingFooterRow > div:nth-child(2){ order: 2; }
+  #contact .landingFooterRow > div:nth-child(3){ order: 3; }
+
+  /* center deeq block and stack text + logo */
+  #contact .landingFooterDeeq{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    line-height: 1.25 !important;
+    font-size: 12px !important;
+  }
+
+  /* logo size mobile */
+  #contact .landingFooterDeeq .deeqLogo{
+    height: 20px !important;
+    width: auto !important;
+    transform: none !important;
+  }
+
+  /* links row: wrap & center */
+  #contact .landingFooterRow > div:nth-child(3){
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* kill inline separator margins */
+  #contact .landingFooterRow > div:nth-child(3) span{
+    margin: 0 !important;
+  }
+}
