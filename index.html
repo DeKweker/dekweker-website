@@ -8,19 +8,23 @@
   <meta name="description" content="De Kweker is een rapper uit Brugge (8000). West-Vlaams. Muziek die dicht op het leven zit — zonder uitleg ernaast." />
   <meta name="robots" content="index,follow" />
 
-  <link rel="canonical" href="https://kwkr.be/" />
+  <!-- ✅ FIX: canonical naar WWW -->
+  <link rel="canonical" href="https://www.kwkr.be/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="De Kweker" />
   <meta property="og:title" content="De Kweker — Brugge (8000)" />
   <meta property="og:description" content="De Kweker is een rapper uit Brugge (8000). West-Vlaams. Muziek die dicht op het leven zit — zonder uitleg ernaast." />
-  <meta property="og:image" content="https://kwkr.be/assets/og-cover.jpg" />
-  <meta property="og:url" content="https://kwkr.be/" />
+  <!-- ✅ FIX: OG image naar WWW -->
+  <meta property="og:image" content="https://www.kwkr.be/assets/og-cover.jpg" />
+  <!-- ✅ FIX: OG url naar WWW -->
+  <meta property="og:url" content="https://www.kwkr.be/" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://kwkr.be/assets/og-cover.jpg" />
+  <!-- ✅ FIX: Twitter image naar WWW -->
+  <meta name="twitter:image" content="https://www.kwkr.be/assets/og-cover.jpg" />
 
   <!-- Favicons -->
   <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -407,7 +411,7 @@
         </div>
       </section>
 
-      <!-- CONTACT -->
+            <!-- CONTACT -->
       <section class="panel panelWide" id="contact" style="margin-top:14px;">
         <div class="kickerWarm"><span class="dotWarm"></span> Contact</div>
         <h2 style="margin:10px 0 8px;">Bookings & links</h2>
@@ -447,9 +451,17 @@
           </div>
         </div>
 
+        <!-- footer row: city / deeq credit / links -->
         <div class="landingFooterRow">
           <div>Brugge (8000)</div>
-          <div> © 2026 De Kweker. Alle rechten voorbehouden.</div>
+
+          <div class="landingFooterDeeq">
+            © 2026 De Kweker · Powered by
+            <a class="deeqLink" href="https://deeq-studio.com" target="_blank" rel="noopener noreferrer" aria-label="DeeQ Studio">
+              <img class="deeqLogo" src="/assets/deeq-studio.svg" alt="DeeQ Studio" loading="lazy" />
+            </a>
+          </div>
+
           <div>
             <a href="https://pokoemagazine.nl/de-kweker-verroader/" target="_blank" rel="noopener noreferrer">Pokoe</a>
             <span style="opacity:.5;margin:0 8px;">·</span>
@@ -462,7 +474,6 @@
 
     </div>
   </main>
-  
 
   <!-- Bio toggle (no dependencies) -->
   <script>
@@ -479,6 +490,14 @@
         btn.textContent = expanded ? "Lees minder" : "Lees meer";
         btn.setAttribute("aria-expanded", expanded ? "true" : "false");
       });
+    })();
+  </script>
+
+  <!-- DeeQ footer year -->
+  <script>
+    (function(){
+      const y = document.getElementById("deeqYear");
+      if(y) y.textContent = new Date().getFullYear();
     })();
   </script>
 </body>

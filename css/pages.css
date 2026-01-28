@@ -556,3 +556,36 @@
 @media (max-width: 900px){
   .musicTop h1{ font-size: 30px; }
 }
+/* =========================
+   DeeQ Studio footer — FINAL FIX
+========================= */
+
+.landingFooterDeeq{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;          /* tekst mag klein blijven */
+  line-height: 1;
+}
+
+.landingFooterDeeq .deeqLink{
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 🚨 HIER ZAT HET PROBLEEM */
+.landingFooterDeeq .deeqLogo{
+  display: block;
+  height: 21px;        /* ← kleiner (aanrader) */
+  width: auto;
+  max-width: none;
+  max-height: none;
+  opacity: .88;
+  transform: translateY(1px);
+}
+
+
+/* subtiele hover */
+.landingFooterDeeq .deeqLink:hover .deeqLogo{
+  opacity: 1;
+}
