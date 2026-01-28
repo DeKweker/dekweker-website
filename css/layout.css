@@ -66,15 +66,35 @@
   }
 }
 
-/* brand */
+/* brand (logo) */
 #site-header .brand{ display:flex; align-items:center; }
+
 #site-header .brandLink{
-  color: rgba(255,255,255,.92);
-  text-decoration: none;
-  font-weight: 900;
-  letter-spacing: -.2px;
-  white-space: nowrap;
+  display:flex;
+  align-items:center;
+  line-height:0;
+  text-decoration:none;
 }
+
+/* image logo in navbar */
+#site-header .brandLogo{
+  display:block;
+  height:32px;
+  width:auto;
+  max-width:none;
+  max-height:none;
+
+  /* jouw SVG is zwart -> maak hem wit op donkere header */
+  filter: brightness(0) invert(1);
+  opacity:.92;
+}
+
+#site-header .brandLink:hover .brandLogo{ opacity: 1; }
+
+@media (max-width: 520px){
+  #site-header .brandLogo{ height:26px; }
+}
+
 
 /* center nav */
 #site-header .navLinks{
@@ -218,4 +238,66 @@
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
+}
+/* =========================================================
+   HEADER — FINAL (brand SVG + layout anchor)
+   Plak DIT als enige block helemaal ONDERAAN layout.css
+========================================================= */
+
+/* Topbar: vaste SPA-achtige layout */
+#site-header .topbar{
+  display: grid;
+  grid-template-columns: 220px 1fr auto; /* brand / nav / actions */
+  align-items: center;
+  gap: 14px;
+
+  min-height: 72px;     /* genoeg ruimte voor groter logo */
+  padding: 0 22px;
+}
+
+/* Brand: logo mag niet door text-styling beïnvloed worden */
+#site-header .brand{ display:flex; align-items:center; min-width:0; }
+
+#site-header .brandLink{
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  color: inherit;
+}
+
+/* Logo: echte grootte (desktop) */
+#site-header .brandLogo{
+  display: block;
+  height: 75px;         /* ✅ HIER regel je de grootte */
+  width: auto;
+  max-width: none;
+  max-height: none;
+}
+
+/* Center nav blijft center */
+#site-header .navLinks{
+  justify-content: center;
+  min-width: 0;
+}
+
+/* Mobile: nav weg + compactere header */
+@media (max-width: 900px){
+  #site-header .navLinks{ display:none !important; }
+
+  #site-header .topbar{
+    grid-template-columns: 1fr auto; /* brand + actions */
+  }
+}
+
+@media (max-width: 520px){
+  #site-header .topbar{
+    min-height: 60px;
+    padding: 0 16px;
+  }
+
+  #site-header .brandLogo{
+    height: 64px;
+  }
 }
