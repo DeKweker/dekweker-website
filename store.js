@@ -316,7 +316,7 @@
 
       window.location.href = payload.url;
     } catch {
-      setCheckoutNote('Checkout tijdelijk niet beschikbaar. Probeer later opnieuw.');
+      setCheckoutNote('Checkout kon niet worden gestart. Mail info@kwkr.be om je bestelling te regelen.');
     } finally {
       checkoutBusy = false;
       updateCheckoutState();

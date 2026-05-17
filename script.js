@@ -163,7 +163,7 @@
     const renderEvents = (items) => {
       if (!items.length) {
         eventsFeed.innerHTML =
-          "<p class='events-empty'>Nieuwe data worden binnenkort toegevoegd.</p>";
+          "<p class='events-empty'>Nieuwe live data worden toegevoegd zodra ze bevestigd zijn.</p>";
         return;
       }
 
@@ -188,7 +188,7 @@
 
           const linksBlock = links
             ? `<div class='events-item-links'>${links}</div>`
-            : "<p class='events-meta'>Info volgt binnenkort.</p>";
+            : "<p class='events-meta'>Details worden bevestigd via de organisator.</p>";
 
           return `
             <li class='events-item'>
@@ -217,8 +217,7 @@
         const payload = await response.json();
         renderEvents(Array.isArray(payload.events) ? payload.events : []);
       } catch {
-        eventsFeed.innerHTML =
-          "<p class='events-error'>Events tijdelijk niet beschikbaar.</p>";
+        renderEvents([]);
       }
     };
 
