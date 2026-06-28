@@ -2707,6 +2707,29 @@ h3 {
   filter: grayscale(100%);
 }
 
+.page-muziek.page-pro .music-hero-grid::before {
+  background:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.96), rgba(5, 5, 5, 0.76)),
+    linear-gradient(180deg, rgba(255, 154, 58, 0.08), transparent 42%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 1;
+  filter: none;
+}
+
+.page-muziek.page-pro .music-visual-stack {
+  grid-template-columns: 1fr;
+}
+
+.page-muziek.page-pro .music-visual-stack figure {
+  min-height: clamp(360px, 56vh, 560px);
+}
+
+.page-muziek.page-pro .music-visual-stack img {
+  object-position: center top;
+}
+
 .page-pro .music-visual-stack figure,
 .page-pro .featured-article,
 .page-pro .official-hero,
