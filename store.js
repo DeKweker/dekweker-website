@@ -141,12 +141,12 @@
     }
 
     if (!STORE.live) {
-      setCheckoutNote('Prelaunch: checkout staat nog niet live.');
+      setCheckoutNote('Checkout opent zodra de drop live gaat.');
       return;
     }
 
     if (!hasItems) {
-      setCheckoutNote('Voeg eerst items toe aan je cart.');
+      setCheckoutNote('Voeg eerst items toe aan je mandje.');
       return;
     }
 
