@@ -903,6 +903,7 @@ h3 {
   border-radius: 14px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.26);
+  min-height: clamp(360px, 54vh, 560px);
 }
 
 .music-visual-stack img {
@@ -2726,11 +2727,11 @@ h3 {
 }
 
 .page-pro .music-visual-stack figure:first-child img {
-  object-position: center 34%;
+  object-position: center 12%;
 }
 
 .page-pro .music-visual-stack figure:nth-child(2) img {
-  object-position: 38% center;
+  object-position: 42% 16%;
 }
 
 .page-pro .media-hero-stats,
