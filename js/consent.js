@@ -99,12 +99,12 @@
         <div class='cookie-copy'>
           <p class='cookie-kicker'>Cookies</p>
           <p class='cookie-text'>
-            We gebruiken enkel noodzakelijke cookies. Voor YouTube en Spotify vragen we eerst je akkoord.
+            Noodzakelijke cookies zijn actief. Voor YouTube en Spotify vragen we eerst je akkoord.
           </p>
         </div>
         <div class='cookie-actions'>
           <button type='button' class='btn primary' data-cookie-accept>Akkoord</button>
-          <button type='button' class='btn ghost' data-cookie-decline>Enkel noodzakelijk</button>
+          <button type='button' class='btn ghost' data-cookie-decline>Noodzakelijk</button>
           <a class='textLink cookie-link' href='/privacy/'>Meer info</a>
         </div>
       </div>

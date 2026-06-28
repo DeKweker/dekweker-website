@@ -205,6 +205,15 @@
     };
 
     const loadEvents = async () => {
+      const isStaticPreview =
+        ['localhost', '127.0.0.1', '0.0.0.0'].includes(window.location.hostname) ||
+        window.location.protocol === 'file:';
+
+      if (isStaticPreview) {
+        renderEvents([]);
+        return;
+      }
+
       try {
         const response = await fetch('/api/events?limit=4', {
           cache: 'default',

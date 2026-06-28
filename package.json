@@ -2,6 +2,9 @@
   "name": "dekweker-website",
   "private": true,
   "version": "1.0.0",
+  "scripts": {
+    "seo:audit": "node scripts/seo-audit.mjs"
+  },
   "dependencies": {
     "stripe": "^16.0.0"
   }

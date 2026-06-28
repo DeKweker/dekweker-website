@@ -1,4 +1,4 @@
-﻿const CALENDAR_ID =
+const CALENDAR_ID =
   'a423b7f3776240d3a12658889e9931f0e45f86dff71773ce00ccac8285e33ecb@group.calendar.google.com';
 
 const CALENDAR_ICS_URL =

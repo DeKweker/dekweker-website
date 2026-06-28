@@ -4,6 +4,9 @@
   <url>
     <loc>https://www.kwkr.be/</loc>
     <image:image>
+      <image:loc>https://www.kwkr.be/assets/portrait/bio/kwekerbio-wall-wide.jpg</image:loc>
+    </image:image>
+    <image:image>
       <image:loc>https://www.kwkr.be/assets/og-cover.jpg</image:loc>
     </image:image>
     <image:image>
