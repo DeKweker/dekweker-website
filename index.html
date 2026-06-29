@@ -58,7 +58,15 @@
     <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />
     <link rel='manifest' href='/site.webmanifest' />
 
-    <link rel='preload' as='image' href='/assets/portrait/bio/kwekerbio-5.jpg' fetchpriority='high' />
+    <link
+      rel='preload'
+      as='image'
+      href='/assets/portrait/bio/kwekerbio-5-960.webp'
+      type='image/webp'
+      imagesrcset='/assets/portrait/bio/kwekerbio-5-640.webp 640w, /assets/portrait/bio/kwekerbio-5-960.webp 960w'
+      imagesizes='(max-width: 760px) 100vw, 38vw'
+      fetchpriority='high'
+    />
     <link rel='preconnect' href='https://fonts.googleapis.com' />
     <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
     <link
