@@ -2883,8 +2883,12 @@ h3 {
   }
 
   .pro-hero-portrait {
-    min-height: 235px;
-    max-height: 32vh;
+    min-height: clamp(300px, 72vw, 380px);
+    max-height: none;
+  }
+
+  .page-home .pro-hero-portrait img {
+    object-position: center 18%;
   }
 
   .pro-hero-portrait figcaption {
