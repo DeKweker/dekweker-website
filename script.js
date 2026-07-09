@@ -162,8 +162,7 @@
 
     const renderEvents = (items) => {
       if (!items.length) {
-        eventsFeed.innerHTML =
-          "<p class='events-empty'>Nieuwe live data worden toegevoegd zodra ze bevestigd zijn.</p>";
+        eventsFeed.innerHTML = '';
         return;
       }
 

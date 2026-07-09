@@ -86,7 +86,7 @@
         rel='stylesheet'
       />
     </noscript>
-    <link rel='stylesheet' href='/css/rebuild-2026.css?v=20260629a' />
+    <link rel='stylesheet' href='/css/rebuild-2026.css?v=20260709a' />
 
     <script type='application/ld+json'>
       {
@@ -172,6 +172,41 @@
               "https://www.youtube.com/watch?v=J7XVdP0mvNk"
             ],
             "inLanguage": "nl-BE"
+          },
+          {
+            "@type": "MusicEvent",
+            "@id": "https://www.kwkr.be/#villa-west-2026",
+            "name": "Villa West - De Kweker live",
+            "description": "De Kweker speelt een uur live met enkele gastartiesten tijdens Villa West, georganiseerd door Kwartier West.",
+            "startDate": "2026-08-07T22:00:00+02:00",
+            "endDate": "2026-08-07T23:00:00+02:00",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "isAccessibleForFree": true,
+            "image": "https://www.kwkr.be/assets/events/villa-west-de-kweker.png",
+            "location": {
+              "@type": "Place",
+              "name": "Villa Bota",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Brugge",
+                "addressCountry": "BE"
+              }
+            },
+            "organizer": {
+              "@type": "Organization",
+              "name": "Kwartier West"
+            },
+            "performer": {
+              "@id": "https://www.kwkr.be/#artist"
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR",
+              "availability": "https://schema.org/InStock",
+              "url": "https://www.kwkr.be/#events"
+            }
           },
           {
             "@type": "BreadcrumbList",
@@ -326,6 +361,52 @@
             Bevestigde data verschijnen hier automatisch. Voor booking, clubs, jeugdhuizen en collabs kan je rechtstreeks mailen.
           </p>
         </div>
+        <article class='events-featured' aria-labelledby='villa-west-title'>
+          <figure class='events-poster'>
+            <img
+              src='/assets/events/villa-west-de-kweker.png'
+              width='1080'
+              height='1350'
+              loading='lazy'
+              decoding='async'
+              alt='Affiche van Villa West met De Kweker in Villa Bota Brugge'
+            />
+          </figure>
+          <div class='events-featured-body'>
+            <div class='events-featured-head'>
+              <p class='events-featured-kicker'>Vrijdag 7 augustus 2026</p>
+              <span class='events-spotlight'>Gratis toegang</span>
+            </div>
+            <h3 id='villa-west-title'>Villa West — De Kweker live</h3>
+            <p class='muted'>
+              De Kweker &amp; Friends spelen een uur live in Villa Bota, met enkele gastartiesten.
+              Villa West wordt georganiseerd door Kwartier West.
+            </p>
+            <ul class='events-info-list' aria-label='Praktische informatie Villa West'>
+              <li>
+                <span class='events-info-label'>Datum</span>
+                <span class='events-info-value'><time datetime='2026-08-07'>Vrijdag 7 augustus 2026</time></span>
+              </li>
+              <li>
+                <span class='events-info-label'>Uur</span>
+                <span class='events-info-value'><time datetime='2026-08-07T22:00:00+02:00'>22:00</time>–<time datetime='2026-08-07T23:00:00+02:00'>23:00</time></span>
+              </li>
+              <li>
+                <span class='events-info-label'>Locatie</span>
+                <span class='events-info-value'>Villa Bota, Brugge</span>
+              </li>
+              <li>
+                <span class='events-info-label'>Organisatie</span>
+                <span class='events-info-value'>Kwartier West</span>
+              </li>
+              <li class='events-info-free'>
+                <span class='events-info-label'>Toegang</span>
+                <strong class='events-info-value'>Volledig gratis</strong>
+              </li>
+            </ul>
+            <p class='events-free-callout'>Gratis inkom — kom langs, geen ticket nodig.</p>
+          </div>
+        </article>
         <div class='events-feed' data-events-feed>
           <p class='events-loading'>Nieuwe live data worden toegevoegd zodra ze bevestigd zijn.</p>
         </div>
@@ -517,6 +598,6 @@
     </footer>
 
     <script src='/js/consent.js' defer></script>
-    <script src='/script.js' defer></script>
+    <script src='/script.js?v=20260709a' defer></script>
   </body>
 </html>
