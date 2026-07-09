@@ -630,6 +630,7 @@ h3 {
   text-transform: uppercase;
 }
 
+.events-featured-body h2,
 .events-featured-body h3 {
   margin: 0;
   font-size: clamp(2rem, 3.2vw, 3rem);

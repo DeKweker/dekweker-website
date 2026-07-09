@@ -4,6 +4,7 @@ import path from 'node:path';
 const root = process.cwd();
 const publicPages = [
   'index.html',
+  'live/index.html',
   'muziek/index.html',
   'media/index.html',
   'de-kweker/index.html',

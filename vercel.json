@@ -19,6 +19,8 @@
     { "src": "^/(favicon\\.ico|apple-touch-icon\\.png|favicon-16x16\\.png|favicon-32x32\\.png|favicon-96x96\\.png|site\\.webmanifest)$", "continue": true, "headers": { "Cache-Control": "public, max-age=604800" } },
     { "src": "^/muziek/?$", "continue": true, "headers": { "Cache-Control": "no-store, no-cache, must-revalidate" } },
     { "src": "^/muziek/index\\.html$", "continue": true, "headers": { "Cache-Control": "no-store, no-cache, must-revalidate" } },
+    { "src": "^/live/?$", "continue": true, "headers": { "Cache-Control": "no-store, no-cache, must-revalidate" } },
+    { "src": "^/live/index\\.html$", "continue": true, "headers": { "Cache-Control": "no-store, no-cache, must-revalidate" } },
 
     { "src": "^/site\\.html$", "continue": true, "headers": { "X-Robots-Tag": "noindex, nofollow, noarchive, noimageindex" } },
     { "src": "^/maintenance\\.html$", "continue": true, "headers": { "X-Robots-Tag": "noindex, nofollow, noarchive" } },
@@ -30,6 +32,8 @@
 
     { "src": "^/de-kweker$", "dest": "/de-kweker/index.html" },
     { "src": "^/de-kweker/$", "dest": "/de-kweker/index.html" },
+    { "src": "^/live$", "dest": "/live/index.html" },
+    { "src": "^/live/$", "dest": "/live/index.html" },
     { "src": "^/media$", "dest": "/media/index.html" },
     { "src": "^/media/$", "dest": "/media/index.html" },
     { "src": "^/sporen$", "dest": "/media/index.html" },
