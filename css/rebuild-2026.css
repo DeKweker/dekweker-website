@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/bebas-neue-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/assets/fonts/space-grotesk-latin.woff2') format('woff2');
+}
+
 :root {
   --bg: #060606;
   --bg-soft: #0e0b09;
@@ -898,7 +914,7 @@ h3 {
 .tour-year-label {
   margin: 0;
   padding-top: clamp(1.5rem, 3vw, 2.5rem);
-  color: rgba(242, 238, 233, 0.22);
+  color: rgba(242, 238, 233, 0.46);
   font-family: var(--heading-font);
   font-size: clamp(2.5rem, 5vw, 5rem);
   line-height: 1;
@@ -1095,6 +1111,17 @@ h3 {
 
   .tour-poster-preview figure {
     margin-left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .page-live .events-featured-body {
+    order: 1;
+  }
+
+  .page-live .events-poster {
+    order: 2;
+    margin-top: 0.5rem;
   }
 }
 
@@ -1565,6 +1592,14 @@ h3 {
 
 .official-card {
   gap: 0.85rem;
+}
+
+.official-card h2,
+.media-hero-stats h2,
+.policy-card h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  line-height: 1.08;
 }
 
 .official-hero {
@@ -2182,15 +2217,26 @@ h3 {
 .policy-grid {
   display: grid;
   gap: 0.9rem;
+  counter-reset: policy;
 }
 
 .policy-card {
+  position: relative;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: rgba(0, 0, 0, 0.2);
   padding: 0.95rem;
   display: grid;
   gap: 0.55rem;
+  counter-increment: policy;
+}
+
+.policy-card::before {
+  content: '0' counter(policy);
+  color: var(--accent);
+  font-family: var(--heading-font);
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
 }
 
 .policy-card p {
@@ -3114,6 +3160,40 @@ h3 {
   display: grid;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.page-privacy.page-pro main > .section-shell:first-child {
+  min-height: auto;
+  padding-block: clamp(3.5rem, 8vw, 7rem);
+}
+
+@media (min-width: 900px) {
+  .page-muziek.page-pro .section-head,
+  .page-media.page-pro .section-head,
+  .page-official.page-pro .section-head {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.22fr) minmax(0, 1fr);
+    column-gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .page-muziek.page-pro .section-head .kicker,
+  .page-media.page-pro .section-head .kicker,
+  .page-official.page-pro .section-head .kicker {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .page-muziek.page-pro .section-head h2,
+  .page-media.page-pro .section-head h2,
+  .page-official.page-pro .section-head h2,
+  .page-muziek.page-pro .section-head .muted,
+  .page-media.page-pro .section-head .muted,
+  .page-official.page-pro .section-head .muted {
+    grid-column: 2;
+  }
 }
 
 .page-pro:not(.page-home) .music-hero-grid,
