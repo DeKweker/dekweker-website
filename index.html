@@ -86,7 +86,7 @@
         rel='stylesheet'
       />
     </noscript>
-    <link rel='stylesheet' href='/css/rebuild-2026.css?v=20260709a' />
+    <link rel='stylesheet' href='/css/rebuild-2026.css?v=20260710d' />
 
     <script type='application/ld+json'>
       {
@@ -167,6 +167,7 @@
             },
             "duration": "PT3M32S",
             "datePublished": "2026-06-21",
+            "image": "https://www.kwkr.be/assets/releases/geen-slim-shady-cover.jpg",
             "url": "https://open.spotify.com/album/70ZBPHOr4F3pgk3MYBZzn3",
             "sameAs": [
               "https://www.youtube.com/watch?v=J7XVdP0mvNk"
@@ -428,82 +429,48 @@
               <a class='btn ghost' href='/muziek/'>Alle releases</a>
             </div>
           </div>
-          <figure class='pro-feature-media'>
-            <picture>
-              <source
-                type='image/webp'
-                srcset='/assets/portrait/bio/kwekerbio-4-640.webp 640w, /assets/portrait/bio/kwekerbio-4-960.webp 960w'
-                sizes='(max-width: 760px) 100vw, 42vw'
-              />
-              <img
-                src='/assets/portrait/bio/kwekerbio-4.jpg'
-                width='1200'
-                height='1500'
-                loading='lazy'
-                decoding='async'
-                alt='De Kweker tijdens de Lekt Em clipshoot'
-              />
-            </picture>
+          <figure class='pro-feature-media release-cover-media'>
+            <img
+              src='/assets/releases/geen-slim-shady-cover.jpg'
+              width='300'
+              height='300'
+              loading='lazy'
+              decoding='async'
+              alt='Coverart van Geen Slim Shady door P@FF1 met De Kweker'
+            />
           </figure>
         </div>
       </section>
 
       <section id='events' class='section-shell container reveal'>
-        <div class='section-head'>
-          <p class='kicker'>Live</p>
-          <h2>Aankomende shows en live momenten.</h2>
-          <p class='muted'>
-            Bevestigde data verschijnen hier automatisch. Voor booking, clubs, jeugdhuizen en collabs kan je rechtstreeks mailen.
-          </p>
-        </div>
-        <article class='events-featured' aria-labelledby='villa-west-title'>
-          <figure class='events-poster'>
-            <img
-              src='/assets/events/villa-west-de-kweker.png'
-              width='1080'
-              height='1350'
-              loading='lazy'
-              decoding='async'
-              alt='Affiche van Villa West met De Kweker in Villa Bota Brugge'
-            />
-          </figure>
-          <div class='events-featured-body'>
-            <div class='events-featured-head'>
-              <p class='events-featured-kicker'>Vrijdag 7 augustus 2026</p>
-              <span class='events-spotlight'>Gratis toegang</span>
-            </div>
-            <h3 id='villa-west-title'>Villa West — De Kweker live</h3>
-            <p class='muted'>
-              De Kweker &amp; Friends spelen een uur live in Villa Bota, met enkele gastartiesten.
-              Villa West wordt georganiseerd door Kwartier West.
-            </p>
-            <ul class='events-info-list' aria-label='Praktische informatie Villa West'>
-              <li>
-                <span class='events-info-label'>Datum</span>
-                <span class='events-info-value'><time datetime='2026-08-07'>Vrijdag 7 augustus 2026</time></span>
-              </li>
-              <li>
-                <span class='events-info-label'>Uur</span>
-                <span class='events-info-value'><time datetime='2026-08-07T22:00:00+02:00'>22:00</time>–<time datetime='2026-08-07T23:00:00+02:00'>23:00</time></span>
-              </li>
-              <li>
-                <span class='events-info-label'>Locatie</span>
-                <span class='events-info-value'>Villa Bota, Brugge</span>
-              </li>
-              <li>
-                <span class='events-info-label'>Organisatie</span>
-                <span class='events-info-value'>Kwartier West</span>
-              </li>
-              <li class='events-info-free'>
-                <span class='events-info-label'>Toegang</span>
-                <strong class='events-info-value'>Volledig gratis</strong>
-              </li>
-            </ul>
-            <p class='events-free-callout'>Gratis inkom — kom langs, geen ticket nodig.</p>
+        <div class='home-live-head'>
+          <div>
+            <p class='kicker'>Live</p>
+            <h2>Aankomend &amp; archief.</h2>
+            <p class='muted'>De eerstvolgende show en een korte selectie uit het liveverleden.</p>
           </div>
-        </article>
-        <div class='events-feed' data-events-feed>
-          <p class='events-loading'>Nieuwe live data worden toegevoegd zodra ze bevestigd zijn.</p>
+          <a class='textLink' href='/live/'>Volledige livepagina <span aria-hidden='true'>&rarr;</span></a>
+        </div>
+        <div class='home-live-grid'>
+          <article class='home-live-upcoming'>
+            <div class='home-live-label'><span>Aankomend</span><strong>01</strong></div>
+            <div class='home-live-copy'>
+              <p class='events-featured-kicker'><time datetime='2026-08-07'>7 augustus 2026</time> &middot; 22:00</p>
+              <h3>Villa West</h3>
+              <p class='muted'>De Kweker &amp; Friends spelen een uur live in Villa Bota, Brugge. Gratis toegang.</p>
+              <a class='btn primary' href='/live/#villa-west-title'>Bekijk show</a>
+            </div>
+            <img src='/assets/events/villa-west-de-kweker.png' width='1080' height='1350' loading='lazy' decoding='async' alt='Affiche Villa West met De Kweker' />
+          </article>
+          <article class='home-live-past'>
+            <div class='home-live-label'><span>Archief</span><strong>03</strong></div>
+            <ol class='home-live-history'>
+              <li><time datetime='2026-05-15'>15.05.26</time><div><strong>Friday After Hours</strong><span>De Kelk &middot; Brugge</span></div></li>
+              <li><time datetime='2025-07-05'>05.07.25</time><div><strong>Caf&eacute; Bambino</strong><span>Roeselare</span></div></li>
+              <li><time datetime='2025-05-31'>31.05.25</time><div><strong>Dominus MMA IV</strong><span>Oostende &middot; gast bij King Skam</span></div></li>
+            </ol>
+            <a class='textLink' href='/live/#tour-archive-title'>Bekijk het volledige archief <span aria-hidden='true'>&rarr;</span></a>
+          </article>
         </div>
       </section>
 
@@ -542,50 +509,6 @@
               <span>Booking</span>
               <strong>info@kwkr.be</strong>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section id='archief' class='section-shell container reveal'>
-        <div class='pro-feature pro-feature-reverse'>
-          <figure class='pro-feature-media poster-media'>
-            <picture>
-              <source
-                type='image/webp'
-                srcset='/assets/events/friday-afterhours-affiche-616.webp 616w, /assets/events/friday-afterhours-affiche-900.webp 900w'
-                sizes='(max-width: 760px) 100vw, 42vw'
-              />
-              <img
-                src='/assets/events/friday-afterhours-affiche.jpg'
-                width='1080'
-                height='1472'
-                loading='lazy'
-                decoding='async'
-                alt='Affiche van Friday Afterhours in De Kelk Brugge'
-              />
-            </picture>
-          </figure>
-          <div class='music-block'>
-            <p class='kicker'>Archief</p>
-            <h2>Friday Afterhours in Brugge.</h2>
-            <p class='muted'>
-              Op 15 mei 2026 stond De Kweker op de eerste Friday After Hours in De Kelk, Langestraat 69 in Brugge.
-              Het archief houdt voorbije shows, persmomenten en beeldmateriaal vindbaar voor bezoekers en zoekmachines.
-            </p>
-            <ul class='events-lineup-list' aria-label='Line-up Friday Afterhours'>
-              <li class='events-lineup-row is-spotlight'>
-                <span class='events-lineup-label'>Showcases</span>
-                <span class='events-lineup-names'><strong>De Kweker</strong>, Samoerai</span>
-              </li>
-              <li class='events-lineup-row'>
-                <span class='events-lineup-label'>Datum</span>
-                <span class='events-lineup-names'><time datetime='2026-05-15'>15 mei 2026</time></span>
-              </li>
-              <li class='events-lineup-row'>
-                <span class='events-lineup-label'>Locatie</span>
-                <span class='events-lineup-names'>De Kelk, Brugge</span>
-              </li>
-            </ul>
           </div>
         </div>
       </section>

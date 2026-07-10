@@ -822,6 +822,46 @@ h3 {
   margin: 0;
 }
 
+.tour-archive-hero {
+  position: relative;
+  width: min(1180px, 100%);
+  margin: clamp(2rem, 4vw, 4rem) 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  background: #050505;
+}
+
+.tour-archive-hero img {
+  width: 100%;
+  max-height: 520px;
+  aspect-ratio: 16 / 8;
+  object-fit: cover;
+  object-position: center 38%;
+}
+
+.tour-archive-hero figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.2rem clamp(1rem, 3vw, 2rem);
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.88));
+  color: #fff;
+}
+
+.tour-archive-hero figcaption span {
+  font-weight: 700;
+}
+
+.tour-archive-hero figcaption strong {
+  color: var(--accent);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .tour-archive-stats {
   display: flex;
   gap: clamp(1.25rem, 3vw, 3rem);
@@ -2857,6 +2897,163 @@ h3 {
   max-height: 720px;
   object-fit: cover;
   filter: grayscale(100%);
+}
+
+.release-cover-media {
+  width: min(320px, 100%);
+  justify-self: end;
+  border-color: rgba(255, 154, 58, 0.34);
+  background: #111;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
+}
+
+.release-cover-media img {
+  aspect-ratio: 1;
+  max-height: none;
+  object-fit: cover;
+  filter: none;
+}
+
+.home-live-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.home-live-head h2 {
+  margin-bottom: 0.5rem;
+}
+
+.home-live-head .muted {
+  margin: 0;
+}
+
+.home-live-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.home-live-upcoming,
+.home-live-past {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  background: rgba(7, 7, 7, 0.82);
+}
+
+.home-live-upcoming {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(150px, 23vw, 260px);
+  min-height: 420px;
+}
+
+.home-live-label {
+  position: absolute;
+  inset: 0 auto auto 0;
+  z-index: 2;
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  background: var(--accent);
+  color: #090705;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.home-live-label strong {
+  padding-left: 0.7rem;
+  border-left: 1px solid rgba(9, 7, 5, 0.3);
+}
+
+.home-live-copy {
+  align-self: end;
+  padding: clamp(4.5rem, 7vw, 6rem) clamp(1.25rem, 3vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.home-live-copy h3 {
+  margin: 0.2rem 0 0.8rem;
+  font-size: clamp(2.7rem, 5vw, 5.5rem);
+  line-height: 0.9;
+}
+
+.home-live-upcoming > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.home-live-past {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(4.5rem, 7vw, 6rem) clamp(1.25rem, 3vw, 2.4rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.home-live-history {
+  margin: 0 0 1.4rem;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.home-live-history li {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  padding: 1.05rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.home-live-history time {
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.home-live-history div,
+.home-live-history span {
+  display: block;
+}
+
+.home-live-history span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 920px) {
+  .home-live-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .home-live-head {
+    display: grid;
+  }
+
+  .home-live-upcoming {
+    grid-template-columns: 1fr 112px;
+    min-height: 360px;
+  }
+
+  .home-live-copy {
+    padding-inline: 1rem;
+  }
+
+  .tour-archive-hero figcaption {
+    display: grid;
+  }
 }
 
 .poster-media {

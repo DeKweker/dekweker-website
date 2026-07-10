@@ -27,6 +27,24 @@
     <image:image>
       <image:loc>https://www.kwkr.be/assets/portrait/bio/kwekerbio-5.jpg</image:loc>
     </image:image>
+    <image:image>
+      <image:loc>https://www.kwkr.be/assets/releases/geen-slim-shady-cover.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kwkr.be/assets/events/villa-west-de-kweker.png</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.kwkr.be/live/</loc>
+    <image:image>
+      <image:loc>https://www.kwkr.be/assets/events/dominus-mma-de-kweker.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kwkr.be/assets/events/friday-afterhours-affiche.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.kwkr.be/assets/events/villa-west-de-kweker.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://www.kwkr.be/media/</loc>
