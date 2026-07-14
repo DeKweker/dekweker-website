@@ -19,11 +19,28 @@ const textOf = (html, pattern) => html.match(pattern)?.[1]?.trim() || '';
 const allMatches = (html, pattern) => [...html.matchAll(pattern)];
 const flattenJsonLd = (value) => {
   if (Array.isArray(value)) return value.flatMap(flattenJsonLd);
-  if (value && typeof value === 'object' && Array.isArray(value['@graph'])) {
-    return [value, ...value['@graph'].flatMap(flattenJsonLd)];
-  }
-  return value && typeof value === 'object' ? [value] : [];
+  if (!value || typeof value !== 'object') return [];
+  return [value, ...Object.values(value).flatMap(flattenJsonLd)];
 };
+
+const forbiddenRichResultTypes = new Set([
+  'DiscussionForumPosting',
+  'SocialMediaPosting',
+]);
+
+const requiredEventFields = [
+  'name',
+  'description',
+  'startDate',
+  'endDate',
+  'eventStatus',
+  'eventAttendanceMode',
+  'image',
+  'location',
+  'organizer',
+  'performer',
+  'offers',
+];
 
 const fail = (file, message) => {
   issues.push(`${file}: ${message}`);
@@ -78,6 +95,40 @@ for (const file of publicPages) {
   }
   if (!jsonLdNodes.some((node) => ['WebPage', 'CollectionPage'].includes(node['@type']))) {
     fail(file, 'missing WebPage or CollectionPage structured data');
+  }
+
+  for (const node of jsonLdNodes) {
+    const types = Array.isArray(node['@type']) ? node['@type'] : [node['@type']];
+    for (const type of types) {
+      if (forbiddenRichResultTypes.has(type)) {
+        fail(file, `unsupported rich-result type ${type}`);
+      }
+    }
+
+    if (!types.some((type) => ['Event', 'MusicEvent'].includes(type))) continue;
+
+    for (const field of requiredEventFields) {
+      if (node[field] === undefined || node[field] === null || node[field] === '') {
+        fail(file, `${node['@type']} is missing ${field}`);
+      }
+    }
+
+    const offer = node.offers;
+    for (const field of ['url', 'price', 'priceCurrency', 'availability', 'validFrom']) {
+      if (!offer || offer[field] === undefined || offer[field] === null || offer[field] === '') {
+        fail(file, `${node['@type']} offer is missing ${field}`);
+      }
+    }
+
+    const organizer = node.organizer;
+    for (const field of ['name', 'url']) {
+      if (!organizer || !organizer[field]) fail(file, `${node['@type']} organizer is missing ${field}`);
+    }
+
+    const address = node.location?.address;
+    for (const field of ['streetAddress', 'postalCode', 'addressLocality', 'addressCountry']) {
+      if (!address || !address[field]) fail(file, `${node['@type']} location address is missing ${field}`);
+    }
   }
   if (/\/assets\/deeq-studio\.svg|\/assets\/de-kweker-belfort\.svg/.test(html)) {
     fail(file, 'public page references oversized legacy SVG asset');
