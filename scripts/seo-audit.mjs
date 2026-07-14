@@ -140,6 +140,20 @@ for (const file of publicPages) {
     if (!/\swidth=/.test(attrs) || !/\sheight=/.test(attrs)) fail(file, 'image missing width or height');
   }
 
+  for (const match of allMatches(html, /<iframe\b([^>]*)>/gi)) {
+    const attrs = match[1];
+    if (/\s(?:width|height)=['"][^'"]*%/i.test(attrs)) {
+      fail(file, 'iframe width and height attributes must be integer pixels; use CSS for percentages');
+    }
+  }
+
+  for (const match of allMatches(html, /<div\b([^>]*)>/gi)) {
+    const attrs = match[1];
+    if (/\saria-label=/i.test(attrs) && !/\srole=/i.test(attrs)) {
+      fail(file, 'div with aria-label requires an appropriate role');
+    }
+  }
+
   for (const match of allMatches(html, /<a\b([^>]*)>/gi)) {
     const attrs = match[1];
     const href = textOf(attrs, /\shref=['"]([^'"]+)['"]/i);
