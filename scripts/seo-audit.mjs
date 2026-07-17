@@ -78,6 +78,15 @@ for (const file of publicPages) {
   if (!/<meta\s+name=['"]twitter:card['"]/i.test(html)) fail(file, 'missing twitter:card');
   if (!/<meta\s+name=['"]twitter:image['"]/i.test(html)) fail(file, 'missing twitter:image');
   if (!/<meta\s+name=['"]twitter:image:alt['"]/i.test(html)) fail(file, 'missing twitter:image:alt');
+  if (!/<link\s+rel=['"]icon['"][^>]+type=['"]image\/x-icon['"][^>]+href=['"]\/favicon\.ico[^'"]*['"]/i.test(html)) {
+    fail(file, 'missing explicit ICO favicon declaration');
+  }
+  if (!/<link\s+rel=['"]icon['"][^>]+sizes=['"]32x32['"][^>]+href=['"]\/favicon-32x32\.png['"]/i.test(html)) {
+    fail(file, 'missing 32x32 PNG favicon declaration');
+  }
+  if (!/<link\s+rel=['"]apple-touch-icon['"][^>]+href=['"]\/apple-touch-icon\.png['"]/i.test(html)) {
+    fail(file, 'missing Apple touch icon declaration');
+  }
   if (!/<link\s+rel=['"]alternate['"]\s+hreflang=['"]nl-BE['"]/i.test(html)) fail(file, 'missing nl-BE hreflang');
   if (!/<meta\s+name=['"]robots['"][^>]+index,\s*follow/i.test(html)) fail(file, 'robots should include index, follow');
   if (!jsonLdBlocks.length) fail(file, 'missing structured data');
@@ -176,6 +185,17 @@ for (const file of publicPages) {
 const robots = read('robots.txt');
 if (!robots.includes('Sitemap: https://www.kwkr.be/sitemap.xml')) {
   fail('robots.txt', 'missing sitemap reference');
+}
+
+for (const asset of [
+  'favicon.ico',
+  'favicon-16x16.png',
+  'favicon-32x32.png',
+  'favicon-96x96.png',
+  'apple-touch-icon.png',
+  'site.webmanifest',
+]) {
+  if (!existsSync(path.join(root, asset))) fail(asset, 'required site identity asset is missing');
 }
 
 const scanTextFiles = (dir) => {
