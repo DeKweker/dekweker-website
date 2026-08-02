@@ -98,6 +98,9 @@
             "about": {
               "@id": "https://www.kwkr.be/#artist"
             },
+            "mainEntity": {
+              "@id": "https://www.kwkr.be/#artist"
+            },
             "primaryImageOfPage": {
               "@type": "ImageObject",
               "url": "https://www.kwkr.be/assets/portrait/bio/kwekerbio-wall-wide.jpg",
@@ -109,11 +112,13 @@
             "@type": "Person",
             "@id": "https://www.kwkr.be/#artist",
             "name": "De Kweker",
-            "alternateName": "Joey De Queecker",
+            "alternateName": ["Joey De Queecker", "Joey \"De Kweker\" De Queecker"],
             "url": "https://www.kwkr.be/",
             "image": "https://www.kwkr.be/assets/og-cover.jpg",
             "description": "De Kweker is een rapper uit Brugge (8000) die in het West-Vlaams schrijft en performt.",
             "jobTitle": "Rapper",
+            "genre": ["Hiphop", "Rap", "Vlaamse rap", "West-Vlaamse rap"],
+            "knowsAbout": ["West-Vlaamse rap", "Brugge", "Hiphop", "Boom bap", "Drill"],
             "homeLocation": {
               "@type": "Place",
               "name": "Brugge, West-Vlaanderen, Belgie"
@@ -127,8 +132,36 @@
               "https://soundcloud.com/dekweker",
               "https://music.apple.com/be/artist/de-kweker/1747400203?l=nl",
               "https://vi.be/platform/DeKweker",
+              "https://kwartierwest.be/pages/hiphop/artist/de-kweker",
               "https://dekweker.bandcamp.com/",
               "https://musicbrainz.org/artist/f9fc6031-beef-42b2-97f4-f66845a6d557"
+            ],
+            "subjectOf": [
+              {
+                "@type": "WebPage",
+                "name": "De Kweker op VI.BE",
+                "url": "https://vi.be/platform/DeKweker"
+              },
+              {
+                "@type": "WebPage",
+                "name": "De Kweker op Kwartier West",
+                "url": "https://kwartierwest.be/pages/hiphop/artist/de-kweker"
+              },
+              {
+                "@type": "Article",
+                "name": "Joey \"De Kweker\" De Queecker rapt in het Brugs",
+                "publisher": { "@type": "Organization", "name": "Krant van West-Vlaanderen" },
+                "url": "https://kw.be/nieuws/cultuur/muziek/joey-de-kweker-de-queecker-31-rapt-in-het-brugs-mijn-moeilijke-jeugd-vormt-een-belangrijke-inspiratie/"
+              },
+              {
+                "@type": "WebPage",
+                "name": "De Kweker op MusicBrainz",
+                "url": "https://musicbrainz.org/artist/f9fc6031-beef-42b2-97f4-f66845a6d557"
+              }
+            ],
+            "affiliation": [
+              { "@id": "https://www.kwkr.be/#kwartier-west" },
+              { "@id": "https://www.kwkr.be/#rugged-raw" }
             ],
             "contactPoint": {
               "@type": "ContactPoint",
@@ -136,6 +169,23 @@
               "contactType": "bookings",
               "availableLanguage": ["nl", "en"]
             }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://www.kwkr.be/#kwartier-west",
+            "name": "Kwartier West",
+            "url": "https://kwartierwest.be/",
+            "sameAs": "https://kwartierwest.be/pages/hiphop/artist/de-kweker"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://www.kwkr.be/#rugged-raw",
+            "name": "Rugged & Raw Records"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://www.kwkr.be/#numb",
+            "name": "NUMB"
           },
           {
             "@type": "MusicRecording",
@@ -152,9 +202,30 @@
             "datePublished": "2026-06-21",
             "image": "https://www.kwkr.be/assets/releases/geen-slim-shady-cover.jpg",
             "url": "https://open.spotify.com/album/70ZBPHOr4F3pgk3MYBZzn3",
+            "recordLabel": { "@id": "https://www.kwkr.be/#rugged-raw" },
             "sameAs": [
               "https://www.youtube.com/watch?v=J7XVdP0mvNk"
             ],
+            "inLanguage": "nl-BE"
+          },
+          {
+            "@type": "MusicRecording",
+            "@id": "https://www.kwkr.be/muziek/#lekt-em",
+            "name": "Lekt Em",
+            "byArtist": {
+              "@id": "https://www.kwkr.be/#artist"
+            },
+            "producer": {
+              "@id": "https://www.kwkr.be/#numb"
+            },
+            "datePublished": "2025-09-29",
+            "url": "https://www.youtube.com/watch?v=8Q0LB68kxRw",
+            "sameAs": [
+              "https://www.youtube.com/watch?v=8Q0LB68kxRw"
+            ],
+            "recordLabel": {
+              "@id": "https://www.kwkr.be/#rugged-raw"
+            },
             "inLanguage": "nl-BE"
           },
           {
@@ -183,6 +254,7 @@
             },
             "organizer": {
               "@type": "Organization",
+              "@id": "https://www.kwkr.be/#kwartier-west",
               "name": "Kwartier West",
               "url": "https://kwartierwest.be/"
             },

@@ -78,7 +78,60 @@
             "about": {
               "@id": "https://www.kwkr.be/#artist"
             },
+            "mainEntity": {
+              "@id": "https://www.kwkr.be/#artist"
+            },
+            "hasPart": {
+              "@type": "ItemList",
+              "@id": "https://www.kwkr.be/muziek/#discografie",
+              "name": "Tracks en releases van De Kweker",
+              "itemListElement": [
+                { "@type": "ListItem", "position": 1, "item": { "@id": "https://www.kwkr.be/muziek/#geen-slim-shady" } },
+                { "@type": "ListItem", "position": 2, "item": { "@id": "https://www.kwkr.be/muziek/#lekt-em" } }
+              ]
+            },
             "inLanguage": "nl-BE"
+          },
+          {
+            "@type": "Person",
+            "@id": "https://www.kwkr.be/#artist",
+            "name": "De Kweker",
+            "alternateName": ["Joey De Queecker", "Joey \"De Kweker\" De Queecker"],
+            "url": "https://www.kwkr.be/",
+            "sameAs": [
+              "https://www.instagram.com/dekweker_/",
+              "https://www.facebook.com/p/De-Kweker-61570442235326/",
+              "https://www.tiktok.com/@de.kweker",
+              "https://www.youtube.com/@De.Kweker",
+              "https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG",
+              "https://soundcloud.com/dekweker",
+              "https://music.apple.com/be/artist/de-kweker/1747400203?l=nl",
+              "https://vi.be/platform/DeKweker",
+              "https://kwartierwest.be/pages/hiphop/artist/de-kweker",
+              "https://dekweker.bandcamp.com/",
+              "https://musicbrainz.org/artist/f9fc6031-beef-42b2-97f4-f66845a6d557"
+            ],
+            "affiliation": [
+              { "@id": "https://www.kwkr.be/#kwartier-west" },
+              { "@id": "https://www.kwkr.be/#rugged-raw" }
+            ]
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://www.kwkr.be/#kwartier-west",
+            "name": "Kwartier West",
+            "url": "https://kwartierwest.be/",
+            "sameAs": "https://kwartierwest.be/pages/hiphop/artist/de-kweker"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://www.kwkr.be/#rugged-raw",
+            "name": "Rugged & Raw Records"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://www.kwkr.be/#numb",
+            "name": "NUMB"
           },
           {
             "@type": "MusicRecording",
@@ -95,9 +148,22 @@
             "datePublished": "2026-06-21",
             "image": "https://www.kwkr.be/assets/releases/geen-slim-shady-cover.jpg",
             "url": "https://open.spotify.com/album/70ZBPHOr4F3pgk3MYBZzn3",
+            "recordLabel": { "@id": "https://www.kwkr.be/#rugged-raw" },
             "sameAs": [
               "https://www.youtube.com/watch?v=J7XVdP0mvNk"
             ],
+            "inLanguage": "nl-BE"
+          },
+          {
+            "@type": "MusicRecording",
+            "@id": "https://www.kwkr.be/muziek/#lekt-em",
+            "name": "Lekt Em",
+            "byArtist": { "@id": "https://www.kwkr.be/#artist" },
+            "producer": { "@id": "https://www.kwkr.be/#numb" },
+            "datePublished": "2025-09-29",
+            "url": "https://www.youtube.com/watch?v=8Q0LB68kxRw",
+            "sameAs": ["https://www.youtube.com/watch?v=8Q0LB68kxRw"],
+            "recordLabel": { "@id": "https://www.kwkr.be/#rugged-raw" },
             "inLanguage": "nl-BE"
           },
           {

@@ -58,7 +58,35 @@
             "description": "Aankomende shows en live-optredens van De Kweker.",
             "inLanguage": "nl-BE",
             "isPartOf": { "@id": "https://www.kwkr.be/#website" },
-            "about": { "@id": "https://www.kwkr.be/#artist" }
+            "about": { "@id": "https://www.kwkr.be/#artist" },
+            "mainEntity": { "@id": "https://www.kwkr.be/live/#villa-west-2026" }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://www.kwkr.be/#artist",
+            "name": "De Kweker",
+            "alternateName": ["Joey De Queecker", "Joey \"De Kweker\" De Queecker"],
+            "url": "https://www.kwkr.be/",
+            "sameAs": [
+              "https://www.instagram.com/dekweker_/",
+              "https://www.facebook.com/p/De-Kweker-61570442235326/",
+              "https://www.tiktok.com/@de.kweker",
+              "https://www.youtube.com/@De.Kweker",
+              "https://open.spotify.com/artist/2v5Tuugqs8s4vaONc286EG",
+              "https://soundcloud.com/dekweker",
+              "https://music.apple.com/be/artist/de-kweker/1747400203?l=nl",
+              "https://vi.be/platform/DeKweker",
+              "https://kwartierwest.be/pages/hiphop/artist/de-kweker",
+              "https://dekweker.bandcamp.com/",
+              "https://musicbrainz.org/artist/f9fc6031-beef-42b2-97f4-f66845a6d557"
+            ]
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://www.kwkr.be/#kwartier-west",
+            "name": "Kwartier West",
+            "url": "https://kwartierwest.be/",
+            "sameAs": "https://kwartierwest.be/pages/hiphop/artist/de-kweker"
           },
           {
             "@type": "MusicEvent",
@@ -84,7 +112,7 @@
                 "addressCountry": "BE"
               }
             },
-            "organizer": { "@type": "Organization", "name": "Kwartier West", "url": "https://kwartierwest.be/" },
+            "organizer": { "@type": "Organization", "@id": "https://www.kwkr.be/#kwartier-west", "name": "Kwartier West", "url": "https://kwartierwest.be/" },
             "performer": { "@id": "https://www.kwkr.be/#artist" },
             "offers": {
               "@type": "Offer",

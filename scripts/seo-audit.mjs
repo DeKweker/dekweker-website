@@ -102,8 +102,8 @@ for (const file of publicPages) {
   if (!jsonLdNodes.some((node) => node['@type'] === 'BreadcrumbList')) {
     fail(file, 'missing BreadcrumbList structured data');
   }
-  if (!jsonLdNodes.some((node) => ['WebPage', 'CollectionPage'].includes(node['@type']))) {
-    fail(file, 'missing WebPage or CollectionPage structured data');
+  if (!jsonLdNodes.some((node) => ['WebPage', 'CollectionPage', 'ProfilePage'].includes(node['@type']))) {
+    fail(file, 'missing WebPage, CollectionPage, or ProfilePage structured data');
   }
 
   for (const node of jsonLdNodes) {
