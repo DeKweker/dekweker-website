@@ -237,12 +237,14 @@ export const verifiedVideos: VideoItem[] = [
     slug: "lekt-em-video",
     title: "De Kweker · Lekt Em",
     youtubeId: "a6rZxdtALg4",
+    uploadDate: "2025-06-19",
     description: "Officiële videoclip."
   },
   {
     slug: "geen-slim-shady-lyric-video",
     title: "P@FF1 ft. De Kweker · Geen Slim Shady",
     youtubeId: "J7XVdP0mvNk",
+    uploadDate: "2026-06-20",
     description: "Lyric video."
   }
 ];

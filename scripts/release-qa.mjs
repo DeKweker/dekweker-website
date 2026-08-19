@@ -12,6 +12,7 @@ const forbiddenSourceTerms = ["@neondatabase", "drizzle-orm", "next-sanity", "@s
 function walk(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     if (entry.isDirectory() && generatedDirs.has(entry.name)) return [];
+    if (entry.isFile() && /\.tsbuildinfo$/i.test(entry.name)) return [];
     const path = join(dir, entry.name);
     if (entry.isDirectory()) return walk(path);
     return [path];

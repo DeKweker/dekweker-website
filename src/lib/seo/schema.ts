@@ -177,7 +177,6 @@ export function eventSchema(event: LiveEvent) {
 }
 
 export function videoSchema(video: VideoItem) {
-  const watch = `https://www.youtube.com/watch?v=${video.youtubeId}`;
   return {
     "@context": "https://schema.org",
     "@type": "VideoObject",
@@ -186,7 +185,6 @@ export function videoSchema(video: VideoItem) {
     thumbnailUrl: [video.thumbnail ?? `https://i.ytimg.com/vi/${video.youtubeId}/maxresdefault.jpg`],
     uploadDate: video.uploadDate,
     embedUrl: `https://www.youtube-nocookie.com/embed/${video.youtubeId}`,
-    contentUrl: watch,
     publisher: { "@id": ids.artist }
   };
 }

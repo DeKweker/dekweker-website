@@ -79,7 +79,7 @@ export type VideoItem = {
   slug: string;
   title: string;
   youtubeId: string;
-  uploadDate?: string;
+  uploadDate: string;
   thumbnail?: string;
   description?: string;
 };
