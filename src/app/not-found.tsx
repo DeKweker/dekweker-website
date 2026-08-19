@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound() { return <div className="page-shell"><header className="page-hero"><p className="eyebrow kicker-line">404 / niet gevonden</p><h1 className="page-title">VERKEERDE<br />STRAAT.</h1><p className="page-intro">Deze pagina bestaat niet of is verplaatst.</p></header><section className="page-content"><Link className="button" href="/">Terug naar 8000</Link></section></div>; }
