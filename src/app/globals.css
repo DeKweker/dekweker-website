@@ -624,19 +624,19 @@ html[data-kwkr-intro="show"] .site-intro { display: grid; }
 }
 .route-transition[data-direction="left"] {
   --transition-from-x: -101%;
-  --transition-to-x: 101%;
+  --transition-to-x: -101%;
 }
 .route-transition[data-direction="right"] {
   --transition-from-x: 101%;
-  --transition-to-x: -101%;
+  --transition-to-x: 101%;
 }
 .route-transition[data-direction="top"] {
   --transition-from-y: -101%;
-  --transition-to-y: 101%;
+  --transition-to-y: -101%;
 }
 .route-transition[data-direction="bottom"] {
   --transition-from-y: 101%;
-  --transition-to-y: -101%;
+  --transition-to-y: 101%;
 }
 .route-transition[data-phase="entering"],
 .route-transition[data-phase="covered"] {
@@ -930,3 +930,4 @@ main:focus { outline: none; }
   .home-hero-foot { display: none; }
   .booking-page-copy, .profile-hero-copy { padding-top: calc(var(--header-safe-height) + 34px); padding-bottom: 28px; }
 }
+
