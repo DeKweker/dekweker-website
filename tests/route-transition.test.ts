@@ -15,7 +15,7 @@ describe("route transition choreography", () => {
 
   it("keeps detail routes in the visual language of their parent section", () => {
     expect(getRouteTransition("/muziek/lekt-em").direction).toBe("left");
-    expect(getRouteTransition("/live/wijkplanken-2026").direction).toBe("bottom");
+    expect(getRouteTransition("/live/wijklanken-2026").direction).toBe("bottom");
     expect(getRouteTransition("/booking")).toMatchObject({ word: "BOOK", direction: "left" });
   });
 });

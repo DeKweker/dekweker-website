@@ -161,7 +161,7 @@ export const verifiedReleases: Release[] = [
 
 export const verifiedEvents: LiveEvent[] = [
   {
-    slug: "wijkplanken-plukketuffer-2026",
+    slug: "wijklanken-plukketuffer-2026",
     title: "Wijklanken / PlukkeTuffer",
     startDate: "2026-08-19",
     venue: "Wijklanken",
@@ -169,7 +169,7 @@ export const verifiedEvents: LiveEvent[] = [
     country: "BE",
     status: "past",
     appearanceType: "surprise",
-    image: "/assets/live/plukketuffer-wijkplanken-2026-08-19.jpg",
+    image: "/assets/live/plukketuffer-wijklanken-2026-08-19.jpg",
     description: "Surprise set van De Kweker tijdens de liveshow van PlukkeTuffer."
   },
   {

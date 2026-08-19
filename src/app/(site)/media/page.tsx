@@ -23,8 +23,8 @@ export default async function MediaPage() {
       </header>
 
       <section className="media-lead-grid" data-scroll-scene>
-        <div className="media-lead-photo" data-depth="24"><Image src="/assets/live/plukketuffer-wijkplanken-2026-08-19.jpg" alt="De Kweker live tijdens Wijklanken / PlukkeTuffer" fill priority sizes="(max-width: 900px) 100vw, 58vw" /></div>
-        <div className="media-lead-copy" data-reveal><p className="eyebrow eyebrow-accent">19 augustus 2026</p><h2>WIJKPLANKEN.</h2><p>Surprise act tijdens de liveshow van PlukkeTuffer in Brugge.</p></div>
+        <div className="media-lead-photo" data-depth="24"><Image src="/assets/live/plukketuffer-wijklanken-2026-08-19.jpg" alt="De Kweker live tijdens Wijklanken / PlukkeTuffer" fill priority sizes="(max-width: 900px) 100vw, 58vw" /></div>
+        <div className="media-lead-copy" data-reveal><p className="eyebrow eyebrow-accent">19 augustus 2026</p><h2>WIJKLANKEN.</h2><p>Surprise act tijdens de liveshow van PlukkeTuffer in Brugge.</p></div>
       </section>
 
       <section className="page-content">
