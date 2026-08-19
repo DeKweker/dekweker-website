@@ -45,8 +45,12 @@ export const verifiedReleases: Release[] = [
     description: "Geen Slim Shady van P@FF1, met De Kweker als feature.",
     primaryArtists: [paff1Credit],
     featuredArtists: [deKwekerCredit],
-    links: [{ label: "Spotify", url: "https://open.spotify.com/track/6YmPKfzFqqfiqAT4XHLB0I" }],
-    videoUrl: "https://www.youtube.com/watch?v=J7XVdP0mvNk"
+    links: [
+      { label: "Spotify", url: "https://open.spotify.com/track/6YmPKfzFqqfiqAT4XHLB0I" },
+      { label: "Apple Music", url: "https://music.apple.com/us/album/geen-slim-shady-feat-de-kweker-single/6781121572" },
+    ],
+    videoUrl: "https://www.youtube.com/watch?v=J7XVdP0mvNk",
+    videoLabel: "Lyric video",
   },
   {
     slug: "wurggreep",
@@ -60,8 +64,9 @@ export const verifiedReleases: Release[] = [
     featuredArtists: [deKwekerCredit],
     links: [
       { label: "Spotify", url: "https://open.spotify.com/track/142P3u75eFBI4x9FvNmUS7" },
-      { label: "Apple Music", url: "https://music.apple.com/be/song/wurggreep-feat-de-kweker/1835851808" }
-    ]
+      { label: "Apple Music", url: "https://music.apple.com/be/song/1835851808" },
+      { label: "Alle platformen", url: "https://distrokid.com/hyperfollow/kingskam/wurggreep-feat-de-kweker-2" },
+    ],
   },
   {
     slug: "verre-alverwege",
@@ -75,8 +80,8 @@ export const verifiedReleases: Release[] = [
     featuredArtists: [deKwekerCredit],
     links: [
       { label: "Spotify", url: "https://open.spotify.com/track/1wlP7iJDeiEmhTUxHA1kKv" },
-      { label: "Apple Music", url: "https://music.apple.com/us/artist/den-onbekenden-soldaat/1544801652" }
-    ]
+      { label: "Apple Music", url: "https://music.apple.com/us/album/balanse/1836352427" },
+    ],
   },
   {
     slug: "lekt-em",
@@ -91,8 +96,15 @@ export const verifiedReleases: Release[] = [
     primaryArtists: [deKwekerCredit],
     featuredArtists: [],
     producer: "NUMB",
-    links: [{ label: "YouTube", url: "https://www.youtube.com/watch?v=a6rZxdtALg4" }],
-    videoUrl: "https://www.youtube.com/watch?v=a6rZxdtALg4"
+    links: [
+      { label: "Spotify", url: "https://open.spotify.com/track/2KA0CEMiPrOeGTHoj5rMhO" },
+      { label: "Apple Music", url: "https://music.apple.com/be/album/lekt-em-single/1838887948?l=nl" },
+      { label: "SoundCloud", url: "https://soundcloud.com/dekweker/lektem" },
+      { label: "YouTube", url: "https://www.youtube.com/watch?v=a6rZxdtALg4" },
+      { label: "Alle platformen", url: "https://distrokid.com/hyperfollow/dekweker/lekt-em-2" },
+    ],
+    videoUrl: "https://www.youtube.com/watch?v=8Q0LB68kxRw",
+    videoLabel: "Videoclip",
   },
   {
     slug: "alles-of-niets",
@@ -104,7 +116,11 @@ export const verifiedReleases: Release[] = [
     coverImage: "/assets/releases/alles-of-niets-cover.jpg",
     primaryArtists: [deKwekerCredit],
     featuredArtists: [kingSkamCredit],
-    links: [{ label: "Press", url: "https://pokoemagazine.nl/de-kweker-ft-king-skam-alles-of-niets/" }]
+    links: [
+      { label: "Apple Music", url: "https://music.apple.com/us/album/alles-of-niets-feat-king-skam-single/1835813867" },
+      { label: "Alle platformen", url: "https://distrokid.com/hyperfollow/dekweker/alles-of-niets-feat-king-skam" },
+      { label: "Pers", url: "https://pokoemagazine.nl/de-kweker-ft-king-skam-alles-of-niets/" },
+    ],
   },
   {
     slug: "verroader",
@@ -117,7 +133,13 @@ export const verifiedReleases: Release[] = [
     coverImage: "/assets/releases/verroader-cover.jpg",
     primaryArtists: [deKwekerCredit],
     featuredArtists: [],
-    links: [{ label: "Press", url: "https://pokoemagazine.nl/de-kweker-verroader/" }]
+    links: [
+      { label: "Spotify", url: "https://open.spotify.com/album/3JMTQ6t3r97LvvrHPAmQTv" },
+      { label: "Apple Music", url: "https://music.apple.com/be/album/v-err-oader-single/1835805687?l=nl" },
+      { label: "SoundCloud", url: "https://soundcloud.com/dekweker/verroader-mix3mastered-wav" },
+      { label: "Alle platformen", url: "https://distrokid.com/hyperfollow/dekweker/verroader" },
+      { label: "Pers", url: "https://pokoemagazine.nl/de-kweker-verroader/" },
+    ],
   },
   {
     slug: "moediger",
@@ -129,7 +151,11 @@ export const verifiedReleases: Release[] = [
     coverImage: "/assets/releases/moediger-cover.jpg",
     primaryArtists: [deKwekerCredit],
     featuredArtists: [],
-    links: [{ label: "SoundCloud", url: "https://soundcloud.com/dekweker" }]
+    links: [
+      { label: "Apple Music", url: "https://music.apple.com/be/album/moed-ig-er-single/1835722782" },
+      { label: "Alle platformen", url: "https://distrokid.com/hyperfollow/dekweker/moediger" },
+      { label: "Pers", url: "https://pokoemagazine.nl/de-kweker-moediger/" },
+    ],
   }
 ];
 
@@ -236,8 +262,8 @@ export const verifiedVideos: VideoItem[] = [
   {
     slug: "lekt-em-video",
     title: "De Kweker · Lekt Em",
-    youtubeId: "a6rZxdtALg4",
-    uploadDate: "2025-06-19",
+    youtubeId: "8Q0LB68kxRw",
+    uploadDate: "2025-09-28",
     description: "Officiële videoclip."
   },
   {

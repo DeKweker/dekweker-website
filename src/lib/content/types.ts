@@ -41,6 +41,7 @@ export type Release = {
   producer?: string;
   links: ExternalLink[];
   videoUrl?: string;
+  videoLabel?: string;
   updatedAt?: string;
 };
 

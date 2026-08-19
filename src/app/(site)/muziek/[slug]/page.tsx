@@ -55,7 +55,7 @@ export default async function ReleasePage({ params }: { params: Promise<{ slug: 
           </div>
           <div className="external-links">
             {release.links.map((link) => <a key={link.url} className="button button-secondary" href={link.url} target="_blank" rel="noopener noreferrer">{link.label}</a>)}
-            {release.videoUrl ? <a className="button button-secondary" href={release.videoUrl} target="_blank" rel="noopener noreferrer">Video</a> : null}
+            {release.videoUrl ? <a className="button button-secondary" href={release.videoUrl} target="_blank" rel="noopener noreferrer">{release.videoLabel ?? "Video"}</a> : null}
           </div>
         </div>
       </section>
