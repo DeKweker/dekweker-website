@@ -4,24 +4,31 @@ import { extname, join, relative, resolve } from "node:path";
 const root = process.cwd();
 const errors = [];
 const textExtensions = new Set([".ts", ".tsx", ".js", ".mjs", ".css", ".json", ".md", ".txt", ".bat"]);
-const forbiddenDirs = new Set(["node_modules", ".next", ".vercel", "coverage", "drizzle", "sanity"]);
-const ignoredDirs = new Set([".git"]);
+const generatedDirs = new Set(["node_modules", ".next", ".vercel", "coverage", ".git"]);
+const dormantDirs = new Set(["drizzle", "sanity"]);
 const forbiddenFilePatterns = [/\.tsbuildinfo$/i, /\.log$/i, /\.zip$/i, /\.psd$/i, /\.ai$/i, /^\.env\.local$/i, /^\.env\.production$/i];
 const forbiddenSourceTerms = ["@neondatabase", "drizzle-orm", "next-sanity", "@sanity/", "stripe", "resend", "cloudflare.com/turnstile", "KWKR_COMMERCE_ENABLED", "KWKR_CONTENT_SOURCE"];
 
 function walk(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    if (entry.isDirectory() && generatedDirs.has(entry.name)) return [];
     const path = join(dir, entry.name);
-    if (entry.isDirectory()) {
-      if (ignoredDirs.has(entry.name)) return [];
-      return walk(path);
-    }
+    if (entry.isDirectory()) return walk(path);
     return [path];
   });
 }
 
 for (const entry of readdirSync(root, { withFileTypes: true })) {
-  if (entry.isDirectory() && forbiddenDirs.has(entry.name)) errors.push(`Forbidden generated/dormant directory in release: ${entry.name}`);
+  if (entry.isDirectory() && dormantDirs.has(entry.name)) errors.push(`Forbidden dormant directory in release: ${entry.name}`);
+}
+
+const gitignore = readFileSync(resolve(root, ".gitignore"), "utf8");
+for (const generated of ["node_modules", ".next", ".vercel", "coverage"]) {
+  const ignored = gitignore.split(/\r?\n/).some((line) => {
+    const value = line.trim().replace(/\/$/, "");
+    return value === generated || value === `/${generated}`;
+  });
+  if (!ignored) errors.push(`.gitignore must exclude generated directory: ${generated}`);
 }
 
 const files = walk(root);
