@@ -1,0 +1,31 @@
+warning: in the working copy of 'src/app/(site)/media/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/verified.ts', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/app/(site)/media/page.tsx b/src/app/(site)/media/page.tsx[m
+[1mindex 7516415..fc4c07f 100644[m
+[1m--- a/src/app/(site)/media/page.tsx[m
+[1m+++ b/src/app/(site)/media/page.tsx[m
+[36m@@ -23,7 +23,7 @@[m [mexport default async function MediaPage() {[m
+       </header>[m
+ [m
+       <section className="media-lead-grid" data-scroll-scene>[m
+[31m-        <div className="media-lead-photo" data-depth="24"><Image src="/assets/live/plukketuffer-wijkplanken-2026-08-19.jpg" alt="De Kweker live tijdens Wijkplanken / PlukkeTuffer" fill priority sizes="(max-width: 900px) 100vw, 58vw" /></div>[m
+[32m+[m[32m        <div className="media-lead-photo" data-depth="24"><Image src="/assets/live/plukketuffer-wijkplanken-2026-08-19.jpg" alt="De Kweker live tijdens Wijklanken / PlukkeTuffer" fill priority sizes="(max-width: 900px) 100vw, 58vw" /></div>[m
+         <div className="media-lead-copy" data-reveal><p className="eyebrow eyebrow-accent">19 augustus 2026</p><h2>WIJKPLANKEN.</h2><p>Surprise act tijdens de liveshow van PlukkeTuffer in Brugge.</p></div>[m
+       </section>[m
+ [m
+[1mdiff --git a/src/content/verified.ts b/src/content/verified.ts[m
+[1mindex 64ef039..55df83a 100644[m
+[1m--- a/src/content/verified.ts[m
+[1m+++ b/src/content/verified.ts[m
+[36m@@ -162,9 +162,9 @@[m [mexport const verifiedReleases: Release[] = [[m
+ export const verifiedEvents: LiveEvent[] = [[m
+   {[m
+     slug: "wijkplanken-plukketuffer-2026",[m
+[31m-    title: "Wijkplanken / PlukkeTuffer",[m
+[32m+[m[32m    title: "Wijklanken / PlukkeTuffer",[m
+     startDate: "2026-08-19",[m
+[31m-    venue: "Wijkplanken",[m
+[32m+[m[32m    venue: "Wijklanken",[m
+     city: "Brugge",[m
+     country: "BE",[m
+     status: "past",[m

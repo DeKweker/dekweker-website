@@ -162,9 +162,9 @@ export const verifiedReleases: Release[] = [
 export const verifiedEvents: LiveEvent[] = [
   {
     slug: "wijkplanken-plukketuffer-2026",
-    title: "Wijkplanken / PlukkeTuffer",
+    title: "Wijklanken / PlukkeTuffer",
     startDate: "2026-08-19",
-    venue: "Wijkplanken",
+    venue: "Wijklanken",
     city: "Brugge",
     country: "BE",
     status: "past",
