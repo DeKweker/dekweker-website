@@ -162,15 +162,30 @@ export const verifiedReleases: Release[] = [
 export const verifiedEvents: LiveEvent[] = [
   {
     slug: "wijklanken-plukketuffer-2026",
-    title: "Wijklanken / PlukkeTuffer",
-    startDate: "2026-08-19",
-    venue: "Wijklanken",
+    title: "Wijklanken · Plukketuffer",
+    startDate: "2026-08-18",
+    startDateTime: "2026-08-18T19:00:00+02:00",
+    endDateTime: "2026-08-18T23:30:00+02:00",
+    venue: "Sportcafetaria Extra Time",
+    streetAddress: "Nijverheidsstraat 112",
+    postalCode: "8310",
+    addressLocality: "Assebroek",
     city: "Brugge",
     country: "BE",
     status: "past",
     appearanceType: "surprise",
-    image: "/assets/live/plukketuffer-wijklanken-2026-08-19.jpg",
-    description: "Surprise set van De Kweker tijdens de liveshow van PlukkeTuffer."
+    image: "/assets/live/plukketuffer-wijklanken-2026-08-18.jpg",
+    description:
+      "Surprise set van De Kweker tijdens Plukketuffer op Wijklanken.",
+    organizer: {
+      name: "Stad Brugge, Evenementenbeleid en -vergunningen",
+      url: "https://www.brugge.be/"
+    },
+    sourceUrl: "https://www.brugge.be/wijklanken",
+    free: true,
+    price: 0,
+    priceCurrency: "EUR",
+    richResult: false
   },
   {
     slug: "villa-west-de-kweker-friends-2026",
@@ -179,32 +194,66 @@ export const verifiedEvents: LiveEvent[] = [
     startDateTime: "2026-08-07T20:30:00+02:00",
     endDateTime: "2026-08-07T22:00:00+02:00",
     venue: "Villa Bota",
+    streetAddress: "Park 8",
+    postalCode: "8000",
+    addressLocality: "Brugge",
     city: "Brugge",
     country: "BE",
     status: "past",
+    appearanceType: "headline",
     image: "/assets/events/villa-west-open-air-de-kweker.jpg",
-    description: "Open-air liveshow in Brugge met De Kweker & Friends.",
-    free: true
+    description:
+      "De Kweker & Friends live tijdens Villa West, georganiseerd door Kwartier West in Villa Bota.",
+    organizer: {
+      name: "Kwartier West",
+      url: "https://kwartierwest.be/"
+    },
+    sourceUrl: "https://kwartierwest.be/",
+    free: true,
+    price: 0,
+    priceCurrency: "EUR",
+    richResult: false
   },
   {
     slug: "friday-after-hours-2026",
-    title: "Friday After Hours",
+    title: "Phatmarks' Friday After Hours",
     startDate: "2026-05-15",
-    startDateTime: "2026-05-15T20:00:00+02:00",
+    startDateTime: "2026-05-15T20:45:00+02:00",
+    endDateTime: "2026-05-15T23:59:00+02:00",
     venue: "De Kelk",
+    streetAddress: "Langestraat 69",
+    postalCode: "8000",
+    addressLocality: "Brugge",
     city: "Brugge",
     country: "BE",
     status: "past",
-    image: "/assets/events/friday-afterhours-affiche-900.webp"
+    appearanceType: "guest",
+    image: "/assets/events/friday-afterhours-affiche-900.webp",
+    description:
+      "De Kweker live tijdens Phatmarks' Friday After Hours in De Kelk in Brugge.",
+    organizer: {
+      name: "Phatmark Collective vzw",
+      url: "https://phatmark.be/"
+    },
+    sourceUrl:
+      "https://www.visitbruges.be/nl/agenda/evenementenkalender/phatmarks-friday-after-hours",
+    price: 12,
+    priceCurrency: "EUR",
+    richResult: false
   },
   {
     slug: "cafe-bambino-roeselare-2025",
     title: "Café Bambino",
     startDate: "2025-07-05",
     venue: "Café Bambino",
+    streetAddress: "Botermarkt 1",
+    postalCode: "8800",
+    addressLocality: "Roeselare",
     city: "Roeselare",
     country: "BE",
-    status: "past"
+    status: "past",
+    sourceUrl: "https://www.bambinocafe.be/",
+    richResult: false
   },
   {
     slug: "dominus-mma-iv-2025",
@@ -212,11 +261,19 @@ export const verifiedEvents: LiveEvent[] = [
     startDate: "2025-05-31",
     startDateTime: "2025-05-31T20:00:00+02:00",
     venue: "Koninklijke Stallingen",
+    streetAddress: "Koninginnelaan 76",
+    postalCode: "8400",
+    addressLocality: "Oostende",
     city: "Oostende",
     country: "BE",
     status: "past",
+    appearanceType: "guest",
     image: "/assets/events/dominus-mma-de-kweker.jpg",
-    description: "Gastoptreden bij King Skam."
+    description:
+      "Gastoptreden van De Kweker bij King Skam tijdens Dominus MMA IV: Solis.",
+    sourceUrl:
+      "https://www.oostende.be/sportcentrum-de-koninklijke-stallingen",
+    richResult: false
   }
 ];
 

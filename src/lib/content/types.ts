@@ -45,26 +45,64 @@ export type Release = {
   updatedAt?: string;
 };
 
-export type LiveEvent = {
+export type EventOrganizer = {
+  name: string;
+  url: string;
+};
+
+type LiveEventBase = {
   slug: string;
   title: string;
-  /** Local calendar date in YYYY-MM-DD. Never invent a clock time when none is known. */
   startDate: string;
-  /** Exact ISO timestamp only when the published start time is known. */
   startDateTime?: string;
-  /** Exact ISO timestamp only when the published end time is known. */
   endDateTime?: string;
   venue: string;
+  streetAddress?: string;
+  postalCode?: string;
+  addressLocality?: string;
   city: string;
   country: string;
   status: "scheduled" | "cancelled" | "postponed" | "past";
-  appearanceType?: "headline" | "guest" | "support" | "surprise" | "festival" | "session";
+  appearanceType?:
+    | "headline"
+    | "guest"
+    | "support"
+    | "surprise"
+    | "festival"
+    | "session";
   image?: string;
   description?: string;
   ticketUrl?: string;
   free?: boolean;
+  organizer?: EventOrganizer;
+  sourceUrl?: string;
+  price?: number;
+  priceCurrency?: "EUR";
   updatedAt?: string;
 };
+
+/**
+ * Alleen actuele events die volledig genoeg zijn voor Google's
+ * Event rich results mogen richResult:true krijgen.
+ *
+ * Archiefshows blijven gewoon publieke/indexeerbare pagina's,
+ * maar publiceren geen verouderde of incomplete Event JSON-LD.
+ */
+export type LiveEvent =
+  | (LiveEventBase & {
+      richResult: true;
+      status: "scheduled" | "cancelled" | "postponed";
+      startDateTime: string;
+      endDateTime: string;
+      streetAddress: string;
+      postalCode: string;
+      organizer: EventOrganizer;
+      price: number;
+      priceCurrency: "EUR";
+    })
+  | (LiveEventBase & {
+      richResult?: false;
+    });
 
 export type PressItem = {
   slug: string;

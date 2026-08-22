@@ -129,50 +129,78 @@ export function profilePageSchema(artist: ArtistProfile) {
 }
 
 export function eventSchema(event: LiveEvent) {
+  if (event.richResult !== true) return null;
+
   const url = `${siteUrl}/live/${event.slug}`;
+  const admissionUrl =
+    event.ticketUrl ?? (event.free ? url : undefined);
+
   return {
     "@context": "https://schema.org",
     "@type": "MusicEvent",
     "@id": `${url}#event`,
     name: event.title,
     url,
-    startDate: event.startDateTime ?? event.startDate,
+
+    startDate: event.startDateTime,
     endDate: event.endDateTime,
+
     eventStatus:
       event.status === "cancelled"
         ? "https://schema.org/EventCancelled"
         : event.status === "postponed"
           ? "https://schema.org/EventPostponed"
           : "https://schema.org/EventScheduled",
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    image: event.image ? [new URL(event.image, siteUrl).toString()] : undefined,
+
+    eventAttendanceMode:
+      "https://schema.org/OfflineEventAttendanceMode",
+
+    image: event.image
+      ? [new URL(event.image, siteUrl).toString()]
+      : undefined,
+
     description: event.description,
-    isAccessibleForFree: event.free ?? undefined,
-    performer: { "@id": ids.artist },
+
+    isAccessibleForFree:
+      event.free ?? event.price === 0,
+
+    performer: {
+      "@type": "MusicGroup",
+      "@id": ids.artist,
+      name: "De Kweker",
+      url: `${siteUrl}/de-kweker`
+    },
+
+    organizer: {
+      "@type": "Organization",
+      name: event.organizer.name,
+      url: event.organizer.url
+    },
+
     location: {
       "@type": "Place",
       name: event.venue,
       address: {
         "@type": "PostalAddress",
-        addressLocality: event.city,
+        streetAddress: event.streetAddress,
+        postalCode: event.postalCode,
+        addressLocality:
+          event.addressLocality ?? event.city,
+        addressRegion: "West-Vlaanderen",
         addressCountry: event.country
       }
     },
-    offers: event.ticketUrl
-      ? {
-          "@type": "Offer",
-          url: event.ticketUrl,
-          availability: "https://schema.org/InStock"
-        }
-      : event.free
-        ? {
-            "@type": "Offer",
-            url,
-            price: 0,
-            priceCurrency: "EUR",
-            availability: "https://schema.org/InStock"
-          }
-        : undefined
+
+    offers: {
+      "@type": "Offer",
+      price: event.price,
+      priceCurrency: event.priceCurrency,
+      ...(admissionUrl ? { url: admissionUrl } : {})
+    },
+
+    ...(event.sourceUrl
+      ? { sameAs: [event.sourceUrl] }
+      : {})
   };
 }
 

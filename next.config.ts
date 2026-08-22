@@ -23,6 +23,17 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 7
   },
+  async redirects() {
+    return [
+      {
+        source:
+          "/live/wijkplanken-plukketuffer-2026",
+        destination:
+          "/live/wijklanken-plukketuffer-2026",
+        permanent: true
+      }
+    ];
+  },
   async headers() {
     return [
       {
