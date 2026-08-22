@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { getReleases } from "@/lib/content/repository";
 import { artistNames, fullReleaseCredit, isFeatureAppearanceForSiteArtist } from "@/lib/content/release-credit";
 import { releaseSchema } from "@/lib/seo/schema";
-import { pageMetadata, socialCardPath } from "@/lib/seo/site";
+import { pageMetadata } from "@/lib/seo/site";
 
 export async function generateStaticParams() {
   return (await getReleases()).map((release) => ({ slug: release.slug }));
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const release = (await getReleases()).find((item) => item.slug === slug);
   if (!release) return {};
   const credit = fullReleaseCredit(release);
-  return pageMetadata({ title: `${release.title} | ${credit}`, path: `/muziek/${release.slug}`, description: release.description ?? `${release.title} van ${credit}.`, image: socialCardPath("release", release.slug), imageAlt: `${release.title} · ${credit}` });
+  return pageMetadata({ title: `${release.title} | ${credit}`, path: `/muziek/${release.slug}`, description: release.description ?? `${release.title} van ${credit}.`, imageAlt: `${release.title} · ${credit}` });
 }
 
 export default async function ReleasePage({ params }: { params: Promise<{ slug: string }> }) {

@@ -71,6 +71,44 @@ for (const asset of assetRefs) {
 const publicAssets = walk(resolve(root, "public/assets")).map((file) => `/${relative(resolve(root, "public"), file).replaceAll("\\", "/")}`);
 for (const asset of publicAssets) if (!assetRefs.has(asset)) errors.push(`Unreferenced asset remains in production payload: ${asset}`);
 
+const appRoot = resolve(root, "src/app");
+const pageFiles = files.filter((file) => file.startsWith(appRoot) && file.endsWith("page.tsx"));
+const routePatterns = pageFiles.map((file) => {
+  const rel = relative(appRoot, file).replaceAll("\\", "/").replace(/\/page\.tsx$/, "");
+  const route = rel.split("/").filter((part) => !/^\(.+\)$/.test(part)).join("/");
+  const pattern = `/${route}`.replace(/\/$/, "") || "/";
+  return new RegExp(`^${pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\\\[[^/]+\\\]/g, "[^/]+")}$`);
+});
+const literalInternalLinks = new Set();
+for (const file of sourceFiles) {
+  const rel = relative(root, file).replaceAll("\\", "/");
+  const text = readFileSync(file, "utf8");
+  for (const match of text.matchAll(/(?:href|destination)\s*=?:?\s*["'](\/[A-Za-z0-9_./-]*)["']/g)) literalInternalLinks.add(`${match[1]}\0${rel}`);
+  if (rel !== "src/content/verified.ts" && /["'`](\/assets\/(?:events|live|releases|portrait|press)\/)/.test(text)) {
+    errors.push(`Content asset is hardcoded outside the verified source: ${rel}`);
+  }
+}
+for (const entry of literalInternalLinks) {
+  const [href, rel] = entry.split("\0");
+  if (href.startsWith("/assets/") || href === "/favicon.ico") continue;
+  if (!routePatterns.some((pattern) => pattern.test(href))) errors.push(`Internal link has no matching app route: ${href} (${rel})`);
+}
+
+for (const file of pageFiles) {
+  const rel = relative(root, file).replaceAll("\\", "/");
+  if (rel.endsWith("src/app/(site)/page.tsx")) continue;
+  const text = readFileSync(file, "utf8");
+  if (!/export (?:const metadata|async function generateMetadata)/.test(text)) errors.push(`Public page has no explicit metadata: ${rel}`);
+}
+
+const seoSource = readFileSync(resolve(root, "src/lib/seo/site.ts"), "utf8");
+if (!seoSource.includes('export const siteUrl = "https://kwkr.be"')) errors.push("Canonical origin must be fixed to https://kwkr.be.");
+if (sourceFiles.some((file) => readFileSync(file, "utf8").includes("/api/og"))) errors.push("Source references the unavailable /api/og route.");
+const nextConfig = readFileSync(resolve(root, "next.config.ts"), "utf8");
+if (!nextConfig.includes('type: "host", value: "www.kwkr.be"') || !nextConfig.includes('destination: "https://kwkr.be/:path*"')) {
+  errors.push("www.kwkr.be must permanently redirect to the canonical non-www host.");
+}
+
 const header = readFileSync(resolve(root, "src/components/Header.tsx"), "utf8");
 const css = readFileSync(resolve(root, "src/app/globals.css"), "utf8");
 const transition = readFileSync(resolve(root, "src/lib/ui/route-transition.ts"), "utf8");

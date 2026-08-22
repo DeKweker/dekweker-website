@@ -18,6 +18,8 @@ export default async function HomePage() {
 
   const own = releases.filter(isPrimaryReleaseForSiteArtist).slice(0, 3);
   const feature = releases.find(isFeatureAppearanceForSiteArtist);
+  const dominus = events.find((event) => event.slug === "dominus-mma-iv-2025");
+  const villaWest = events.find((event) => event.slug === "villa-west-de-kweker-friends-2026");
   const liveItems = events.slice(0, 5).map((event) => ({
     slug: event.slug,
     title: event.title,
@@ -122,14 +124,18 @@ export default async function HomePage() {
           <div className="section-heading-aside"><p>Livebeelden, affiches en pers uit het archief.</p><Link className="rule-link" href="/media">Media</Link></div>
         </div>
         <div className="media-collage" data-scroll-scene>
-          <Link className="media-shot media-shot-live" href="/live/dominus-mma-iv-2025" data-depth="20">
-            <Image src="/assets/events/dominus-mma-de-kweker.jpg" alt="De Kweker live tijdens Dominus MMA IV" fill sizes="(max-width: 900px) 100vw, 47vw" />
-            <span>Live · 31.05.2025</span>
-          </Link>
-          <Link className="media-shot media-shot-poster" href="/live/villa-west-de-kweker-friends-2026" data-depth="12">
-            <Image src="/assets/events/villa-west-open-air-de-kweker.jpg" alt="Affiche De Kweker & Friends bij Villa West" fill sizes="(max-width: 900px) 48vw, 24vw" />
-            <span>Villa West</span>
-          </Link>
+          {dominus?.image ? (
+            <Link className="media-shot media-shot-live" href={`/live/${dominus.slug}`} data-depth="20">
+              <Image src={dominus.image} alt={`De Kweker live tijdens ${dominus.title}`} fill sizes="(max-width: 900px) 100vw, 47vw" />
+              <span>Live · {formatEventDateCompact(dominus)}</span>
+            </Link>
+          ) : null}
+          {villaWest?.image ? (
+            <Link className="media-shot media-shot-poster" href={`/live/${villaWest.slug}`} data-depth="12">
+              <Image src={villaWest.image} alt={`Affiche van ${villaWest.title}`} fill sizes="(max-width: 900px) 48vw, 24vw" />
+              <span>{villaWest.title}</span>
+            </Link>
+          ) : null}
           {press[0]?.image ? (
             <a className="media-shot media-shot-press" href={press[0].url} target="_blank" rel="noopener noreferrer" data-depth="17">
               <Image src={press[0].image} alt="Persfoto De Kweker" fill sizes="(max-width: 900px) 48vw, 25vw" />
@@ -140,9 +146,7 @@ export default async function HomePage() {
       </section>
 
       <section className="booking-scene" data-scroll-scene>
-        <div className="booking-scene-bg" data-depth="26">
-          <Image src="/assets/events/dominus-mma-de-kweker.jpg" alt="" fill sizes="100vw" />
-        </div>
+        {dominus?.image ? <div className="booking-scene-bg" data-depth="26"><Image src={dominus.image} alt="" fill sizes="100vw" /></div> : null}
         <div className="booking-scene-overlay" aria-hidden="true" />
         <div className="booking-scene-inner" data-reveal>
           <p className="eyebrow eyebrow-accent">Booking / features / pers</p>

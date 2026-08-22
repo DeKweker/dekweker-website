@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { BookingCueMark } from "@/components/PageMotionMarks";
+import { getEvents } from "@/lib/content/repository";
 import { pageMetadata } from "@/lib/seo/site";
 
 export const metadata: Metadata = pageMetadata({
@@ -11,13 +12,12 @@ export const metadata: Metadata = pageMetadata({
 
 const bookingMail = "mailto:info@kwkr.be?subject=Booking%20De%20Kweker&body=Naam%20organisatie%3A%0ADatum%3A%0ALocatie%3A%0AType%20event%3A%0ATiming%3A%0ABudget%3A%0AExtra%20info%3A";
 
-export default function BookingPage() {
+export default async function BookingPage() {
+  const bookingImage = (await getEvents()).find((event) => event.slug === "dominus-mma-iv-2025")?.image;
   return (
     <div className="page-shell booking-page">
       <section className="booking-page-hero" data-scroll-scene>
-        <div className="booking-page-image" data-depth="26">
-          <Image src="/assets/events/dominus-mma-de-kweker.jpg" alt="De Kweker live op het podium" fill priority sizes="100vw" />
-        </div>
+        {bookingImage ? <div className="booking-page-image" data-depth="26"><Image src={bookingImage} alt="De Kweker live op het podium" fill priority sizes="100vw" /></div> : null}
         <div className="booking-page-shade" aria-hidden="true" />
         <BookingCueMark />
         <div className="booking-page-copy" data-reveal>

@@ -23,8 +23,17 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 7
   },
+  turbopack: {
+    root: process.cwd()
+  },
   async redirects() {
     return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.kwkr.be" }],
+        destination: "https://kwkr.be/:path*",
+        permanent: true
+      },
       {
         source:
           "/live/wijkplanken-plukketuffer-2026",

@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
+import { verifiedArtist } from "@/content/verified";
 
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kwkr.be";
-
-export function socialCardPath(type: "site" | "profile" | "release" | "event", slug?: string) {
-  const params = new URLSearchParams({ type });
-  if (slug) params.set("slug", slug);
-  return `/api/og?${params.toString()}`;
-}
+/** The public entity has one canonical origin, independent of deploy environment. */
+export const siteUrl = "https://kwkr.be";
 
 export const defaultDescription =
   "Officiële website van De Kweker, West-Vlaamse rapper uit Brugge (8000). Muziek, live shows, video's, media en booking.";
@@ -26,7 +22,7 @@ export function pageMetadata({
 }): Metadata {
   const canonical = new URL(path, siteUrl).toString();
   const imageUrl = new URL(image, siteUrl).toString();
-  const brandedTitle = title.includes("De Kweker") ? title : `${title} | De Kweker`;
+  const brandedTitle = title.includes(verifiedArtist.name) ? title : `${title} | ${verifiedArtist.name}`;
 
   return {
     title: { absolute: brandedTitle },
@@ -36,7 +32,7 @@ export function pageMetadata({
       type: "website",
       locale: "nl_BE",
       url: canonical,
-      siteName: "De Kweker",
+      siteName: verifiedArtist.name,
       title: brandedTitle,
       description,
       images: [{ url: imageUrl, width: 1200, height: 630, alt: imageAlt }]

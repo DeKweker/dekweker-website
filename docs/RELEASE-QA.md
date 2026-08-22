@@ -2,7 +2,7 @@
 
 `npm run verify` is the release gate. The Vercel `build` script runs the same QA, typecheck, lint and tests before `next build`, so a production deployment cannot silently skip those checks.
 
-The repository-level QA rejects generated folders, local environment files, dormant service references, missing or unreferenced production assets, debug markers, localhost references, oversized files and regressions in booking navigation, motion lifecycle, reduced motion, safe-area support and image-crop safeguards.
+The repository-level QA rejects generated folders, local environment files, dormant service references, missing or unreferenced production assets, hardcoded content assets outside the verified source, debug markers, localhost references, oversized files, invalid internal links, public pages without metadata, canonical/www regressions and regressions in booking navigation, motion lifecycle, reduced motion, safe-area support and image-crop safeguards. Vitest additionally validates unique content slugs, stable artist IDs, dates, local assets, external URL syntax, sitemap coverage and canonical metadata.
 
 ## Responsive review matrix
 

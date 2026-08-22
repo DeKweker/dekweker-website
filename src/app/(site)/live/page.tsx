@@ -18,7 +18,7 @@ export default async function LivePage() {
   const today = todayInBrussels();
   const upcoming = events.filter((event) => event.status === "scheduled" && event.startDate >= today);
   const past = events.filter((event) => !upcoming.includes(event));
-  const lead = past.find((event) => event.image?.includes("/assets/live/")) ?? past.find((event) => event.image);
+  const lead = past.find((event) => event.image);
 
   return (
     <div className="page-shell">

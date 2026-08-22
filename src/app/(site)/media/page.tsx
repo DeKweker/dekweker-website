@@ -2,7 +2,8 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/JsonLd";
 import { MediaFrameMark } from "@/components/PageMotionMarks";
-import { getArtist, getPress, getVideos } from "@/lib/content/repository";
+import { getArtist, getEvents, getPress, getVideos } from "@/lib/content/repository";
+import { formatEventDate } from "@/lib/content/events";
 import { videoSchema } from "@/lib/seo/schema";
 import { pageMetadata } from "@/lib/seo/site";
 
@@ -13,7 +14,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function MediaPage() {
-  const [artist, press, videos] = await Promise.all([getArtist(), getPress(), getVideos()]);
+  const [artist, events, press, videos] = await Promise.all([getArtist(), getEvents(), getPress(), getVideos()]);
+  const mediaLead = events.find((event) => event.slug === "wijklanken-plukketuffer-2026");
   return (
     <div className="page-shell">
       {videos.map((video) => <JsonLd key={video.slug} data={videoSchema(video)} />)}
@@ -22,10 +24,12 @@ export default async function MediaPage() {
         <MediaFrameMark />
       </header>
 
-      <section className="media-lead-grid" data-scroll-scene>
-        <div className="media-lead-photo" data-depth="24"><Image src="/assets/live/plukketuffer-wijklanken-2026-08-18.jpg" alt="De Kweker live tijdens Wijklanken / PlukkeTuffer" fill priority sizes="(max-width: 900px) 100vw, 58vw" /></div>
-        <div className="media-lead-copy" data-reveal><p className="eyebrow eyebrow-accent">19 augustus 2026</p><h2>WIJKLANKEN.</h2><p>Surprise act tijdens de liveshow van PlukkeTuffer in Brugge.</p></div>
-      </section>
+      {mediaLead?.image ? (
+        <section className="media-lead-grid" data-scroll-scene>
+          <div className="media-lead-photo" data-depth="24"><Image src={mediaLead.image} alt={`De Kweker live tijdens ${mediaLead.title}`} fill priority sizes="(max-width: 900px) 100vw, 58vw" /></div>
+          <div className="media-lead-copy" data-reveal><p className="eyebrow eyebrow-accent">{formatEventDate(mediaLead)}</p><h2>WIJKLANKEN.</h2><p>{mediaLead.description}</p></div>
+        </section>
+      ) : null}
 
       <section className="page-content">
         <div className="catalog-heading" data-reveal><div><p className="eyebrow">Video</p><h2>KIJK.</h2></div><p>Officiële clips en video’s waarin De Kweker te horen of te zien is.</p></div>

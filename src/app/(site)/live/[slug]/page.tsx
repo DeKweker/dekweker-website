@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { getEvents } from "@/lib/content/repository";
 import { formatEventDate } from "@/lib/content/events";
 import { eventSchema } from "@/lib/seo/schema";
-import { pageMetadata, socialCardPath } from "@/lib/seo/site";
+import { pageMetadata } from "@/lib/seo/site";
 
 export async function generateStaticParams() {
   return (await getEvents()).map((event) => ({ slug: event.slug }));
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const event = (await getEvents()).find((item) => item.slug === slug);
   if (!event) return {};
-  return pageMetadata({ title: event.title, path: `/live/${event.slug}`, description: event.description ?? `${event.title}. De Kweker live in ${event.city}.`, image: socialCardPath("event", event.slug), imageAlt: `${event.title} · ${event.venue} · ${event.city}` });
+  return pageMetadata({ title: event.title, path: `/live/${event.slug}`, description: event.description ?? `${event.title}. De Kweker live in ${event.city}.`, imageAlt: `${event.title} · ${event.venue} · ${event.city}` });
 }
 
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {

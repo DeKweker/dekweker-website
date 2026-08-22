@@ -15,7 +15,9 @@ This repository is the live public website for De Kweker. It contains only the p
 
 ## Public routes
 
-`/`, `/muziek`, `/muziek/[slug]`, `/live`, `/live/[slug]`, `/archief`, `/media`, `/de-kweker`, `/booking`, `/contact`, `/privacy`, `/voorwaarden` plus metadata routes, RSS, image sitemap and the dynamic OG image endpoint.
+`/`, `/muziek`, `/muziek/[slug]`, `/live`, `/live/[slug]`, `/archief`, `/media`, `/de-kweker`, `/booking`, `/contact`, `/privacy`, `/voorwaarden` plus metadata routes, RSS and the image sitemap. Social metadata uses the reviewed static 1200 × 630 brand image.
+
+The canonical origin is always `https://kwkr.be`; `www.kwkr.be` permanently redirects to the non-www host. Preview deployments remain non-indexable and still point canonical metadata at production.
 
 ## Data and third parties
 
